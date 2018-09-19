@@ -38,562 +38,6 @@
         __webpack_require__.p = "";
         return __webpack_require__(__webpack_require__.s = "./src/index.js");
     }({
-        "./node_modules/beaver-logger/client/index.js": function(module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            var interface_namespaceObject = {};
-            __webpack_require__.d(interface_namespaceObject, "track", function() {
-                return _track;
-            });
-            __webpack_require__.d(interface_namespaceObject, "buffer", function() {
-                return buffer;
-            });
-            __webpack_require__.d(interface_namespaceObject, "tracking", function() {
-                return tracking;
-            });
-            __webpack_require__.d(interface_namespaceObject, "getTransport", function() {
-                return getTransport;
-            });
-            __webpack_require__.d(interface_namespaceObject, "setTransport", function() {
-                return setTransport;
-            });
-            __webpack_require__.d(interface_namespaceObject, "print", function() {
-                return print;
-            });
-            __webpack_require__.d(interface_namespaceObject, "immediateFlush", function() {
-                return immediateFlush;
-            });
-            __webpack_require__.d(interface_namespaceObject, "flush", function() {
-                return _flush;
-            });
-            __webpack_require__.d(interface_namespaceObject, "log", function() {
-                return log;
-            });
-            __webpack_require__.d(interface_namespaceObject, "prefix", function() {
-                return prefix;
-            });
-            __webpack_require__.d(interface_namespaceObject, "debug", function() {
-                return debug;
-            });
-            __webpack_require__.d(interface_namespaceObject, "info", function() {
-                return info;
-            });
-            __webpack_require__.d(interface_namespaceObject, "warn", function() {
-                return warn;
-            });
-            __webpack_require__.d(interface_namespaceObject, "error", function() {
-                return error;
-            });
-            __webpack_require__.d(interface_namespaceObject, "init", function() {
-                return init;
-            });
-            __webpack_require__.d(interface_namespaceObject, "startTransition", function() {
-                return startTransition;
-            });
-            __webpack_require__.d(interface_namespaceObject, "endTransition", function() {
-                return endTransition;
-            });
-            __webpack_require__.d(interface_namespaceObject, "transition", function() {
-                return transition;
-            });
-            __webpack_require__.d(interface_namespaceObject, "payloadBuilders", function() {
-                return payloadBuilders;
-            });
-            __webpack_require__.d(interface_namespaceObject, "metaBuilders", function() {
-                return metaBuilders;
-            });
-            __webpack_require__.d(interface_namespaceObject, "trackingBuilders", function() {
-                return trackingBuilders;
-            });
-            __webpack_require__.d(interface_namespaceObject, "headerBuilders", function() {
-                return headerBuilders;
-            });
-            __webpack_require__.d(interface_namespaceObject, "addPayloadBuilder", function() {
-                return addPayloadBuilder;
-            });
-            __webpack_require__.d(interface_namespaceObject, "addMetaBuilder", function() {
-                return addMetaBuilder;
-            });
-            __webpack_require__.d(interface_namespaceObject, "addTrackingBuilder", function() {
-                return addTrackingBuilder;
-            });
-            __webpack_require__.d(interface_namespaceObject, "addHeaderBuilder", function() {
-                return addHeaderBuilder;
-            });
-            __webpack_require__.d(interface_namespaceObject, "config", function() {
-                return config;
-            });
-            __webpack_require__.d(interface_namespaceObject, "logLevels", function() {
-                return logLevels;
-            });
-            var src = __webpack_require__("./node_modules/zalgo-promise/src/index.js");
-            function extend(dest, src) {
-                var over = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
-                dest = dest || {};
-                src = src || {};
-                for (var i in src) src.hasOwnProperty(i) && (!over && dest.hasOwnProperty(i) || (dest[i] = src[i]));
-                return dest;
-            }
-            function uniqueID() {
-                var chars = "0123456789abcdef";
-                return "xxxxxxxxxx".replace(/./g, function() {
-                    return chars.charAt(Math.floor(Math.random() * chars.length));
-                });
-            }
-            var payloadBuilders = [], metaBuilders = [], trackingBuilders = [], headerBuilders = [];
-            function addPayloadBuilder(builder) {
-                payloadBuilders.push(builder);
-            }
-            function addMetaBuilder(builder) {
-                metaBuilders.push(builder);
-            }
-            function addTrackingBuilder(builder) {
-                trackingBuilders.push(builder);
-            }
-            function addHeaderBuilder(builder) {
-                headerBuilders.push(builder);
-            }
-            var config = {
-                uri: "",
-                prefix: "",
-                initial_state_name: "init",
-                flushInterval: 6e5,
-                debounceInterval: 10,
-                sizeLimit: 300,
-                silent: !1,
-                heartbeat: !0,
-                heartbeatConsoleLog: !0,
-                heartbeatInterval: 5e3,
-                heartbeatTooBusy: !1,
-                heartbeatTooBusyThreshold: 1e4,
-                logLevel: "warn",
-                autoLog: [ "warn", "error" ],
-                logUnload: !0,
-                logPerformance: !0
-            }, logLevels = [ "error", "warn", "info", "debug" ], buffer = [], tracking = [], logger_transport = function(headers, data, options) {
-                return function(method, url) {
-                    var headers = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, data = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : {}, _ref$fireAndForget = (arguments.length > 4 && void 0 !== arguments[4] ? arguments[4] : {}).fireAndForget, fireAndForget = void 0 !== _ref$fireAndForget && _ref$fireAndForget;
-                    return new src.a(function(resolve) {
-                        var XRequest = window.XMLHttpRequest || window.ActiveXObject;
-                        if (window.XDomainRequest && !function(url) {
-                            var match = url.match(/https?:\/\/[^/]+/);
-                            return !match || match[0] === window.location.protocol + "//" + window.location.host;
-                        }(url)) {
-                            if (!function(url) {
-                                return window.location.protocol === url.split("/")[0];
-                            }(url)) return resolve();
-                            XRequest = window.XDomainRequest;
-                        }
-                        var req = new XRequest("MSXML2.XMLHTTP.3.0");
-                        req.open(method.toUpperCase(), url, !0);
-                        if ("function" == typeof req.setRequestHeader) {
-                            req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                            req.setRequestHeader("Content-type", "application/json");
-                            for (var headerName in headers) headers.hasOwnProperty(headerName) && req.setRequestHeader(headerName, headers[headerName]);
-                        }
-                        fireAndForget ? resolve() : req.onreadystatechange = function() {
-                            req.readyState > 3 && resolve();
-                        };
-                        req.send(JSON.stringify(data).replace(/&/g, "%26"));
-                    });
-                }("post", config.uri, headers, data, options);
-            };
-            function getTransport() {
-                return logger_transport;
-            }
-            function setTransport(newTransport) {
-                logger_transport = newTransport;
-            }
-            var loaded = !1;
-            setTimeout(function() {
-                loaded = !0;
-            }, 1);
-            function print(level, event, payload) {
-                if ("undefined" != typeof window && window.console && window.console.log) {
-                    if (!loaded) return setTimeout(function() {
-                        return print(level, event, payload);
-                    }, 1);
-                    var logLevel = config.logLevel;
-                    window.LOG_LEVEL && (logLevel = window.LOG_LEVEL);
-                    if (!(logLevels.indexOf(level) > logLevels.indexOf(logLevel))) {
-                        payload = payload || {};
-                        var args = [ event ];
-                        Boolean(window.document.documentMode) && (payload = JSON.stringify(payload));
-                        args.push(payload);
-                        (payload.error || payload.warning) && args.push("\n\n", payload.error || payload.warning);
-                        try {
-                            window.console[level] && window.console[level].apply ? window.console[level].apply(window.console, args) : window.console.log && window.console.log.apply && window.console.log.apply(window.console, args);
-                        } catch (err) {}
-                    }
-                }
-            }
-            function immediateFlush() {
-                var _ref$fireAndForget = (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}).fireAndForget, fireAndForget = void 0 !== _ref$fireAndForget && _ref$fireAndForget;
-                if ("undefined" != typeof window && config.uri) {
-                    var hasBuffer = buffer.length, hasTracking = tracking.length;
-                    if (hasBuffer || hasTracking) {
-                        for (var meta = {}, _i2 = 0, _length2 = null == metaBuilders ? 0 : metaBuilders.length; _i2 < _length2; _i2++) {
-                            var builder = metaBuilders[_i2];
-                            try {
-                                extend(meta, builder(meta), !1);
-                            } catch (err) {
-                                console.error("Error in custom meta builder:", err.stack || err.toString());
-                            }
-                        }
-                        for (var headers = {}, _i4 = 0, _length4 = null == headerBuilders ? 0 : headerBuilders.length; _i4 < _length4; _i4++) {
-                            var _builder = headerBuilders[_i4];
-                            try {
-                                extend(headers, _builder(headers), !1);
-                            } catch (err) {
-                                console.error("Error in custom header builder:", err.stack || err.toString());
-                            }
-                        }
-                        var req = logger_transport(headers, {
-                            events: buffer,
-                            meta: meta,
-                            tracking: tracking
-                        }, {
-                            fireAndForget: fireAndForget
-                        });
-                        buffer = [];
-                        tracking = [];
-                        return req;
-                    }
-                }
-            }
-            var method, interval, debounce, _flush = (method = immediateFlush, interval = config.debounceInterval, 
-            debounce = {}, function() {
-                var args = arguments;
-                if (debounce.timeout) {
-                    clearTimeout(debounce.timeout);
-                    delete debounce.timeout;
-                }
-                debounce.timeout = setTimeout(function() {
-                    var resolver = debounce.resolver, rejector = debounce.rejector;
-                    delete debounce.promise;
-                    delete debounce.resolver;
-                    delete debounce.rejector;
-                    delete debounce.timeout;
-                    return src.a.resolve().then(function() {
-                        return method.apply(null, args);
-                    }).then(resolver, rejector);
-                }, interval);
-                debounce.promise = debounce.promise || new src.a(function(resolver, rejector) {
-                    debounce.resolver = resolver;
-                    debounce.rejector = rejector;
-                });
-                return debounce.promise;
-            });
-            function enqueue(level, event, payload) {
-                buffer.push({
-                    level: level,
-                    event: event,
-                    payload: payload
-                });
-                config.autoLog.indexOf(level) > -1 && _flush();
-            }
-            function log(level, event, payload) {
-                if ("undefined" != typeof window) {
-                    config.prefix && (event = config.prefix + "_" + event);
-                    "string" == typeof (payload = payload || {}) ? payload = {
-                        message: payload
-                    } : payload instanceof Error && (payload = {
-                        error: payload.stack || payload.toString()
-                    });
-                    try {
-                        JSON.stringify(payload);
-                    } catch (err) {
-                        return;
-                    }
-                    payload.timestamp = Date.now();
-                    for (var _i6 = 0, _length6 = null == payloadBuilders ? 0 : payloadBuilders.length; _i6 < _length6; _i6++) {
-                        var builder = payloadBuilders[_i6];
-                        try {
-                            extend(payload, builder(payload), !1);
-                        } catch (err) {
-                            console.error("Error in custom payload builder:", err.stack || err.toString());
-                        }
-                    }
-                    config.silent || print(level, event, payload);
-                    buffer.length === config.sizeLimit ? enqueue("info", "logger_max_buffer_length") : buffer.length < config.sizeLimit && enqueue(level, event, payload);
-                }
-            }
-            function prefix(name) {
-                return {
-                    debug: function(event, payload) {
-                        return log("debug", name + "_" + event, payload);
-                    },
-                    info: function(event, payload) {
-                        return log("info", name + "_" + event, payload);
-                    },
-                    warn: function(event, payload) {
-                        return log("warn", name + "_" + event, payload);
-                    },
-                    error: function(event, payload) {
-                        return log("error", name + "_" + event, payload);
-                    },
-                    track: function(payload) {
-                        return _track(payload);
-                    },
-                    flush: function() {
-                        return _flush();
-                    }
-                };
-            }
-            function debug(event, payload) {
-                return log("debug", event, payload);
-            }
-            function info(event, payload) {
-                return log("info", event, payload);
-            }
-            function warn(event, payload) {
-                return log("warn", event, payload);
-            }
-            function error(event, payload) {
-                return log("error", event, payload);
-            }
-            function _track(payload) {
-                if ("undefined" != typeof window && payload) {
-                    try {
-                        JSON.stringify(payload);
-                    } catch (err) {
-                        return;
-                    }
-                    for (var _i8 = 0, _length8 = null == trackingBuilders ? 0 : trackingBuilders.length; _i8 < _length8; _i8++) {
-                        var builder = trackingBuilders[_i8];
-                        try {
-                            extend(payload, builder(payload), !1);
-                        } catch (err) {
-                            console.error("Error in custom tracking builder:", err.stack || err.toString());
-                        }
-                    }
-                    print("debug", "tracking", payload);
-                    tracking.push(payload);
-                }
-            }
-            var enablePerformance = window && window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0;
-            function now() {
-                return enablePerformance ? performance.now() : Date.now();
-            }
-            function timer(startTime) {
-                return {
-                    startTime: startTime = void 0 !== startTime ? startTime : now(),
-                    elapsed: function() {
-                        return parseInt(now() - startTime, 10);
-                    },
-                    reset: function() {
-                        startTime = now();
-                    }
-                };
-            }
-            function reqStartElapsed() {
-                if (enablePerformance) {
-                    var timing = window.performance.timing;
-                    return parseInt(timing.connectEnd - timing.navigationStart, 10);
-                }
-            }
-            var clientTimer = timer(), reqTimer = timer(reqStartElapsed());
-            var initiated = !1;
-            function init(conf) {
-                extend(config, conf || {});
-                if (!initiated) {
-                    initiated = !0;
-                    config.logPerformance && function() {
-                        if (!enablePerformance) return info("no_performance_data");
-                        addPayloadBuilder(function() {
-                            var payload = {};
-                            payload.client_elapsed = clientTimer.elapsed();
-                            enablePerformance && (payload.req_elapsed = reqTimer.elapsed());
-                            return payload;
-                        });
-                        new src.a(function(resolve) {
-                            "undefined" != typeof document && "complete" === document.readyState && resolve();
-                            window.addEventListener("load", resolve);
-                        }).then(function() {
-                            var timing = {};
-                            [ "connectEnd", "connectStart", "domComplete", "domContentLoadedEventEnd", "domContentLoadedEventStart", "domInteractive", "domLoading", "domainLookupEnd", "domainLookupStart", "fetchStart", "loadEventEnd", "loadEventStart", "navigationStart", "redirectEnd", "redirectStart", "requestStart", "responseEnd", "responseStart", "secureConnectionStart", "unloadEventEnd", "unloadEventStart" ].forEach(function(key) {
-                                timing[key] = parseInt(window.performance.timing[key], 10) || 0;
-                            });
-                            var offset = timing.connectEnd - timing.navigationStart;
-                            timing.connectEnd && Object.keys(timing).forEach(function(name) {
-                                var time = timing[name];
-                                time && info("timing_" + name, {
-                                    client_elapsed: parseInt(time - timing.connectEnd - (clientTimer.startTime - offset), 10),
-                                    req_elapsed: parseInt(time - timing.connectEnd, 10)
-                                });
-                            });
-                            info("timing", timing);
-                            info("memory", window.performance.memory);
-                            info("navigation", window.performance.navigation);
-                            window.performance.getEntries && window.performance.getEntries().forEach(function(resource) {
-                                [ "link", "script", "img", "css" ].indexOf(resource.initiatorType) > -1 && info(resource.initiatorType, resource);
-                            });
-                        });
-                    }();
-                    config.heartbeat && (heartBeatTimer = timer(), heartbeatCount = 0, time = config.heartbeatInterval, 
-                    function loop() {
-                        setTimeout(function() {
-                            !function() {
-                                if (!(config.heartbeatMaxThreshold && heartbeatCount > config.heartbeatMaxThreshold)) {
-                                    heartbeatCount += 1;
-                                    var elapsed = heartBeatTimer.elapsed(), lag = elapsed - config.heartbeatInterval, heartbeatPayload = {
-                                        count: heartbeatCount,
-                                        elapsed: elapsed
-                                    };
-                                    if (config.heartbeatTooBusy) {
-                                        heartbeatPayload.lag = lag;
-                                        lag >= config.heartbeatTooBusyThreshold && info("toobusy", heartbeatPayload, config.heartbeatConsoleLog);
-                                    }
-                                    info("heartbeat", heartbeatPayload, config.heartbeatConsoleLog);
-                                }
-                            }();
-                            loop();
-                        }, time);
-                    }());
-                    if (config.logUnload) {
-                        window.addEventListener("beforeunload", function() {
-                            info("window_beforeunload");
-                            immediateFlush({
-                                fireAndForget: !0
-                            });
-                        });
-                        window.addEventListener("unload", function() {
-                            info("window_unload");
-                            immediateFlush({
-                                fireAndForget: !0
-                            });
-                        });
-                    }
-                    config.flushInterval && setInterval(_flush, config.flushInterval);
-                    if (window.beaverLogQueue) {
-                        window.beaverLogQueue.forEach(function(payload) {
-                            log(payload.level, payload.event, payload);
-                        });
-                        delete window.beaverLogQueue;
-                    }
-                }
-                var time, heartBeatTimer, heartbeatCount;
-            }
-            var windowID = uniqueID(), pageID = uniqueID(), currentState = config.initial_state_name, startTime = void 0;
-            function startTransition() {
-                startTime = now();
-            }
-            function endTransition(toState) {
-                startTime = startTime || reqStartElapsed();
-                var currentTime = now(), elapsedTime = void 0;
-                void 0 !== startTime && (elapsedTime = parseInt(currentTime - startTime, 0));
-                var transitionName = "transition_" + currentState + "_to_" + toState;
-                info(transitionName, {
-                    duration: elapsedTime
-                });
-                _track({
-                    transition: transitionName,
-                    transition_time: elapsedTime
-                });
-                immediateFlush();
-                startTime = currentTime;
-                currentState = toState;
-                pageID = uniqueID();
-            }
-            function transition(toState) {
-                startTransition();
-                endTransition(toState);
-            }
-            addPayloadBuilder(function() {
-                return {
-                    windowID: windowID,
-                    pageID: pageID
-                };
-            });
-            addMetaBuilder(function() {
-                return {
-                    state: "ui_" + currentState
-                };
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return _track;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return buffer;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return tracking;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return getTransport;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return setTransport;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return print;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return immediateFlush;
-            });
-            __webpack_require__.d(__webpack_exports__, "c", function() {
-                return _flush;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return log;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return prefix;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return debug;
-            });
-            __webpack_require__.d(__webpack_exports__, "d", function() {
-                return info;
-            });
-            __webpack_require__.d(__webpack_exports__, "f", function() {
-                return warn;
-            });
-            __webpack_require__.d(__webpack_exports__, "b", function() {
-                return error;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return init;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return startTransition;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return endTransition;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return transition;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return payloadBuilders;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return metaBuilders;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return trackingBuilders;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return headerBuilders;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return addPayloadBuilder;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return addMetaBuilder;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return addTrackingBuilder;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return addHeaderBuilder;
-            });
-            __webpack_require__.d(__webpack_exports__, "a", function() {
-                return config;
-            });
-            __webpack_require__.d(__webpack_exports__, "e", function() {
-                return logLevels;
-            });
-        },
         "./node_modules/cross-domain-safe-weakmap/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
             __webpack_require__.d({}, "WeakMap", function() {
@@ -2014,649 +1458,6 @@
             var __WEBPACK_IMPORTED_MODULE_0__conf__ = __webpack_require__("./node_modules/post-robot/src/conf/index.js"), global = window[__WEBPACK_IMPORTED_MODULE_0__conf__.b.WINDOW_PROPS.POSTROBOT] = window[__WEBPACK_IMPORTED_MODULE_0__conf__.b.WINDOW_PROPS.POSTROBOT] || {};
             global.registerSelf = function() {};
         },
-        "./node_modules/post-robot/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            Object.defineProperty(__webpack_exports__, "__esModule", {
-                value: !0
-            });
-            var interface_namespaceObject = {};
-            __webpack_require__.d(interface_namespaceObject, "cleanUpWindow", function() {
-                return cleanUpWindow;
-            });
-            __webpack_require__.d(interface_namespaceObject, "Promise", function() {
-                return zalgo_promise_src.a;
-            });
-            __webpack_require__.d(interface_namespaceObject, "bridge", function() {
-                return bridge;
-            });
-            __webpack_require__.d(interface_namespaceObject, "init", function() {
-                return init;
-            });
-            __webpack_require__.d(interface_namespaceObject, "parent", function() {
-                return public_parent;
-            });
-            __webpack_require__.d(interface_namespaceObject, "send", function() {
-                return _send;
-            });
-            __webpack_require__.d(interface_namespaceObject, "request", function() {
-                return request;
-            });
-            __webpack_require__.d(interface_namespaceObject, "sendToParent", function() {
-                return sendToParent;
-            });
-            __webpack_require__.d(interface_namespaceObject, "client", function() {
-                return client;
-            });
-            __webpack_require__.d(interface_namespaceObject, "on", function() {
-                return _on;
-            });
-            __webpack_require__.d(interface_namespaceObject, "listen", function() {
-                return listen;
-            });
-            __webpack_require__.d(interface_namespaceObject, "once", function() {
-                return once;
-            });
-            __webpack_require__.d(interface_namespaceObject, "listener", function() {
-                return server_listener;
-            });
-            __webpack_require__.d(interface_namespaceObject, "CONFIG", function() {
-                return conf.a;
-            });
-            __webpack_require__.d(interface_namespaceObject, "CONSTANTS", function() {
-                return conf.b;
-            });
-            __webpack_require__.d(interface_namespaceObject, "disable", function() {
-                return disable;
-            });
-            var lib = __webpack_require__("./node_modules/post-robot/src/lib/index.js"), src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), conf = __webpack_require__("./node_modules/post-robot/src/conf/index.js"), global = __webpack_require__("./node_modules/post-robot/src/global.js"), zalgo_promise_src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), SEND_MESSAGE_STRATEGIES = {};
-            SEND_MESSAGE_STRATEGIES[conf.b.SEND_STRATEGIES.POST_MESSAGE] = function(win, serializedMessage, domain) {
-                try {
-                    __webpack_require__("./node_modules/post-robot/src/compat/index.js").emulateIERestrictions(window, win);
-                } catch (err) {
-                    return;
-                }
-                (Array.isArray(domain) ? domain : "string" == typeof domain ? [ domain ] : [ conf.b.WILDCARD ]).map(function(dom) {
-                    if (0 === dom.indexOf(conf.b.MOCK_PROTOCOL)) {
-                        if (window.location.protocol === conf.b.FILE_PROTOCOL) return conf.b.WILDCARD;
-                        if (!Object(src.isActuallySameDomain)(win)) throw new Error("Attempting to send messsage to mock domain " + dom + ", but window is actually cross-domain");
-                        return Object(src.getActualDomain)(win);
-                    }
-                    return 0 === dom.indexOf(conf.b.FILE_PROTOCOL) ? conf.b.WILDCARD : dom;
-                }).forEach(function(dom) {
-                    return win.postMessage(serializedMessage, dom);
-                });
-            };
-            var _require = __webpack_require__("./node_modules/post-robot/src/bridge/index.js"), sendBridgeMessage = _require.sendBridgeMessage, needsBridgeForBrowser = _require.needsBridgeForBrowser, isBridge = _require.isBridge;
-            SEND_MESSAGE_STRATEGIES[conf.b.SEND_STRATEGIES.BRIDGE] = function(win, serializedMessage, domain) {
-                if (needsBridgeForBrowser() || isBridge()) {
-                    if (Object(src.isSameDomain)(win)) throw new Error("Post message through bridge disabled between same domain windows");
-                    if (!1 !== Object(src.isSameTopWindow)(window, win)) throw new Error("Can only use bridge to communicate between two different windows, not between frames");
-                    return sendBridgeMessage(win, serializedMessage, domain);
-                }
-            };
-            SEND_MESSAGE_STRATEGIES[conf.b.SEND_STRATEGIES.GLOBAL] = function(win, serializedMessage) {
-                if (Object(lib.i)()) {
-                    if (!Object(src.isSameDomain)(win)) throw new Error("Post message through global disabled between different domain windows");
-                    if (!1 !== Object(src.isSameTopWindow)(window, win)) throw new Error("Can only use global to communicate between two different windows, not between frames");
-                    var foreignGlobal = win[conf.b.WINDOW_PROPS.POSTROBOT];
-                    if (!foreignGlobal) throw new Error("Can not find postRobot global on foreign window");
-                    return foreignGlobal.receiveMessage({
-                        source: window,
-                        origin: Object(src.getDomain)(),
-                        data: serializedMessage
-                    });
-                }
-            };
-            var _extends = Object.assign || function(target) {
-                for (var i = 1; i < arguments.length; i++) {
-                    var source = arguments[i];
-                    for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
-                }
-                return target;
-            };
-            function sendMessage(win, message, domain) {
-                return zalgo_promise_src.a.try(function() {
-                    var _jsonStringify;
-                    message = function(win, message) {
-                        var options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, id = Object(lib.q)(), type = Object(lib.c)(), sourceDomain = Object(src.getDomain)(window);
-                        return _extends({}, message, options, {
-                            sourceDomain: sourceDomain,
-                            id: message.id || id,
-                            windowType: type
-                        });
-                    }(win, message, {
-                        data: Object(lib.o)(win, domain, message.data),
-                        domain: domain
-                    });
-                    if (win === window && !conf.a.ALLOW_SAME_ORIGIN) throw new Error("Attemping to send message to self");
-                    if (Object(src.isWindowClosed)(win)) throw new Error("Window is closed");
-                    var messages = [], serializedMessage = Object(lib.g)(((_jsonStringify = {})[conf.b.WINDOW_PROPS.POSTROBOT] = message, 
-                    _jsonStringify), null, 2);
-                    return zalgo_promise_src.a.map(Object.keys(SEND_MESSAGE_STRATEGIES), function(strategyName) {
-                        return zalgo_promise_src.a.try(function() {
-                            if (!conf.a.ALLOWED_POST_MESSAGE_METHODS[strategyName]) throw new Error("Strategy disallowed: " + strategyName);
-                            return SEND_MESSAGE_STRATEGIES[strategyName](win, serializedMessage, domain);
-                        }).then(function() {
-                            messages.push(strategyName + ": success");
-                            return !0;
-                        }, function(err) {
-                            messages.push(strategyName + ": " + Object(lib.p)(err) + "\n");
-                            return !1;
-                        });
-                    }).then(function(results) {
-                        var success = results.some(Boolean), status = message.type + " " + message.name + " " + (success ? "success" : "error") + ":\n  - " + messages.join("\n  - ") + "\n";
-                        if (!success) throw new Error(status);
-                    });
-                });
-            }
-            var cross_domain_safe_weakmap_src = __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/index.js");
-            global.a.responseListeners = global.a.responseListeners || {};
-            global.a.requestListeners = global.a.requestListeners || {};
-            global.a.WINDOW_WILDCARD = global.a.WINDOW_WILDCARD || new function() {}();
-            global.a.erroredResponseListeners = global.a.erroredResponseListeners || {};
-            var _RECEIVE_MESSAGE_TYPE, __DOMAIN_REGEX__ = "__domain_regex__";
-            function getResponseListener(hash) {
-                return global.a.responseListeners[hash];
-            }
-            function deleteResponseListener(hash) {
-                delete global.a.responseListeners[hash];
-            }
-            function isResponseListenerErrored(hash) {
-                return Boolean(global.a.erroredResponseListeners[hash]);
-            }
-            function getRequestListener(_ref) {
-                var name = _ref.name, win = _ref.win, domain = _ref.domain;
-                win === conf.b.WILDCARD && (win = null);
-                domain === conf.b.WILDCARD && (domain = null);
-                if (!name) throw new Error("Name required to get request listener");
-                var nameListeners = global.a.requestListeners[name];
-                if (nameListeners) for (var _i2 = 0, _ref3 = [ win, global.a.WINDOW_WILDCARD ], _length2 = null == _ref3 ? 0 : _ref3.length; _i2 < _length2; _i2++) {
-                    var winQualifier = _ref3[_i2], winListeners = winQualifier && nameListeners.get(winQualifier);
-                    if (winListeners) {
-                        if (domain && "string" == typeof domain) {
-                            if (winListeners[domain]) return winListeners[domain];
-                            if (winListeners[__DOMAIN_REGEX__]) for (var _i4 = 0, _winListeners$__DOMAI2 = winListeners[__DOMAIN_REGEX__], _length4 = null == _winListeners$__DOMAI2 ? 0 : _winListeners$__DOMAI2.length; _i4 < _length4; _i4++) {
-                                var _ref5 = _winListeners$__DOMAI2[_i4], regex = _ref5.regex, listener = _ref5.listener;
-                                if (Object(src.matchDomain)(regex, domain)) return listener;
-                            }
-                        }
-                        if (winListeners[conf.b.WILDCARD]) return winListeners[conf.b.WILDCARD];
-                    }
-                }
-            }
-            var types__extends = Object.assign || function(target) {
-                for (var i = 1; i < arguments.length; i++) {
-                    var source = arguments[i];
-                    for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
-                }
-                return target;
-            }, RECEIVE_MESSAGE_TYPES = ((_RECEIVE_MESSAGE_TYPE = {})[conf.b.POST_MESSAGE_TYPE.ACK] = function(source, origin, message) {
-                if (!isResponseListenerErrored(message.hash)) {
-                    var options = getResponseListener(message.hash);
-                    if (!options) throw new Error("No handler found for post message ack for message: " + message.name + " from " + origin + " in " + window.location.protocol + "//" + window.location.host + window.location.pathname);
-                    if (!Object(src.matchDomain)(options.domain, origin)) throw new Error("Ack origin " + origin + " does not match domain " + options.domain.toString());
-                    options.ack = !0;
-                }
-            }, _RECEIVE_MESSAGE_TYPE[conf.b.POST_MESSAGE_TYPE.REQUEST] = function(source, origin, message) {
-                var options = getRequestListener({
-                    name: message.name,
-                    win: source,
-                    domain: origin
-                });
-                function respond(data) {
-                    return message.fireAndForget || Object(src.isWindowClosed)(source) ? zalgo_promise_src.a.resolve() : sendMessage(source, types__extends({
-                        target: message.originalSource,
-                        hash: message.hash,
-                        name: message.name
-                    }, data), origin);
-                }
-                return zalgo_promise_src.a.all([ respond({
-                    type: conf.b.POST_MESSAGE_TYPE.ACK
-                }), zalgo_promise_src.a.try(function() {
-                    if (!options) throw new Error("No handler found for post message: " + message.name + " from " + origin + " in " + window.location.protocol + "//" + window.location.host + window.location.pathname);
-                    if (!Object(src.matchDomain)(options.domain, origin)) throw new Error("Request origin " + origin + " does not match domain " + options.domain.toString());
-                    var data = message.data;
-                    return options.handler({
-                        source: source,
-                        origin: origin,
-                        data: data
-                    });
-                }).then(function(data) {
-                    return respond({
-                        type: conf.b.POST_MESSAGE_TYPE.RESPONSE,
-                        ack: conf.b.POST_MESSAGE_ACK.SUCCESS,
-                        data: data
-                    });
-                }, function(err) {
-                    var error = Object(lib.p)(err).replace(/^Error: /, ""), code = err.code;
-                    return respond({
-                        type: conf.b.POST_MESSAGE_TYPE.RESPONSE,
-                        ack: conf.b.POST_MESSAGE_ACK.ERROR,
-                        error: error,
-                        code: code
-                    });
-                }) ]).then(lib.j).catch(function(err) {
-                    if (options && options.handleError) return options.handleError(err);
-                    throw err;
-                });
-            }, _RECEIVE_MESSAGE_TYPE[conf.b.POST_MESSAGE_TYPE.RESPONSE] = function(source, origin, message) {
-                if (!isResponseListenerErrored(message.hash)) {
-                    var options = getResponseListener(message.hash);
-                    if (!options) throw new Error("No handler found for post message response for message: " + message.name + " from " + origin + " in " + window.location.protocol + "//" + window.location.host + window.location.pathname);
-                    if (!Object(src.matchDomain)(options.domain, origin)) throw new Error("Response origin " + origin + " does not match domain " + Object(src.stringifyDomainPattern)(options.domain));
-                    deleteResponseListener(message.hash);
-                    if (message.ack === conf.b.POST_MESSAGE_ACK.ERROR) {
-                        var err = new Error(message.error);
-                        message.code && (err.code = message.code);
-                        return options.respond(err, null);
-                    }
-                    if (message.ack === conf.b.POST_MESSAGE_ACK.SUCCESS) {
-                        var data = message.data || message.response;
-                        return options.respond(null, {
-                            source: source,
-                            origin: origin,
-                            data: data
-                        });
-                    }
-                }
-            }, _RECEIVE_MESSAGE_TYPE), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
-                return typeof obj;
-            } : function(obj) {
-                return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-            };
-            global.a.receivedMessages = global.a.receivedMessages || [];
-            function receiveMessage(event) {
-                if (!window || window.closed) throw new Error("Message recieved in closed window");
-                try {
-                    if (!event.source) return;
-                } catch (err) {
-                    return;
-                }
-                var source = event.source, origin = event.origin, message = function(message) {
-                    var parsedMessage = void 0;
-                    try {
-                        parsedMessage = Object(lib.f)(message);
-                    } catch (err) {
-                        return;
-                    }
-                    if (parsedMessage && "object" === (void 0 === parsedMessage ? "undefined" : _typeof(parsedMessage)) && null !== parsedMessage && (parsedMessage = parsedMessage[conf.b.WINDOW_PROPS.POSTROBOT]) && "object" === (void 0 === parsedMessage ? "undefined" : _typeof(parsedMessage)) && null !== parsedMessage && parsedMessage.type && "string" == typeof parsedMessage.type && RECEIVE_MESSAGE_TYPES[parsedMessage.type]) return parsedMessage;
-                }(event.data);
-                if (message) {
-                    if (!message.sourceDomain || "string" != typeof message.sourceDomain) throw new Error("Expected message to have sourceDomain");
-                    0 !== message.sourceDomain.indexOf(conf.b.MOCK_PROTOCOL) && 0 !== message.sourceDomain.indexOf(conf.b.FILE_PROTOCOL) || (origin = message.sourceDomain);
-                    if (-1 === global.a.receivedMessages.indexOf(message.id)) {
-                        global.a.receivedMessages.push(message.id);
-                        if (!Object(src.isWindowClosed)(source) || message.fireAndForget) {
-                            message.data && (message.data = Object(lib.b)(source, origin, message.data));
-                            RECEIVE_MESSAGE_TYPES[message.type](source, origin, message);
-                        }
-                    }
-                }
-            }
-            function messageListener(event) {
-                try {
-                    Object(lib.j)(event.source);
-                } catch (err) {
-                    return;
-                }
-                var messageEvent = {
-                    source: event.source || event.sourceElement,
-                    origin: event.origin || event.originalEvent && event.originalEvent.origin,
-                    data: event.data
-                };
-                try {
-                    __webpack_require__("./node_modules/post-robot/src/compat/index.js").emulateIERestrictions(messageEvent.source, window);
-                } catch (err) {
-                    return;
-                }
-                receiveMessage(messageEvent);
-            }
-            global.a.receiveMessage = receiveMessage;
-            global.a.requestPromises = global.a.requestPromises || new cross_domain_safe_weakmap_src.a();
-            function request(options) {
-                return zalgo_promise_src.a.try(function() {
-                    if (!options.name) throw new Error("Expected options.name");
-                    var name = options.name, targetWindow = void 0, domain = void 0;
-                    if ("string" == typeof options.window) {
-                        var el = document.getElementById(options.window);
-                        if (!el) throw new Error("Expected options.window " + Object.prototype.toString.call(options.window) + " to be a valid element id");
-                        if ("iframe" !== el.tagName.toLowerCase()) throw new Error("Expected options.window " + Object.prototype.toString.call(options.window) + " to be an iframe");
-                        if (!el.contentWindow) throw new Error("Iframe must have contentWindow.  Make sure it has a src attribute and is in the DOM.");
-                        targetWindow = el.contentWindow;
-                    } else if (options.window instanceof HTMLIFrameElement) {
-                        if ("iframe" !== options.window.tagName.toLowerCase()) throw new Error("Expected options.window " + Object.prototype.toString.call(options.window) + " to be an iframe");
-                        if (options.window && !options.window.contentWindow) throw new Error("Iframe must have contentWindow.  Make sure it has a src attribute and is in the DOM.");
-                        options.window && options.window.contentWindow && (targetWindow = options.window.contentWindow);
-                    } else targetWindow = options.window;
-                    if (!targetWindow) throw new Error("Expected options.window to be a window object, iframe, or iframe element id.");
-                    var win = targetWindow;
-                    domain = options.domain || conf.b.WILDCARD;
-                    var hash = options.name + "_" + Object(lib.q)();
-                    if (Object(src.isWindowClosed)(win)) throw new Error("Target window is closed");
-                    var hasResult = !1, requestPromises = global.a.requestPromises.get(win);
-                    if (!requestPromises) {
-                        requestPromises = [];
-                        global.a.requestPromises.set(win, requestPromises);
-                    }
-                    var requestPromise = zalgo_promise_src.a.try(function() {
-                        if (Object(src.isAncestor)(window, win)) return Object(lib.k)(win, options.timeout || conf.a.CHILD_WINDOW_TIMEOUT);
-                    }).then(function() {
-                        var origin = (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}).origin;
-                        if (Object(lib.e)(domain) && !origin) return Object(lib.n)(win);
-                    }).then(function() {
-                        var origin = (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}).origin;
-                        if (Object(lib.e)(domain)) {
-                            if (!Object(src.matchDomain)(domain, origin)) throw new Error("Remote window domain " + origin + " does not match regex: " + domain.toString());
-                            domain = origin;
-                        }
-                        if ("string" != typeof domain && !Array.isArray(domain)) throw new TypeError("Expected domain to be a string or array");
-                        var actualDomain = domain;
-                        return new zalgo_promise_src.a(function(resolve, reject) {
-                            var responseListener = void 0;
-                            options.fireAndForget || function(hash, listener) {
-                                global.a.responseListeners[hash] = listener;
-                            }(hash, responseListener = {
-                                name: name,
-                                window: win,
-                                domain: actualDomain,
-                                respond: function(err, result) {
-                                    if (!err) {
-                                        hasResult = !0;
-                                        requestPromises.splice(requestPromises.indexOf(requestPromise, 1));
-                                    }
-                                    err ? reject(err) : resolve(result);
-                                }
-                            });
-                            sendMessage(win, {
-                                type: conf.b.POST_MESSAGE_TYPE.REQUEST,
-                                hash: hash,
-                                name: name,
-                                data: options.data,
-                                fireAndForget: options.fireAndForget
-                            }, actualDomain).catch(reject);
-                            if (options.fireAndForget) return resolve();
-                            var ackTimeout = conf.a.ACK_TIMEOUT, resTimeout = options.timeout || conf.a.RES_TIMEOUT, cycleTime = 100;
-                            setTimeout(function cycle() {
-                                if (!hasResult) {
-                                    if (Object(src.isWindowClosed)(win)) return responseListener.ack ? reject(new Error("Window closed for " + name + " before response")) : reject(new Error("Window closed for " + name + " before ack"));
-                                    ackTimeout = Math.max(ackTimeout - cycleTime, 0);
-                                    -1 !== resTimeout && (resTimeout = Math.max(resTimeout - cycleTime, 0));
-                                    if (responseListener.ack) {
-                                        if (-1 === resTimeout) return;
-                                        cycleTime = Math.min(resTimeout, 2e3);
-                                    } else {
-                                        if (0 === ackTimeout) return reject(new Error("No ack for postMessage " + name + " in " + Object(src.getDomain)() + " in " + conf.a.ACK_TIMEOUT + "ms"));
-                                        if (0 === resTimeout) return reject(new Error("No response for postMessage " + name + " in " + Object(src.getDomain)() + " in " + (options.timeout || conf.a.RES_TIMEOUT) + "ms"));
-                                    }
-                                    setTimeout(cycle, cycleTime);
-                                }
-                            }, cycleTime);
-                        });
-                    });
-                    requestPromise.catch(function() {
-                        !function(hash) {
-                            global.a.erroredResponseListeners[hash] = !0;
-                        }(hash);
-                        deleteResponseListener(hash);
-                    });
-                    requestPromises.push(requestPromise);
-                    return requestPromise;
-                });
-            }
-            function _send(window, name, data, options) {
-                (options = options || {}).window = window;
-                options.name = name;
-                options.data = data;
-                return request(options);
-            }
-            function sendToParent(name, data, options) {
-                var win = Object(src.getAncestor)();
-                return win ? _send(win, name, data, options) : new zalgo_promise_src.a(function(resolve, reject) {
-                    return reject(new Error("Window does not have a parent"));
-                });
-            }
-            function client() {
-                var options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                if (!options.window) throw new Error("Expected options.window");
-                var win = options.window;
-                return {
-                    send: function(name, data) {
-                        return _send(win, name, data, options);
-                    }
-                };
-            }
-            global.a.send = _send;
-            var server__typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
-                return typeof obj;
-            } : function(obj) {
-                return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-            };
-            function listen(options) {
-                if (!options.name) throw new Error("Expected options.name");
-                if (!options.handler) throw new Error("Expected options.handler");
-                var name = options.name, win = options.window, domain = options.domain, listenerOptions = {
-                    handler: options.handler,
-                    handleError: options.errorHandler || function(err) {
-                        throw err;
-                    },
-                    window: win,
-                    domain: domain || conf.b.WILDCARD,
-                    name: name
-                }, requestListener = function addRequestListener(_ref6, listener) {
-                    var name = _ref6.name, win = _ref6.win, domain = _ref6.domain;
-                    if (!name || "string" != typeof name) throw new Error("Name required to add request listener");
-                    if (Array.isArray(win)) {
-                        for (var listenersCollection = [], _i6 = 0, _win2 = win, _length6 = null == _win2 ? 0 : _win2.length; _i6 < _length6; _i6++) {
-                            var item = _win2[_i6];
-                            listenersCollection.push(addRequestListener({
-                                name: name,
-                                domain: domain,
-                                win: item
-                            }, listener));
-                        }
-                        return {
-                            cancel: function() {
-                                for (var _i8 = 0, _length8 = null == listenersCollection ? 0 : listenersCollection.length; _i8 < _length8; _i8++) listenersCollection[_i8].cancel();
-                            }
-                        };
-                    }
-                    if (Array.isArray(domain)) {
-                        for (var _listenersCollection = [], _i10 = 0, _domain2 = domain, _length10 = null == _domain2 ? 0 : _domain2.length; _i10 < _length10; _i10++) {
-                            var _item = _domain2[_i10];
-                            _listenersCollection.push(addRequestListener({
-                                name: name,
-                                win: win,
-                                domain: _item
-                            }, listener));
-                        }
-                        return {
-                            cancel: function() {
-                                for (var _i12 = 0, _length12 = null == _listenersCollection ? 0 : _listenersCollection.length; _i12 < _length12; _i12++) _listenersCollection[_i12].cancel();
-                            }
-                        };
-                    }
-                    var existingListener = getRequestListener({
-                        name: name,
-                        win: win,
-                        domain: domain
-                    });
-                    win && win !== conf.b.WILDCARD || (win = global.a.WINDOW_WILDCARD);
-                    domain = domain || conf.b.WILDCARD;
-                    if (existingListener) throw win && domain ? new Error("Request listener already exists for " + name + " on domain " + domain.toString() + " for " + (win === global.a.WINDOW_WILDCARD ? "wildcard" : "specified") + " window") : win ? new Error("Request listener already exists for " + name + " for " + (win === global.a.WINDOW_WILDCARD ? "wildcard" : "specified") + " window") : domain ? new Error("Request listener already exists for " + name + " on domain " + domain.toString()) : new Error("Request listener already exists for " + name);
-                    var requestListeners = global.a.requestListeners, nameListeners = requestListeners[name];
-                    if (!nameListeners) {
-                        nameListeners = new cross_domain_safe_weakmap_src.a();
-                        requestListeners[name] = nameListeners;
-                    }
-                    var winListeners = nameListeners.get(win);
-                    if (!winListeners) {
-                        winListeners = {};
-                        nameListeners.set(win, winListeners);
-                    }
-                    var strDomain = domain.toString(), regexListeners = winListeners[__DOMAIN_REGEX__], regexListener = void 0;
-                    if (Object(lib.e)(domain)) {
-                        if (!regexListeners) {
-                            regexListeners = [];
-                            winListeners[__DOMAIN_REGEX__] = regexListeners;
-                        }
-                        regexListener = {
-                            regex: domain,
-                            listener: listener
-                        };
-                        regexListeners.push(regexListener);
-                    } else winListeners[strDomain] = listener;
-                    return {
-                        cancel: function() {
-                            if (winListeners) {
-                                delete winListeners[strDomain];
-                                win && 0 === Object.keys(winListeners).length && nameListeners.delete(win);
-                                regexListener && regexListeners.splice(regexListeners.indexOf(regexListener, 1));
-                            }
-                        }
-                    };
-                }({
-                    name: name,
-                    win: win,
-                    domain: domain
-                }, listenerOptions);
-                if (options.once) {
-                    var _handler = listenerOptions.handler;
-                    listenerOptions.handler = Object(lib.l)(function() {
-                        requestListener.cancel();
-                        return _handler.apply(this, arguments);
-                    });
-                }
-                if (listenerOptions.window && options.errorOnClose) var interval = Object(lib.m)(function() {
-                    if (win && "object" === (void 0 === win ? "undefined" : server__typeof(win)) && Object(src.isWindowClosed)(win)) {
-                        interval.cancel();
-                        listenerOptions.handleError(new Error("Post message target window is closed"));
-                    }
-                }, 50);
-                return {
-                    cancel: function() {
-                        requestListener.cancel();
-                    }
-                };
-            }
-            function _on(name, options, handler) {
-                if ("function" == typeof options) {
-                    handler = options;
-                    options = {};
-                }
-                (options = options || {}).name = name;
-                options.handler = handler || options.handler;
-                return listen(options);
-            }
-            function once(name) {
-                var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, handler = arguments[2];
-                if ("function" == typeof options) {
-                    handler = options;
-                    options = {};
-                }
-                options = options || {};
-                handler = handler || options.handler;
-                var errorHandler = options.errorHandler, promise = new zalgo_promise_src.a(function(resolve, reject) {
-                    (options = options || {}).name = name;
-                    options.once = !0;
-                    options.handler = function(event) {
-                        resolve(event);
-                        if (handler) return handler(event);
-                    };
-                    options.errorHandler = function(err) {
-                        reject(err);
-                        if (errorHandler) return errorHandler(err);
-                    };
-                }), onceListener = listen(options);
-                promise.cancel = onceListener.cancel;
-                return promise;
-            }
-            function server_listener() {
-                var options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                return {
-                    on: function(name, handler) {
-                        return _on(name, options, handler);
-                    }
-                };
-            }
-            global.a.on = _on;
-            function disable() {
-                delete window[conf.b.WINDOW_PROPS.POSTROBOT];
-                window.removeEventListener("message", messageListener);
-            }
-            var public_parent = Object(src.getAncestor)();
-            function cleanUpWindow(win) {
-                var requestPromises = global.a.requestPromises.get(win);
-                if (requestPromises) for (var _i2 = 0, _length2 = null == requestPromises ? 0 : requestPromises.length; _i2 < _length2; _i2++) requestPromises[_i2].reject(new Error("No response from window - cleaned up"));
-                global.a.popupWindowsByWin && global.a.popupWindowsByWin.delete(win);
-                global.a.remoteWindows && global.a.remoteWindows.delete(win);
-                global.a.requestPromises.delete(win);
-                global.a.methods.delete(win);
-                global.a.readyPromises.delete(win);
-            }
-            var bridge = __webpack_require__("./node_modules/post-robot/src/bridge/interface.js");
-            function init() {
-                if (!global.a.initialized) {
-                    Object(lib.a)(window, "message", messageListener);
-                    __webpack_require__("./node_modules/post-robot/src/bridge/index.js").openTunnelToOpener();
-                    Object(lib.d)();
-                    Object(lib.h)({
-                        on: _on,
-                        send: _send
-                    });
-                }
-                global.a.initialized = !0;
-            }
-            init();
-            __webpack_require__.d(__webpack_exports__, "cleanUpWindow", function() {
-                return cleanUpWindow;
-            });
-            __webpack_require__.d(__webpack_exports__, "Promise", function() {
-                return zalgo_promise_src.a;
-            });
-            __webpack_require__.d(__webpack_exports__, "bridge", function() {
-                return bridge;
-            });
-            __webpack_require__.d(__webpack_exports__, "init", function() {
-                return init;
-            });
-            __webpack_require__.d(__webpack_exports__, "parent", function() {
-                return public_parent;
-            });
-            __webpack_require__.d(__webpack_exports__, "send", function() {
-                return _send;
-            });
-            __webpack_require__.d(__webpack_exports__, "request", function() {
-                return request;
-            });
-            __webpack_require__.d(__webpack_exports__, "sendToParent", function() {
-                return sendToParent;
-            });
-            __webpack_require__.d(__webpack_exports__, "client", function() {
-                return client;
-            });
-            __webpack_require__.d(__webpack_exports__, "on", function() {
-                return _on;
-            });
-            __webpack_require__.d(__webpack_exports__, "listen", function() {
-                return listen;
-            });
-            __webpack_require__.d(__webpack_exports__, "once", function() {
-                return once;
-            });
-            __webpack_require__.d(__webpack_exports__, "listener", function() {
-                return server_listener;
-            });
-            __webpack_require__.d(__webpack_exports__, "CONFIG", function() {
-                return conf.a;
-            });
-            __webpack_require__.d(__webpack_exports__, "CONSTANTS", function() {
-                return conf.b;
-            });
-            __webpack_require__.d(__webpack_exports__, "disable", function() {
-                return disable;
-            });
-            __webpack_exports__.default = interface_namespaceObject;
-        },
         "./node_modules/post-robot/src/lib/index.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
             var src = __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/index.js"), cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), conf = __webpack_require__("./node_modules/post-robot/src/conf/index.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
@@ -3072,1721 +1873,6 @@
                 return module;
             };
         },
-        "./node_modules/xcomponent/src/constants.js": function(module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            Object.defineProperty(__webpack_exports__, "__esModule", {
-                value: !0
-            });
-            __webpack_require__.d(__webpack_exports__, "XCOMPONENT", function() {
-                return XCOMPONENT;
-            });
-            __webpack_require__.d(__webpack_exports__, "__XCOMPONENT__", function() {
-                return __XCOMPONENT__;
-            });
-            __webpack_require__.d(__webpack_exports__, "POST_MESSAGE", function() {
-                return POST_MESSAGE;
-            });
-            __webpack_require__.d(__webpack_exports__, "PROP_TYPES", function() {
-                return PROP_TYPES;
-            });
-            __webpack_require__.d(__webpack_exports__, "INITIAL_PROPS", function() {
-                return INITIAL_PROPS;
-            });
-            __webpack_require__.d(__webpack_exports__, "WINDOW_REFERENCES", function() {
-                return WINDOW_REFERENCES;
-            });
-            __webpack_require__.d(__webpack_exports__, "PROP_TYPES_LIST", function() {
-                return PROP_TYPES_LIST;
-            });
-            __webpack_require__.d(__webpack_exports__, "CONTEXT_TYPES", function() {
-                return CONTEXT_TYPES;
-            });
-            __webpack_require__.d(__webpack_exports__, "CLASS_NAMES", function() {
-                return CLASS_NAMES;
-            });
-            __webpack_require__.d(__webpack_exports__, "EVENTS", function() {
-                return EVENTS;
-            });
-            __webpack_require__.d(__webpack_exports__, "ATTRIBUTES", function() {
-                return ATTRIBUTES;
-            });
-            __webpack_require__.d(__webpack_exports__, "ANIMATION_NAMES", function() {
-                return ANIMATION_NAMES;
-            });
-            __webpack_require__.d(__webpack_exports__, "EVENT_NAMES", function() {
-                return EVENT_NAMES;
-            });
-            __webpack_require__.d(__webpack_exports__, "CLOSE_REASONS", function() {
-                return CLOSE_REASONS;
-            });
-            __webpack_require__.d(__webpack_exports__, "CONTEXT_TYPES_LIST", function() {
-                return CONTEXT_TYPES_LIST;
-            });
-            __webpack_require__.d(__webpack_exports__, "DELEGATE", function() {
-                return DELEGATE;
-            });
-            __webpack_require__.d(__webpack_exports__, "WILDCARD", function() {
-                return WILDCARD;
-            });
-            __webpack_require__.d(__webpack_exports__, "DEFAULT_DIMENSIONS", function() {
-                return DEFAULT_DIMENSIONS;
-            });
-            var XCOMPONENT = "xcomponent", __XCOMPONENT__ = "__" + XCOMPONENT + "__", POST_MESSAGE = {
-                INIT: XCOMPONENT + "_init",
-                PROPS: XCOMPONENT + "_props",
-                PROP_CALLBACK: XCOMPONENT + "_prop_callback",
-                CLOSE: XCOMPONENT + "_close",
-                CHECK_CLOSE: XCOMPONENT + "_check_close",
-                REDIRECT: XCOMPONENT + "_redirect",
-                RESIZE: XCOMPONENT + "_resize",
-                ONRESIZE: XCOMPONENT + "_onresize",
-                DELEGATE: XCOMPONENT + "_delegate",
-                ALLOW_DELEGATE: XCOMPONENT + "_allow_delegate",
-                ERROR: XCOMPONENT + "_error",
-                HIDE: XCOMPONENT + "_hide",
-                SHOW: XCOMPONENT + "_show"
-            }, PROP_TYPES = {
-                STRING: "string",
-                OBJECT: "object",
-                FUNCTION: "function",
-                BOOLEAN: "boolean",
-                NUMBER: "number"
-            }, INITIAL_PROPS = {
-                RAW: "raw",
-                UID: "uid"
-            }, WINDOW_REFERENCES = {
-                OPENER: "opener",
-                TOP: "top",
-                PARENT: "parent",
-                GLOBAL: "global"
-            }, PROP_TYPES_LIST = Object.keys(PROP_TYPES).map(function(key) {
-                return PROP_TYPES[key];
-            }), CONTEXT_TYPES = {
-                IFRAME: "iframe",
-                POPUP: "popup"
-            }, CLASS_NAMES = {
-                XCOMPONENT: "" + XCOMPONENT,
-                OUTLET: XCOMPONENT + "-outlet",
-                COMPONENT_FRAME: XCOMPONENT + "-component-frame",
-                PRERENDER_FRAME: XCOMPONENT + "-prerender-frame",
-                VISIBLE: XCOMPONENT + "-visible",
-                INVISIBLE: XCOMPONENT + "-invisible"
-            }, EVENTS = {
-                CLOSE: XCOMPONENT + "-close"
-            }, ATTRIBUTES = {
-                IFRAME_PLACEHOLDER: "data-xcomponent-" + XCOMPONENT + "-placeholder"
-            }, ANIMATION_NAMES = {
-                SHOW_CONTAINER: XCOMPONENT + "-show-container",
-                SHOW_COMPONENT: XCOMPONENT + "-show-component",
-                HIDE_CONTAINER: XCOMPONENT + "-hide-container",
-                HIDE_COMPONENT: XCOMPONENT + "-hide-component"
-            }, EVENT_NAMES = {
-                CLICK: "click"
-            }, CLOSE_REASONS = {
-                PARENT_CALL: "parent_call",
-                CHILD_CALL: "child_call",
-                CLOSE_DETECTED: "close_detected",
-                USER_CLOSED: "user_closed",
-                PARENT_CLOSE_DETECTED: "parent_close_detected"
-            }, CONTEXT_TYPES_LIST = Object.keys(CONTEXT_TYPES).map(function(key) {
-                return CONTEXT_TYPES[key];
-            }), DELEGATE = {
-                CALL_ORIGINAL: "call_original",
-                CALL_DELEGATE: "call_delegate"
-            }, WILDCARD = "*", DEFAULT_DIMENSIONS = {
-                WIDTH: 300,
-                HEIGHT: 150
-            };
-        },
-        "./node_modules/xcomponent/src/drivers/angular.js": function(module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.d(__webpack_exports__, "a", function() {
-                return angular;
-            });
-            var __WEBPACK_IMPORTED_MODULE_0__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), angular = {
-                global: function() {
-                    return window.angular;
-                },
-                register: function(component, ng) {
-                    return ng.module(component.tag, []).directive(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.i)(component.tag), function() {
-                        for (var scope = {}, _i2 = 0, _component$getPropNam2 = component.getPropNames(), _length2 = null == _component$getPropNam2 ? 0 : _component$getPropNam2.length; _i2 < _length2; _i2++) {
-                            var key = _component$getPropNam2[_i2];
-                            scope[key] = "=";
-                        }
-                        component.looseProps && (scope.props = "=");
-                        return {
-                            scope: scope,
-                            restrict: "E",
-                            controller: [ "$scope", "$element", function($scope, $element) {
-                                if (component.looseProps && !$scope.props) throw new Error("For angular bindings to work, prop definitions must be passed to xcomponent.create");
-                                component.log("instantiate_angular_component");
-                                var getProps = function() {
-                                    var scopeProps = void 0;
-                                    if ($scope.props) scopeProps = $scope.props; else {
-                                        scopeProps = {};
-                                        for (var _i4 = 0, _Object$keys2 = Object.keys(scope), _length4 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i4 < _length4; _i4++) {
-                                            var _key = _Object$keys2[_i4];
-                                            void 0 !== $scope[_key] && (scopeProps[_key] = $scope[_key]);
-                                        }
-                                    }
-                                    return Object(__WEBPACK_IMPORTED_MODULE_0__lib__.Q)(scopeProps, {
-                                        function: function(value) {
-                                            return function() {
-                                                var result = value.apply(this, arguments);
-                                                !function() {
-                                                    if ("$apply" !== $scope.$root.$$phase && "$digest" !== $scope.$root.$$phase) try {
-                                                        $scope.$apply();
-                                                    } catch (err) {}
-                                                }();
-                                                return result;
-                                            };
-                                        }
-                                    });
-                                }, parent = component.init(getProps(), null, $element[0]);
-                                parent.render($element[0]);
-                                $scope.$watch(function() {
-                                    parent.updateProps(getProps());
-                                });
-                            } ]
-                        };
-                    });
-                }
-            };
-        },
-        "./node_modules/xcomponent/src/drivers/angular2.js": function(module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.d(__webpack_exports__, "a", function() {
-                return angular2;
-            });
-            var __WEBPACK_IMPORTED_MODULE_0__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), _extends = Object.assign || function(target) {
-                for (var i = 1; i < arguments.length; i++) {
-                    var source = arguments[i];
-                    for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
-                }
-                return target;
-            }, angular2 = {
-                global: function() {},
-                register: function(xcomponent, _ref) {
-                    var AngularComponent = _ref.Component, NgModule = _ref.NgModule, ElementRef = _ref.ElementRef, NgZone = _ref.NgZone;
-                    xcomponent.log("initializing angular2 component");
-                    var getProps = function(component) {
-                        return Object(__WEBPACK_IMPORTED_MODULE_0__lib__.Q)(_extends({}, component.internalProps, component.props), {
-                            function: function(value) {
-                                if ("function" == typeof value) return function() {
-                                    var _this = this, _arguments = arguments;
-                                    return component.zone.run(function() {
-                                        return value.apply(_this, _arguments);
-                                    });
-                                };
-                            }
-                        });
-                    }, ComponentInstance = AngularComponent({
-                        selector: xcomponent.tag,
-                        template: "<div></div>",
-                        inputs: [ "props" ]
-                    }).Class({
-                        constructor: [ ElementRef, NgZone, function(elementRef, zone) {
-                            this.elementRef = elementRef;
-                            this.zone = zone;
-                        } ],
-                        ngOnInit: function() {
-                            var targetElement = this.elementRef.nativeElement, parent = xcomponent.init(getProps(this), null, targetElement);
-                            parent.render(targetElement);
-                            this.parent = parent;
-                        },
-                        ngOnChanges: function() {
-                            this.parent && this.parent.updateProps(getProps(this));
-                        }
-                    });
-                    return NgModule({
-                        declarations: [ ComponentInstance ],
-                        exports: [ ComponentInstance ]
-                    }).Class({
-                        constructor: function() {}
-                    });
-                }
-            };
-        },
-        "./node_modules/xcomponent/src/drivers/ember.js": function(module, exports) {},
-        "./node_modules/xcomponent/src/drivers/glimmer.js": function(module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.d(__webpack_exports__, "a", function() {
-                return glimmer;
-            });
-            var _extends = Object.assign || function(target) {
-                for (var i = 1; i < arguments.length; i++) {
-                    var source = arguments[i];
-                    for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
-                }
-                return target;
-            }, glimmer = {
-                global: function() {},
-                register: function(component, GlimmerComponent) {
-                    return function(_GlimmerComponent) {
-                        !function(subClass, superClass) {
-                            if ("function" != typeof superClass && null !== superClass) throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
-                            subClass.prototype = Object.create(superClass && superClass.prototype, {
-                                constructor: {
-                                    value: subClass,
-                                    enumerable: !1,
-                                    writable: !0,
-                                    configurable: !0
-                                }
-                            });
-                            superClass && (Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass);
-                        }(_class, _GlimmerComponent);
-                        function _class() {
-                            !function(instance, Constructor) {
-                                if (!(instance instanceof _class)) throw new TypeError("Cannot call a class as a function");
-                            }(this);
-                            return function(self, call) {
-                                if (!self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-                                return !call || "object" != typeof call && "function" != typeof call ? self : call;
-                            }(this, _GlimmerComponent.apply(this, arguments));
-                        }
-                        _class.prototype.didInsertElement = function() {
-                            component.render(_extends({}, this.args), this.element);
-                        };
-                        return _class;
-                    }(GlimmerComponent);
-                }
-            };
-        },
-        "./node_modules/xcomponent/src/drivers/index.js": function(module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            var __WEBPACK_IMPORTED_MODULE_0__script__ = __webpack_require__("./node_modules/xcomponent/src/drivers/script.js");
-            __webpack_require__.d(__webpack_exports__, "script", function() {
-                return __WEBPACK_IMPORTED_MODULE_0__script__.a;
-            });
-            var __WEBPACK_IMPORTED_MODULE_1__react__ = __webpack_require__("./node_modules/xcomponent/src/drivers/react.js");
-            __webpack_require__.d(__webpack_exports__, "react", function() {
-                return __WEBPACK_IMPORTED_MODULE_1__react__.a;
-            });
-            var __WEBPACK_IMPORTED_MODULE_2__vue__ = __webpack_require__("./node_modules/xcomponent/src/drivers/vue.js");
-            __webpack_require__.d(__webpack_exports__, "vue", function() {
-                return __WEBPACK_IMPORTED_MODULE_2__vue__.a;
-            });
-            var __WEBPACK_IMPORTED_MODULE_3__angular__ = __webpack_require__("./node_modules/xcomponent/src/drivers/angular.js");
-            __webpack_require__.d(__webpack_exports__, "angular", function() {
-                return __WEBPACK_IMPORTED_MODULE_3__angular__.a;
-            });
-            var __WEBPACK_IMPORTED_MODULE_4__ember__ = __webpack_require__("./node_modules/xcomponent/src/drivers/ember.js");
-            __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__ember__);
-            __webpack_require__.o(__WEBPACK_IMPORTED_MODULE_4__ember__, "angular2") && __webpack_require__.d(__webpack_exports__, "angular2", function() {
-                return __WEBPACK_IMPORTED_MODULE_4__ember__.angular2;
-            });
-            __webpack_require__.o(__WEBPACK_IMPORTED_MODULE_4__ember__, "glimmer") && __webpack_require__.d(__webpack_exports__, "glimmer", function() {
-                return __WEBPACK_IMPORTED_MODULE_4__ember__.glimmer;
-            });
-            var __WEBPACK_IMPORTED_MODULE_5__glimmer__ = __webpack_require__("./node_modules/xcomponent/src/drivers/glimmer.js");
-            __webpack_require__.d(__webpack_exports__, "glimmer", function() {
-                return __WEBPACK_IMPORTED_MODULE_5__glimmer__.a;
-            });
-            var __WEBPACK_IMPORTED_MODULE_6__angular2__ = __webpack_require__("./node_modules/xcomponent/src/drivers/angular2.js");
-            __webpack_require__.d(__webpack_exports__, "angular2", function() {
-                return __WEBPACK_IMPORTED_MODULE_6__angular2__.a;
-            });
-        },
-        "./node_modules/xcomponent/src/drivers/react.js": function(module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.d(__webpack_exports__, "a", function() {
-                return react;
-            });
-            var __WEBPACK_IMPORTED_MODULE_0__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), react = {
-                global: function() {
-                    if (window.React && window.ReactDOM) return {
-                        React: window.React,
-                        ReactDOM: window.ReactDOM
-                    };
-                },
-                register: function(component, _ref) {
-                    var React = _ref.React, ReactDOM = _ref.ReactDOM;
-                    React.createClass ? component.react = React.createClass({
-                        render: function() {
-                            return React.createElement("div", null);
-                        },
-                        componentDidMount: function() {
-                            component.log("instantiate_react_component");
-                            var el = ReactDOM.findDOMNode(this), parent = component.init(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.t)({}, this.props), null, el);
-                            this.setState({
-                                parent: parent
-                            });
-                            parent.render(el);
-                        },
-                        componentDidUpdate: function() {
-                            this.state && this.state.parent && this.state.parent.updateProps(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.t)({}, this.props));
-                        }
-                    }) : component.react = function(_React$Component) {
-                        !function(subClass, superClass) {
-                            if ("function" != typeof superClass && null !== superClass) throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
-                            subClass.prototype = Object.create(superClass && superClass.prototype, {
-                                constructor: {
-                                    value: subClass,
-                                    enumerable: !1,
-                                    writable: !0,
-                                    configurable: !0
-                                }
-                            });
-                            superClass && (Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass);
-                        }(_class, _React$Component);
-                        function _class() {
-                            !function(instance, Constructor) {
-                                if (!(instance instanceof _class)) throw new TypeError("Cannot call a class as a function");
-                            }(this);
-                            return function(self, call) {
-                                if (!self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-                                return !call || "object" != typeof call && "function" != typeof call ? self : call;
-                            }(this, _React$Component.apply(this, arguments));
-                        }
-                        _class.prototype.render = function() {
-                            return React.createElement("div", null);
-                        };
-                        _class.prototype.componentDidMount = function() {
-                            component.log("instantiate_react_component");
-                            var el = ReactDOM.findDOMNode(this), parent = component.init(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.t)({}, this.props), null, el);
-                            this.setState({
-                                parent: parent
-                            });
-                            parent.render(el);
-                        };
-                        _class.prototype.componentDidUpdate = function() {
-                            this.state && this.state.parent && this.state.parent.updateProps(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.t)({}, this.props));
-                        };
-                        return _class;
-                    }(React.Component);
-                    return component.react;
-                }
-            };
-        },
-        "./node_modules/xcomponent/src/drivers/script.js": function(module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.d(__webpack_exports__, "a", function() {
-                return script;
-            });
-            var script = {
-                global: function() {
-                    return window.document;
-                },
-                register: function register(component, document) {
-                    function render(element) {
-                        if (element && element.tagName && "script" === element.tagName.toLowerCase() && element.attributes.type && "application/x-component" === element.attributes.type.value && element.parentNode) {
-                            var tag = element.getAttribute("data-component");
-                            if (tag && tag === component.tag) {
-                                component.log("instantiate_script_component");
-                                var props = element.innerText ? eval("(" + element.innerText + ")") : {}, container = document.createElement("div");
-                                if (!element.parentNode) throw new Error("Element has no parent");
-                                element.parentNode.replaceChild(container, element);
-                                component.render(props, container);
-                            }
-                        }
-                    }
-                    function scan() {
-                        for (var scriptTags = Array.prototype.slice.call(document.getElementsByTagName("script")), _i2 = 0, _length2 = null == scriptTags ? 0 : scriptTags.length; _i2 < _length2; _i2++) render(scriptTags[_i2]);
-                    }
-                    scan();
-                    document.addEventListener("DOMContentLoaded", scan);
-                    window.addEventListener("load", scan);
-                    document.addEventListener("DOMNodeInserted", function(event) {
-                        render(event.target);
-                    });
-                }
-            };
-        },
-        "./node_modules/xcomponent/src/drivers/vue.js": function(module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.d(__webpack_exports__, "a", function() {
-                return vue;
-            });
-            var __WEBPACK_IMPORTED_MODULE_0__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), vue = {
-                global: function() {},
-                register: function(component) {
-                    return {
-                        template: "<div></div>",
-                        inheritAttrs: !1,
-                        mounted: function() {
-                            var el = this.$el;
-                            this.parent = component.init(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.t)({}, this.$attrs), null, el);
-                            this.parent.render(el);
-                        },
-                        beforeUpdate: function() {
-                            this.parent && this.$attrs && this.parent.updateProps(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.t)({}, this.$attrs));
-                        }
-                    };
-                }
-            };
-        },
-        "./node_modules/xcomponent/src/error.js": function(module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_exports__.b = PopupOpenError;
-            __webpack_exports__.a = IntegrationError;
-            __webpack_exports__.c = RenderError;
-            function PopupOpenError(message) {
-                this.message = message;
-            }
-            PopupOpenError.prototype = Object.create(Error.prototype);
-            function IntegrationError(message) {
-                this.message = message;
-            }
-            IntegrationError.prototype = Object.create(Error.prototype);
-            function RenderError(message) {
-                this.message = message;
-            }
-            RenderError.prototype = Object.create(Error.prototype);
-        },
-        "./node_modules/xcomponent/src/lib/index.js": function(module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            var src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), zalgo_promise_src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), cross_domain_safe_weakmap_src = __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/index.js"), error = __webpack_require__("./node_modules/xcomponent/src/error.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
-                return typeof obj;
-            } : function(obj) {
-                return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-            };
-            function urlEncode(str) {
-                return str.replace(/\?/g, "%3F").replace(/&/g, "%26").replace(/#/g, "%23").replace(/\+/g, "%2B");
-            }
-            function camelToDasherize(string) {
-                return string.replace(/([A-Z])/g, function(g) {
-                    return "-" + g.toLowerCase();
-                });
-            }
-            function dasherizeToCamel(string) {
-                return string.replace(/-([a-z])/g, function(g) {
-                    return g[1].toUpperCase();
-                });
-            }
-            function extend(obj, source) {
-                if (!source) return obj;
-                for (var key in source) source.hasOwnProperty(key) && (obj[key] = source[key]);
-                return obj;
-            }
-            function values(obj) {
-                var results = [];
-                for (var key in obj) obj.hasOwnProperty(key) && results.push(obj[key]);
-                return results;
-            }
-            function uniqueID() {
-                var chars = "0123456789abcdef";
-                return "xxxxxxxxxx".replace(/./g, function() {
-                    return chars.charAt(Math.floor(Math.random() * chars.length));
-                });
-            }
-            function stringifyWithFunctions(obj) {
-                return JSON.stringify(obj, function(key, val) {
-                    return "function" == typeof val ? val.toString() : val;
-                });
-            }
-            function safeGet(obj, prop) {
-                var result = void 0;
-                try {
-                    result = obj[prop];
-                } catch (err) {}
-                return result;
-            }
-            function capitalizeFirstLetter(string) {
-                return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-            }
-            function get(item, path, def) {
-                if (!path) return def;
-                for (var pathParts = path.split("."), i = 0; i < pathParts.length; i++) {
-                    if ("object" !== (void 0 === item ? "undefined" : _typeof(item)) || null === item) return def;
-                    item = item[pathParts[i]];
-                }
-                return void 0 === item ? def : item;
-            }
-            function safeInterval(method, time) {
-                var timeout = void 0;
-                timeout = setTimeout(function runInterval() {
-                    timeout = setTimeout(runInterval, time);
-                    method.call();
-                }, time);
-                return {
-                    cancel: function() {
-                        clearTimeout(timeout);
-                    }
-                };
-            }
-            function safeTimeout(method, time) {
-                var interval = safeInterval(function() {
-                    if ((time -= 100) <= 0) {
-                        interval.cancel();
-                        method();
-                    }
-                }, 100);
-            }
-            function each(item, callback) {
-                if (item) if (Array.isArray(item)) for (var len = item.length, i = 0; i < len; i++) callback(item[i], i); else if ("object" === (void 0 === item ? "undefined" : _typeof(item))) for (var keys = Object.keys(item), _len = keys.length, _i = 0; _i < _len; _i++) {
-                    var key = keys[_i];
-                    callback(item[key], key);
-                }
-            }
-            function replaceObject(item, replacers) {
-                var fullKey = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : "";
-                if (Array.isArray(item)) {
-                    var _ret = function() {
-                        for (var length = item.length, result = [], _loop = function(i) {
-                            Object.defineProperty(result, i, {
-                                configurable: !0,
-                                enumerable: !0,
-                                get: function() {
-                                    var itemKey = fullKey ? fullKey + "." + i : "" + i, child = item[i], type = void 0 === child ? "undefined" : _typeof(child), replacer = replacers[type];
-                                    if (replacer) {
-                                        var replaced = replacer(child, i, itemKey);
-                                        if (void 0 !== replaced) {
-                                            result[i] = replaced;
-                                            return result[i];
-                                        }
-                                    }
-                                    if ("object" === (void 0 === child ? "undefined" : _typeof(child)) && null !== child) {
-                                        result[i] = replaceObject(child, replacers, itemKey);
-                                        return result[i];
-                                    }
-                                    result[i] = child;
-                                    return result[i];
-                                },
-                                set: function(value) {
-                                    delete result[i];
-                                    result[i] = value;
-                                }
-                            });
-                        }, i = 0; i < length; i++) _loop(i);
-                        return {
-                            v: result
-                        };
-                    }();
-                    if ("object" === (void 0 === _ret ? "undefined" : _typeof(_ret))) return _ret.v;
-                } else {
-                    if ("object" !== (void 0 === item ? "undefined" : _typeof(item)) || null === item) throw new Error("Pass an object or array");
-                    var _ret3 = function() {
-                        var result = {}, _loop2 = function(key) {
-                            if (!item.hasOwnProperty(key)) return "continue";
-                            Object.defineProperty(result, key, {
-                                configurable: !0,
-                                enumerable: !0,
-                                get: function() {
-                                    var itemKey = fullKey ? fullKey + "." + key : "" + key, child = item[key], type = void 0 === child ? "undefined" : _typeof(child), replacer = replacers[type];
-                                    if (replacer) {
-                                        var replaced = replacer(child, key, itemKey);
-                                        if (void 0 !== replaced) {
-                                            result[key] = replaced;
-                                            return result[key];
-                                        }
-                                    }
-                                    if ("object" === (void 0 === child ? "undefined" : _typeof(child)) && null !== child) {
-                                        result[key] = replaceObject(child, replacers, itemKey);
-                                        return result[key];
-                                    }
-                                    result[key] = child;
-                                    return result[key];
-                                },
-                                set: function(value) {
-                                    delete result[key];
-                                    result[key] = value;
-                                }
-                            });
-                        };
-                        for (var key in item) _loop2(key);
-                        return {
-                            v: result
-                        };
-                    }();
-                    if ("object" === (void 0 === _ret3 ? "undefined" : _typeof(_ret3))) return _ret3.v;
-                }
-            }
-            function copyProp(source, target, name, def) {
-                if (source.hasOwnProperty(name)) {
-                    var descriptor = Object.getOwnPropertyDescriptor(source, name);
-                    Object.defineProperty(target, name, descriptor);
-                } else target[name] = def;
-            }
-            function dotify(obj) {
-                var prefix = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "", newobj = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-                prefix = prefix ? prefix + "." : prefix;
-                for (var key in obj) void 0 !== obj[key] && null !== obj[key] && "function" != typeof obj[key] && (obj[key] && Array.isArray(obj[key]) && obj[key].length && obj[key].every(function(val) {
-                    return "object" !== (void 0 === val ? "undefined" : _typeof(val));
-                }) ? newobj["" + prefix + key] = obj[key].join(",") : obj[key] && "object" === _typeof(obj[key]) ? newobj = dotify(obj[key], "" + prefix + key, newobj) : newobj["" + prefix + key] = obj[key].toString());
-                return newobj;
-            }
-            var objectIDs = new cross_domain_safe_weakmap_src.a();
-            function getObjectID(obj) {
-                if (null === obj || void 0 === obj || "object" !== (void 0 === obj ? "undefined" : _typeof(obj)) && "function" != typeof obj) throw new Error("Invalid object");
-                var uid = objectIDs.get(obj);
-                if (!uid) {
-                    uid = (void 0 === obj ? "undefined" : _typeof(obj)) + ":" + uniqueID();
-                    objectIDs.set(obj, uid);
-                }
-                return uid;
-            }
-            function regex(pattern, string) {
-                var start = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : 0;
-                "string" == typeof pattern && (pattern = new RegExp(pattern));
-                var result = string.slice(start).match(pattern);
-                if (result) {
-                    var index = result.index, match = result[0];
-                    return {
-                        text: match,
-                        groups: result.slice(1),
-                        start: start + index,
-                        end: start + index + match.length,
-                        length: match.length,
-                        replace: function(text) {
-                            return match ? "" + match.slice(0, start + index) + text + match.slice(index + match.length) : "";
-                        }
-                    };
-                }
-            }
-            function regexAll(pattern, string) {
-                for (var matches = [], start = 0; ;) {
-                    var match = regex(pattern, string, start);
-                    if (!match) break;
-                    matches.push(match);
-                    start = match.end;
-                }
-                return matches;
-            }
-            function count(str, substr) {
-                for (var startIndex = 0, itemCount = 0; ;) {
-                    var index = str.indexOf(substr, startIndex);
-                    if (-1 === index) break;
-                    startIndex = index;
-                    itemCount += 1;
-                }
-                return itemCount;
-            }
-            function stringify(item) {
-                return "string" == typeof item ? item : item && "function" == typeof item.toString ? item.toString() : Object.prototype.toString.call(item);
-            }
-            function stringifyError(err) {
-                if (err) {
-                    var stack = err.stack, message = err.message;
-                    if ("string" == typeof stack) return stack;
-                    if ("string" == typeof message) return message;
-                }
-                return stringify(err);
-            }
-            function eventEmitter() {
-                var triggered = {}, handlers = {};
-                return {
-                    on: function(eventName, handler) {
-                        var handlerList = handlers[eventName] = handlers[eventName] || [];
-                        handlerList.push(handler);
-                        var cancelled = !1;
-                        return {
-                            cancel: function() {
-                                if (!cancelled) {
-                                    cancelled = !0;
-                                    handlerList.splice(handlerList.indexOf(handler), 1);
-                                }
-                            }
-                        };
-                    },
-                    once: function(eventName, handler) {
-                        var listener = this.on(eventName, function() {
-                            listener.cancel();
-                            handler();
-                        });
-                        return listener;
-                    },
-                    trigger: function(eventName) {
-                        var handlerList = handlers[eventName];
-                        if (handlerList) for (var _i3 = 0, _length2 = null == handlerList ? 0 : handlerList.length; _i3 < _length2; _i3++) (0, 
-                        handlerList[_i3])();
-                    },
-                    triggerOnce: function(eventName) {
-                        if (!triggered[eventName]) {
-                            triggered[eventName] = !0;
-                            this.trigger(eventName);
-                        }
-                    }
-                };
-            }
-            function noop() {}
-            function once(method) {
-                var called = !1, result = void 0;
-                return function() {
-                    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
-                    if (called) return result;
-                    called = !0;
-                    return result = method.apply(this, arguments);
-                };
-            }
-            function memoize(method) {
-                var results = {};
-                return function() {
-                    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) args[_key2] = arguments[_key2];
-                    var cacheKey = void 0;
-                    try {
-                        cacheKey = JSON.stringify(Array.prototype.slice.call(arguments), function(key, val) {
-                            return "function" == typeof val ? "xcomponent:memoize[" + getObjectID(val) + "]" : val;
-                        });
-                    } catch (err) {
-                        throw new Error("Arguments not serializable -- can not be used to memoize");
-                    }
-                    results.hasOwnProperty(cacheKey) || (results[cacheKey] = method.apply(this, arguments));
-                    return results[cacheKey];
-                };
-            }
-            function debounce(method) {
-                var time = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 100, timeout = void 0;
-                return function() {
-                    var _this = this, _arguments = arguments;
-                    clearTimeout(timeout);
-                    timeout = setTimeout(function() {
-                        return method.apply(_this, _arguments);
-                    }, time);
-                };
-            }
-            function serializeFunctions(obj) {
-                return replaceObject(obj, {
-                    function: function() {
-                        return {
-                            __type__: "__function__"
-                        };
-                    }
-                });
-            }
-            function deserializeFunctions(obj, handler) {
-                return replaceObject(obj, {
-                    object: function(value, key, fullKey) {
-                        if (value && "__function__" === value.__type__) return function() {
-                            return handler({
-                                key: key,
-                                fullKey: fullKey,
-                                self: this,
-                                args: arguments
-                            });
-                        };
-                    }
-                });
-            }
-            var _extends = Object.assign || function(target) {
-                for (var i = 1; i < arguments.length; i++) {
-                    var source = arguments[i];
-                    for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
-                }
-                return target;
-            }, dom__typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
-                return typeof obj;
-            } : function(obj) {
-                return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-            };
-            function appendChild(container, child) {
-                container.appendChild(child);
-            }
-            function querySelectorAll(el, selector) {
-                return Array.prototype.slice.call(el.querySelectorAll(selector));
-            }
-            function getElementSafe(id) {
-                if (function(element) {
-                    return element instanceof window.Element || null !== element && "object" === (void 0 === element ? "undefined" : dom__typeof(element)) && 1 === element.nodeType && "object" === dom__typeof(element.style) && "object" === dom__typeof(element.ownerDocument);
-                }(id)) return id;
-                if ("string" == typeof id) {
-                    var element = document.getElementById(id);
-                    if (element) return element;
-                    document.querySelector && (element = document.querySelector(id));
-                    if (element) return element;
-                }
-            }
-            function getElement(id) {
-                var element = getElementSafe(id);
-                if (element) return element;
-                throw new Error("Can not find element: " + stringify(id));
-            }
-            var documentReady = new zalgo_promise_src.a(function(resolve) {
-                if ("complete" === window.document.readyState) return resolve(window.document);
-                var interval = setInterval(function() {
-                    if ("complete" === window.document.readyState) {
-                        clearInterval(interval);
-                        return resolve(window.document);
-                    }
-                }, 10);
-            });
-            function isDocumentReady() {
-                return "complete" === window.document.readyState;
-            }
-            function elementReady(id) {
-                return new zalgo_promise_src.a(function(resolve, reject) {
-                    var name = stringify(id), el = getElementSafe(id);
-                    if (el) return resolve(el);
-                    if (isDocumentReady()) return reject(new Error("Document is ready and element " + name + " does not exist"));
-                    var interval = setInterval(function() {
-                        if (el = getElementSafe(id)) {
-                            clearInterval(interval);
-                            return resolve(el);
-                        }
-                        if (isDocumentReady()) {
-                            clearInterval(interval);
-                            return reject(new Error("Document is ready and element " + name + " does not exist"));
-                        }
-                    }, 10);
-                });
-            }
-            function popup(url, options) {
-                var params = Object.keys(options).map(function(key) {
-                    if (options[key]) return key + "=" + stringify(options[key]);
-                }).filter(Boolean).join(","), win = void 0;
-                try {
-                    win = window.open(url, options.name, params, !0);
-                } catch (err) {
-                    throw new error.b("Can not open popup window - " + (err.stack || err.message));
-                }
-                if (Object(src.isWindowClosed)(win)) {
-                    var err;
-                    throw new error.b("Can not open popup window - blocked");
-                }
-                return win;
-            }
-            function writeToWindow(win, html) {
-                try {
-                    win.document.open();
-                    win.document.write(html);
-                    win.document.close();
-                } catch (err) {
-                    try {
-                        win.location = "javascript: document.open(); document.write(" + JSON.stringify(html) + "); document.close();";
-                    } catch (err2) {}
-                }
-            }
-            function writeElementToWindow(win, el) {
-                var tag = el.tagName.toLowerCase();
-                if ("html" !== tag) throw new Error("Expected element to be html, got " + tag);
-                for (var documentElement = win.document.documentElement; documentElement.children && documentElement.children.length; ) documentElement.removeChild(documentElement.children[0]);
-                for (;el.children.length; ) documentElement.appendChild(el.children[0]);
-            }
-            function setStyle(el, styleText) {
-                var doc = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : window.document;
-                el.styleSheet ? el.styleSheet.cssText = styleText : el.appendChild(doc.createTextNode(styleText));
-            }
-            function createElement() {
-                var tag = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "div", options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, container = arguments[2];
-                tag = tag.toLowerCase();
-                var element = document.createElement(tag);
-                options.style && extend(element.style, options.style);
-                options.class && (element.className = options.class.join(" "));
-                if (options.attributes) for (var _i2 = 0, _Object$keys2 = Object.keys(options.attributes), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
-                    var key = _Object$keys2[_i2];
-                    element.setAttribute(key, options.attributes[key]);
-                }
-                options.styleSheet && setStyle(element, options.styleSheet);
-                container && appendChild(container, element);
-                if (options.html) if ("iframe" === tag) {
-                    if (!container || !element.contentWindow) throw new Error("Iframe html can not be written unless container provided and iframe in DOM");
-                    writeToWindow(element.contentWindow, options.html);
-                } else element.innerHTML = options.html;
-                return element;
-            }
-            var awaitFrameLoadPromises = new cross_domain_safe_weakmap_src.a();
-            function awaitFrameLoad(frame) {
-                if (awaitFrameLoadPromises.has(frame)) {
-                    var _promise = awaitFrameLoadPromises.get(frame);
-                    if (_promise) return _promise;
-                }
-                var promise = new zalgo_promise_src.a(function(resolve, reject) {
-                    frame.addEventListener("load", function() {
-                        Object(src.linkFrameWindow)(frame);
-                        resolve(frame);
-                    });
-                    frame.addEventListener("error", function(err) {
-                        frame.contentWindow ? resolve(frame) : reject(err);
-                    });
-                });
-                awaitFrameLoadPromises.set(frame, promise);
-                return promise;
-            }
-            function awaitFrameWindow(frame) {
-                return frame.contentWindow ? zalgo_promise_src.a.resolve(frame.contentWindow) : awaitFrameLoad(frame).then(function(loadedFrame) {
-                    if (!loadedFrame.contentWindow) throw new Error("Could not find window in iframe");
-                    return loadedFrame.contentWindow;
-                });
-            }
-            function iframe() {
-                var options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, el = getElement(arguments[1]), attributes = options.attributes || {}, style = options.style || {}, frame = createElement("iframe", {
-                    attributes: _extends({
-                        frameBorder: "0",
-                        allowTransparency: "true"
-                    }, attributes),
-                    style: _extends({
-                        backgroundColor: "transparent"
-                    }, style),
-                    html: options.html,
-                    class: options.class
-                });
-                awaitFrameLoad(frame);
-                el.appendChild(frame);
-                (options.url || window.navigator.userAgent.match(/MSIE|Edge/i)) && frame.setAttribute("src", options.url || "about:blank");
-                return frame;
-            }
-            function addEventListener(obj, event, handler) {
-                obj.addEventListener(event, handler);
-                return {
-                    cancel: function() {
-                        obj.removeEventListener(event, handler);
-                    }
-                };
-            }
-            function scanForJavascript(str) {
-                if (!str) return str;
-                if (str.match(/<script|on\w+\s*=|javascript:|expression\s*\(|eval\(|new\s*Function/)) throw new Error("HTML contains potential javascript: " + str);
-                return str;
-            }
-            var parseQuery = memoize(function(queryString) {
-                var params = {};
-                if (!queryString) return params;
-                if (-1 === queryString.indexOf("=")) throw new Error("Can not parse query string params: " + queryString);
-                for (var _i4 = 0, _queryString$split2 = queryString.split("&"), _length4 = null == _queryString$split2 ? 0 : _queryString$split2.length; _i4 < _length4; _i4++) {
-                    var pair = _queryString$split2[_i4];
-                    (pair = pair.split("="))[0] && pair[1] && (params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]));
-                }
-                return params;
-            });
-            function getQueryParam(name) {
-                return parseQuery(window.location.search.slice(1))[name];
-            }
-            function formatQuery() {
-                var obj = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                return Object.keys(obj).filter(function(key) {
-                    return "string" == typeof obj[key];
-                }).map(function(key) {
-                    return urlEncode(key) + "=" + urlEncode(obj[key]);
-                }).join("&");
-            }
-            function extendQuery(originalQuery) {
-                var props = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                return props && Object.keys(props).length ? formatQuery(_extends({}, parseQuery(originalQuery), props)) : originalQuery;
-            }
-            function extendUrl(url) {
-                var originalHash, options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, query = options.query || {}, hash = options.hash || {}, originalUrl = void 0, _url$split = url.split("#");
-                originalUrl = _url$split[0];
-                originalHash = _url$split[1];
-                var _originalUrl$split = originalUrl.split("?");
-                originalUrl = _originalUrl$split[0];
-                var queryString = extendQuery(_originalUrl$split[1], query), hashString = extendQuery(originalHash, hash);
-                queryString && (originalUrl = originalUrl + "?" + queryString);
-                hashString && (originalUrl = originalUrl + "#" + hashString);
-                return originalUrl;
-            }
-            function elementStoppedMoving(element) {
-                var timeout = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 5e3;
-                return new zalgo_promise_src.a(function(resolve, reject) {
-                    var el = getElement(element), start = el.getBoundingClientRect(), interval = void 0, timer = void 0;
-                    interval = setInterval(function() {
-                        var end = el.getBoundingClientRect();
-                        if (start.top === end.top && start.bottom === end.bottom && start.left === end.left && start.right === end.right && start.width === end.width && start.height === end.height) {
-                            clearTimeout(timer);
-                            clearInterval(interval);
-                            return resolve();
-                        }
-                        start = end;
-                    }, 50);
-                    timer = setTimeout(function() {
-                        clearInterval(interval);
-                        reject(new Error("Timed out waiting for element to stop animating after " + timeout + "ms"));
-                    }, timeout);
-                });
-            }
-            function getCurrentDimensions(el) {
-                return {
-                    width: el.offsetWidth,
-                    height: el.offsetHeight
-                };
-            }
-            function changeStyle(el, styles) {
-                return new zalgo_promise_src.a(function(resolve) {
-                    for (var _i6 = 0, _Object$keys4 = Object.keys(styles), _length6 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i6 < _length6; _i6++) {
-                        var key = _Object$keys4[_i6];
-                        el.style[key] = styles[key];
-                    }
-                    setTimeout(resolve, 1);
-                });
-            }
-            function setOverflow(el) {
-                var value = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "auto", _el$style = el.style, overflow = _el$style.overflow, overflowX = _el$style.overflowX, overflowY = _el$style.overflowY;
-                el.style.overflow = el.style.overflowX = el.style.overflowY = value;
-                return {
-                    reset: function() {
-                        el.style.overflow = overflow;
-                        el.style.overflowX = overflowX;
-                        el.style.overflowY = overflowY;
-                    }
-                };
-            }
-            function trackDimensions(el, _ref2) {
-                var _ref2$width = _ref2.width, width = void 0 === _ref2$width || _ref2$width, _ref2$height = _ref2.height, height = void 0 === _ref2$height || _ref2$height, _ref2$threshold = _ref2.threshold, threshold = void 0 === _ref2$threshold ? 0 : _ref2$threshold, currentDimensions = getCurrentDimensions(el);
-                return {
-                    check: function() {
-                        var newDimensions = getCurrentDimensions(el);
-                        return {
-                            changed: function(one, two, _ref) {
-                                var _ref$width = _ref.width, _ref$height = _ref.height, height = void 0 === _ref$height || _ref$height, _ref$threshold = _ref.threshold, threshold = void 0 === _ref$threshold ? 0 : _ref$threshold;
-                                return !(void 0 !== _ref$width && !_ref$width || !(Math.abs(one.width - two.width) > threshold)) || !!(height && Math.abs(one.height - two.height) > threshold);
-                            }(currentDimensions, newDimensions, {
-                                width: width,
-                                height: height,
-                                threshold: threshold
-                            }),
-                            dimensions: newDimensions
-                        };
-                    },
-                    reset: function() {
-                        currentDimensions = getCurrentDimensions(el);
-                    }
-                };
-            }
-            function onDimensionsChange(el, _ref3) {
-                var _ref3$width = _ref3.width, width = void 0 === _ref3$width || _ref3$width, _ref3$height = _ref3.height, height = void 0 === _ref3$height || _ref3$height, _ref3$delay = _ref3.delay, delay = void 0 === _ref3$delay ? 50 : _ref3$delay, _ref3$threshold = _ref3.threshold, threshold = void 0 === _ref3$threshold ? 0 : _ref3$threshold;
-                return new zalgo_promise_src.a(function(resolve) {
-                    var tracker = trackDimensions(el, {
-                        width: width,
-                        height: height,
-                        threshold: threshold
-                    }), interval = void 0, resolver = debounce(function(dimensions) {
-                        clearInterval(interval);
-                        return resolve(dimensions);
-                    }, 4 * delay);
-                    interval = setInterval(function() {
-                        var _tracker$check = tracker.check(), changed = _tracker$check.changed, dimensions = _tracker$check.dimensions;
-                        if (changed) {
-                            tracker.reset();
-                            return resolver(dimensions);
-                        }
-                    }, delay);
-                    window.addEventListener("resize", function onWindowResize() {
-                        var _tracker$check2 = tracker.check(), changed = _tracker$check2.changed, dimensions = _tracker$check2.dimensions;
-                        if (changed) {
-                            tracker.reset();
-                            window.removeEventListener("resize", onWindowResize);
-                            resolver(dimensions);
-                        }
-                    });
-                });
-            }
-            function dimensionsMatchViewport(el, _ref4) {
-                var width = _ref4.width, height = _ref4.height, dimensions = getCurrentDimensions(el);
-                return !(width && dimensions.width !== window.innerWidth || height && dimensions.height !== window.innerHeight);
-            }
-            function bindEvents(element, eventNames, handler) {
-                handler = once(handler);
-                for (var _i8 = 0, _length8 = null == eventNames ? 0 : eventNames.length; _i8 < _length8; _i8++) {
-                    var eventName = eventNames[_i8];
-                    element.addEventListener(eventName, handler);
-                }
-                return {
-                    cancel: once(function() {
-                        for (var _i10 = 0, _length10 = null == eventNames ? 0 : eventNames.length; _i10 < _length10; _i10++) {
-                            var _eventName = eventNames[_i10];
-                            element.removeEventListener(_eventName, handler);
-                        }
-                    })
-                };
-            }
-            var VENDOR_PREFIXES = [ "webkit", "moz", "ms", "o" ];
-            function setVendorCSS(element, name, value) {
-                element.style[name] = value;
-                for (var capitalizedName = capitalizeFirstLetter(name), _i12 = 0, _length12 = null == VENDOR_PREFIXES ? 0 : VENDOR_PREFIXES.length; _i12 < _length12; _i12++) {
-                    var prefix = VENDOR_PREFIXES[_i12];
-                    element.style["" + prefix + capitalizedName] = value;
-                }
-            }
-            var CSSRule = window.CSSRule, KEYFRAMES_RULE = CSSRule.KEYFRAMES_RULE || CSSRule.WEBKIT_KEYFRAMES_RULE || CSSRule.MOZ_KEYFRAMES_RULE || CSSRule.O_KEYFRAMES_RULE || CSSRule.MS_KEYFRAMES_RULE, ANIMATION_START_EVENTS = [ "animationstart", "webkitAnimationStart", "oAnimationStart", "MSAnimationStart" ], ANIMATION_END_EVENTS = [ "animationend", "webkitAnimationEnd", "oAnimationEnd", "MSAnimationEnd" ];
-            function animate(element, name, clean) {
-                var timeout = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : 1e3;
-                return new zalgo_promise_src.a(function(resolve, reject) {
-                    var el = getElement(element);
-                    if (!el || !function(element, name) {
-                        var stylesheets = el.ownerDocument.styleSheets;
-                        try {
-                            for (var i = 0; i < stylesheets.length; i++) {
-                                var cssRules = stylesheets[i].cssRules;
-                                if (cssRules) for (var j = 0; j < cssRules.length; j++) {
-                                    var cssRule = cssRules[j];
-                                    if (cssRule && cssRule.type === KEYFRAMES_RULE && cssRule.name === name) return !0;
-                                }
-                            }
-                        } catch (err) {
-                            return !1;
-                        }
-                        return !1;
-                    }(0, name)) return resolve();
-                    var hasStarted = !1, startTimeout = void 0, endTimeout = void 0, startEvent = void 0, endEvent = void 0;
-                    function cleanUp() {
-                        setVendorCSS(el, "animationName", "");
-                        clearTimeout(startTimeout);
-                        clearTimeout(endTimeout);
-                        startEvent.cancel();
-                        endEvent.cancel();
-                    }
-                    startEvent = bindEvents(el, ANIMATION_START_EVENTS, function(event) {
-                        if (event.target === el && event.animationName === name) {
-                            clearTimeout(startTimeout);
-                            event.stopPropagation();
-                            startEvent.cancel();
-                            hasStarted = !0;
-                            endTimeout = setTimeout(function() {
-                                cleanUp();
-                                resolve();
-                            }, timeout);
-                        }
-                    });
-                    endEvent = bindEvents(el, ANIMATION_END_EVENTS, function(event) {
-                        if (event.target === el && event.animationName === name) {
-                            cleanUp();
-                            return "string" == typeof event.animationName && event.animationName !== name ? reject("Expected animation name to be " + name + ", found " + event.animationName) : resolve();
-                        }
-                    });
-                    setVendorCSS(el, "animationName", name);
-                    startTimeout = setTimeout(function() {
-                        if (!hasStarted) {
-                            cleanUp();
-                            return resolve();
-                        }
-                    }, 200);
-                    clean && clean(cleanUp);
-                });
-            }
-            var STYLE = {
-                DISPLAY: {
-                    NONE: "none",
-                    BLOCK: "block"
-                },
-                VISIBILITY: {
-                    VISIBLE: "visible",
-                    HIDDEN: "hidden"
-                },
-                IMPORTANT: "important"
-            };
-            function makeElementVisible(element) {
-                element.style.setProperty("visibility", "");
-            }
-            function makeElementInvisible(element) {
-                element.style.setProperty("visibility", STYLE.VISIBILITY.HIDDEN, STYLE.IMPORTANT);
-            }
-            function showElement(element) {
-                element.style.setProperty("display", "");
-            }
-            function hideElement(element) {
-                element.style.setProperty("display", STYLE.DISPLAY.NONE, STYLE.IMPORTANT);
-            }
-            function destroyElement(element) {
-                element.parentNode && element.parentNode.removeChild(element);
-            }
-            function showAndAnimate(element, name, clean) {
-                var animation = animate(element, name, clean);
-                showElement(element);
-                return animation;
-            }
-            function animateAndHide(element, name, clean) {
-                return animate(element, name, clean).then(function() {
-                    hideElement(element);
-                });
-            }
-            function addClass(element, name) {
-                element.classList ? element.classList.add(name) : -1 === element.className.split(/\s+/).indexOf(name) && (element.className += " " + name);
-            }
-            function removeClass(element, name) {
-                element.classList ? element.classList.remove(name) : -1 !== element.className.split(/\s+/).indexOf(name) && (element.className = element.className.replace(name, ""));
-            }
-            function getCurrentScriptDir() {
-                console.warn("Do not use xcomponent.getCurrentScriptDir() in production -- browser support is limited");
-                return document.currentScript ? document.currentScript.src.split("/").slice(0, -1).join("/") : ".";
-            }
-            function getElementName(element) {
-                if ("string" == typeof element) return element;
-                if (!element || !element.tagName) return "<unknown>";
-                var name = element.tagName.toLowerCase();
-                element.id ? name += "#" + element.id : element.className && (name += "." + element.className.split(" ").join("."));
-                return name;
-            }
-            function isElementClosed(el) {
-                return !el || !el.parentNode;
-            }
-            function watchElementForClose(element, handler) {
-                handler = once(handler);
-                var interval = void 0;
-                isElementClosed(element) ? handler() : interval = safeInterval(function() {
-                    if (isElementClosed(element)) {
-                        interval.cancel();
-                        handler();
-                    }
-                }, 50);
-                return {
-                    cancel: function() {
-                        interval && interval.cancel();
-                    }
-                };
-            }
-            function getHttpType(contentType, url) {
-                return new zalgo_promise_src.a(function(resolve, reject) {
-                    var req = new window.XMLHttpRequest();
-                    req.open("GET", url);
-                    req.setRequestHeader("Accept", contentType);
-                    req.send(null);
-                    req.onload = function() {
-                        resolve(req.responseText);
-                    };
-                    req.onerror = function() {
-                        return reject(new Error("prefetch failed"));
-                    };
-                });
-            }
-            function getHTML(url) {
-                return getHttpType("text/html", url);
-            }
-            function getCSS(url) {
-                return getHttpType("text/css", url);
-            }
-            function getScript(url) {
-                return getHttpType("*/*", url);
-            }
-            function prefetchPage(url) {
-                return getHTML(url);
-            }
-            var JSX_EVENTS = {
-                onClick: "click"
-            };
-            function fixScripts(el) {
-                for (var doc = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : window.document, _i14 = 0, _querySelectorAll2 = querySelectorAll(el, "script"), _length14 = null == _querySelectorAll2 ? 0 : _querySelectorAll2.length; _i14 < _length14; _i14++) {
-                    var script = _querySelectorAll2[_i14], newScript = doc.createElement("script");
-                    newScript.text = script.textContent;
-                    script.parentNode.replaceChild(newScript, script);
-                }
-            }
-            function jsxDom(name, props, content) {
-                name = name.toLowerCase();
-                var doc = this && this.createElement ? this : window.document, el = doc.createElement(name);
-                for (var prop in props) if (prop in JSX_EVENTS) el.addEventListener(JSX_EVENTS[prop], props[prop]); else if ("innerHTML" === prop) {
-                    el.innerHTML = props[prop];
-                    fixScripts(el, doc);
-                } else el.setAttribute(prop, props[prop]);
-                if ("style" === name) {
-                    if ("string" != typeof content) throw new TypeError("Expected " + name + " tag content to be string, got " + (void 0 === content ? "undefined" : dom__typeof(content)));
-                    if (arguments.length > 3) throw new Error("Expected only text content for " + name + " tag");
-                    setStyle(el, content, doc);
-                } else if ("iframe" === name) {
-                    if (arguments.length > 3) throw new Error("Expected only single child node for iframe");
-                    el.addEventListener("load", function() {
-                        var win = el.contentWindow;
-                        if (!win) throw new Error("Expected frame to have contentWindow");
-                        "string" == typeof content ? writeToWindow(win, content) : writeElementToWindow(win, content);
-                    });
-                } else if ("script" === name) {
-                    if ("string" != typeof content) throw new TypeError("Expected " + name + " tag content to be string, got " + (void 0 === content ? "undefined" : dom__typeof(content)));
-                    if (arguments.length > 3) throw new Error("Expected only text content for " + name + " tag");
-                    el.text = content;
-                } else for (var i = 2; i < arguments.length; i++) if ("string" == typeof arguments[i]) {
-                    var textNode = doc.createTextNode(arguments[i]);
-                    appendChild(el, textNode);
-                } else appendChild(el, arguments[i]);
-                return el;
-            }
-            function denodeify(method) {
-                return function() {
-                    var self = this, args = Array.prototype.slice.call(arguments);
-                    return args.length >= method.length ? zalgo_promise_src.a.resolve(method.apply(self, args)) : new zalgo_promise_src.a(function(resolve, reject) {
-                        args.push(function(err, result) {
-                            if (err && !(err instanceof Error)) throw new Error("Passed non-Error object in callback: [ " + err + " ] -- callbacks should either be called with callback(new Error(...)) or callback(null, result).");
-                            return err ? reject(err) : resolve(result);
-                        });
-                        method.apply(self, args);
-                    });
-                };
-            }
-            function promisify(method) {
-                return function() {
-                    var _this = this, _arguments = arguments;
-                    return zalgo_promise_src.a.try(function() {
-                        return method.apply(_this, _arguments);
-                    });
-                };
-            }
-            function promise_delay() {
-                var time = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 1;
-                return new zalgo_promise_src.a(function(resolve) {
-                    setTimeout(resolve, time);
-                });
-            }
-            function cycle(method) {
-                return zalgo_promise_src.a.try(method).then(function() {
-                    return cycle(method);
-                });
-            }
-            function isPerc(str) {
-                return "string" == typeof str && /^[0-9]+%$/.test(str);
-            }
-            function isPx(str) {
-                return "string" == typeof str && /^[0-9]+px$/.test(str);
-            }
-            function toNum(val) {
-                if ("number" == typeof val) return val;
-                var match = val.match(/^([0-9]+)(px|%)$/);
-                if (!match) throw new Error("Could not match css value from " + val);
-                return parseInt(match[1], 10);
-            }
-            function toPx(val) {
-                return toNum(val) + "px";
-            }
-            function toCSS(val) {
-                return "number" == typeof val ? toPx(val) : isPerc(val) ? val : toPx(val);
-            }
-            function percOf(num, perc) {
-                return parseInt(num * toNum(perc) / 100, 10);
-            }
-            function normalizeDimension(dim, max) {
-                if ("number" == typeof dim) return dim;
-                if (isPerc(dim)) return percOf(max, dim);
-                if (isPx(dim)) return toNum(dim);
-                throw new Error("Can not normalize dimension: " + dim);
-            }
-            function memoized(target, name, descriptor) {
-                var method = descriptor.value;
-                descriptor.value = function() {
-                    this.__memoized__ = this.__memoized__ || {};
-                    this.__memoized__.hasOwnProperty(name) || (this.__memoized__[name] = method.apply(this, arguments));
-                    return this.__memoized__[name];
-                };
-                descriptor.value.displayName = name + ":memoized";
-            }
-            function decorators_promise(target, name, descriptor) {
-                var method = descriptor.value;
-                descriptor.value = function() {
-                    return zalgo_promise_src.a.try(method, this, arguments);
-                };
-                descriptor.value.displayName = name + ":promisified";
-            }
-            var post_robot_src = __webpack_require__("./node_modules/post-robot/src/index.js"), client = __webpack_require__("./node_modules/beaver-logger/client/index.js");
-            function setLogLevel(logLevel) {
-                if (-1 === client.e.indexOf(logLevel)) throw new Error("Invalid logLevel: " + logLevel);
-                client.a.logLevel = logLevel;
-                post_robot_src.CONFIG.LOG_LEVEL = logLevel;
-                window.LOG_LEVEL = logLevel;
-            }
-            function info(name, event) {
-                var payload = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-                Object(client.d)("xc_" + name + "_" + event, payload);
-            }
-            function warn(name, event) {
-                var payload = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-                Object(client.f)("xc_" + name + "_" + event, payload);
-            }
-            function logger_error(name, event) {
-                var payload = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-                Object(client.b)("xc_" + name + "_" + event, payload);
-            }
-            var constants = __webpack_require__("./node_modules/xcomponent/src/constants.js");
-            function globalFor(win) {
-                if (Object(src.isSameDomain)(win)) {
-                    win[constants.__XCOMPONENT__] || (win[constants.__XCOMPONENT__] = {});
-                    return win[constants.__XCOMPONENT__];
-                }
-            }
-            function localGlobal() {
-                var global = globalFor(window);
-                if (!global) throw new Error("Could not get local global");
-                return global;
-            }
-            var global = localGlobal();
-            __webpack_require__.d(__webpack_exports__, "d", function() {
-                return appendChild;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return querySelectorAll;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return getElementSafe;
-            });
-            __webpack_require__.d(__webpack_exports__, "x", function() {
-                return getElement;
-            });
-            __webpack_require__.d(__webpack_exports__, "n", function() {
-                return documentReady;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return isDocumentReady;
-            });
-            __webpack_require__.d(__webpack_exports__, "p", function() {
-                return elementReady;
-            });
-            __webpack_require__.d(__webpack_exports__, "M", function() {
-                return popup;
-            });
-            __webpack_require__.d(__webpack_exports__, "_4", function() {
-                return writeToWindow;
-            });
-            __webpack_require__.d(__webpack_exports__, "_3", function() {
-                return writeElementToWindow;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return setStyle;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return createElement;
-            });
-            __webpack_require__.d(__webpack_exports__, "e", function() {
-                return awaitFrameLoad;
-            });
-            __webpack_require__.d(__webpack_exports__, "f", function() {
-                return awaitFrameWindow;
-            });
-            __webpack_require__.d(__webpack_exports__, "B", function() {
-                return iframe;
-            });
-            __webpack_require__.d(__webpack_exports__, "b", function() {
-                return addEventListener;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return scanForJavascript;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return parseQuery;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return getQueryParam;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return formatQuery;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return extendQuery;
-            });
-            __webpack_require__.d(__webpack_exports__, "u", function() {
-                return extendUrl;
-            });
-            __webpack_require__.d(__webpack_exports__, "q", function() {
-                return elementStoppedMoving;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return getCurrentDimensions;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return changeStyle;
-            });
-            __webpack_require__.d(__webpack_exports__, "T", function() {
-                return setOverflow;
-            });
-            __webpack_require__.d(__webpack_exports__, "Z", function() {
-                return trackDimensions;
-            });
-            __webpack_require__.d(__webpack_exports__, "K", function() {
-                return onDimensionsChange;
-            });
-            __webpack_require__.d(__webpack_exports__, "m", function() {
-                return dimensionsMatchViewport;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return bindEvents;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return setVendorCSS;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return animate;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return makeElementVisible;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return makeElementInvisible;
-            });
-            __webpack_require__.d(__webpack_exports__, "V", function() {
-                return showElement;
-            });
-            __webpack_require__.d(__webpack_exports__, "A", function() {
-                return hideElement;
-            });
-            __webpack_require__.d(__webpack_exports__, "l", function() {
-                return destroyElement;
-            });
-            __webpack_require__.d(__webpack_exports__, "U", function() {
-                return showAndAnimate;
-            });
-            __webpack_require__.d(__webpack_exports__, "c", function() {
-                return animateAndHide;
-            });
-            __webpack_require__.d(__webpack_exports__, "a", function() {
-                return addClass;
-            });
-            __webpack_require__.d(__webpack_exports__, "P", function() {
-                return removeClass;
-            });
-            __webpack_require__.d(__webpack_exports__, "w", function() {
-                return getCurrentScriptDir;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return getElementName;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return isElementClosed;
-            });
-            __webpack_require__.d(__webpack_exports__, "_2", function() {
-                return watchElementForClose;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return getHttpType;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return getHTML;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return getCSS;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return getScript;
-            });
-            __webpack_require__.d(__webpack_exports__, "N", function() {
-                return prefetchPage;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return fixScripts;
-            });
-            __webpack_require__.d(__webpack_exports__, "F", function() {
-                return jsxDom;
-            });
-            __webpack_require__.d(__webpack_exports__, "I", function() {
-                return noop;
-            });
-            __webpack_require__.d(__webpack_exports__, "L", function() {
-                return once;
-            });
-            __webpack_require__.d(__webpack_exports__, "G", function() {
-                return memoize;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return debounce;
-            });
-            __webpack_require__.d(__webpack_exports__, "R", function() {
-                return serializeFunctions;
-            });
-            __webpack_require__.d(__webpack_exports__, "k", function() {
-                return deserializeFunctions;
-            });
-            __webpack_require__.d(__webpack_exports__, "j", function() {
-                return denodeify;
-            });
-            __webpack_require__.d(__webpack_exports__, "O", function() {
-                return promisify;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return promise_delay;
-            });
-            __webpack_require__.d(__webpack_exports__, "h", function() {
-                return cycle;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return urlEncode;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return camelToDasherize;
-            });
-            __webpack_require__.d(__webpack_exports__, "i", function() {
-                return dasherizeToCamel;
-            });
-            __webpack_require__.d(__webpack_exports__, "t", function() {
-                return extend;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return values;
-            });
-            __webpack_require__.d(__webpack_exports__, "_0", function() {
-                return uniqueID;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return stringifyWithFunctions;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return safeGet;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return capitalizeFirstLetter;
-            });
-            __webpack_require__.d(__webpack_exports__, "v", function() {
-                return get;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return safeInterval;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return safeTimeout;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return each;
-            });
-            __webpack_require__.d(__webpack_exports__, "Q", function() {
-                return replaceObject;
-            });
-            __webpack_require__.d(__webpack_exports__, "g", function() {
-                return copyProp;
-            });
-            __webpack_require__.d(__webpack_exports__, "o", function() {
-                return dotify;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return getObjectID;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return regex;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return regexAll;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return count;
-            });
-            __webpack_require__.d(__webpack_exports__, "W", function() {
-                return stringify;
-            });
-            __webpack_require__.d(__webpack_exports__, "X", function() {
-                return stringifyError;
-            });
-            __webpack_require__.d(__webpack_exports__, "s", function() {
-                return eventEmitter;
-            });
-            __webpack_require__.d(__webpack_exports__, "D", function() {
-                return isPerc;
-            });
-            __webpack_require__.d(__webpack_exports__, "E", function() {
-                return isPx;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return toNum;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return toPx;
-            });
-            __webpack_require__.d(__webpack_exports__, "Y", function() {
-                return toCSS;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return percOf;
-            });
-            __webpack_require__.d(__webpack_exports__, "J", function() {
-                return normalizeDimension;
-            });
-            __webpack_require__.d(__webpack_exports__, "H", function() {
-                return memoized;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return decorators_promise;
-            });
-            __webpack_require__.d(__webpack_exports__, "S", function() {
-                return setLogLevel;
-            });
-            __webpack_require__.d(__webpack_exports__, "C", function() {
-                return info;
-            });
-            __webpack_require__.d(__webpack_exports__, "_1", function() {
-                return warn;
-            });
-            __webpack_require__.d(__webpack_exports__, "r", function() {
-                return logger_error;
-            });
-            __webpack_require__.d(__webpack_exports__, "z", function() {
-                return globalFor;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return localGlobal;
-            });
-            __webpack_require__.d(__webpack_exports__, "y", function() {
-                return global;
-            });
-        },
-        "./node_modules/xcomponent/src/types.js": function(module, exports) {},
         "./node_modules/zalgo-promise/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
             function utils_isPromise(item) {
@@ -5064,40 +2150,2368 @@
                 return promise_ZalgoPromise;
             });
         },
+        "./node_modules/zoid/src/constants.js": function(module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            Object.defineProperty(__webpack_exports__, "__esModule", {
+                value: !0
+            });
+            __webpack_require__.d(__webpack_exports__, "ZOID", function() {
+                return ZOID;
+            });
+            __webpack_require__.d(__webpack_exports__, "__ZOID__", function() {
+                return __ZOID__;
+            });
+            __webpack_require__.d(__webpack_exports__, "POST_MESSAGE", function() {
+                return POST_MESSAGE;
+            });
+            __webpack_require__.d(__webpack_exports__, "PROP_TYPES", function() {
+                return PROP_TYPES;
+            });
+            __webpack_require__.d(__webpack_exports__, "INITIAL_PROPS", function() {
+                return INITIAL_PROPS;
+            });
+            __webpack_require__.d(__webpack_exports__, "WINDOW_REFERENCES", function() {
+                return WINDOW_REFERENCES;
+            });
+            __webpack_require__.d(__webpack_exports__, "PROP_TYPES_LIST", function() {
+                return PROP_TYPES_LIST;
+            });
+            __webpack_require__.d(__webpack_exports__, "CONTEXT_TYPES", function() {
+                return CONTEXT_TYPES;
+            });
+            __webpack_require__.d(__webpack_exports__, "CLASS_NAMES", function() {
+                return CLASS_NAMES;
+            });
+            __webpack_require__.d(__webpack_exports__, "EVENTS", function() {
+                return EVENTS;
+            });
+            __webpack_require__.d(__webpack_exports__, "ATTRIBUTES", function() {
+                return ATTRIBUTES;
+            });
+            __webpack_require__.d(__webpack_exports__, "ANIMATION_NAMES", function() {
+                return ANIMATION_NAMES;
+            });
+            __webpack_require__.d(__webpack_exports__, "EVENT_NAMES", function() {
+                return EVENT_NAMES;
+            });
+            __webpack_require__.d(__webpack_exports__, "CLOSE_REASONS", function() {
+                return CLOSE_REASONS;
+            });
+            __webpack_require__.d(__webpack_exports__, "CONTEXT_TYPES_LIST", function() {
+                return CONTEXT_TYPES_LIST;
+            });
+            __webpack_require__.d(__webpack_exports__, "DELEGATE", function() {
+                return DELEGATE;
+            });
+            __webpack_require__.d(__webpack_exports__, "WILDCARD", function() {
+                return WILDCARD;
+            });
+            __webpack_require__.d(__webpack_exports__, "DEFAULT_DIMENSIONS", function() {
+                return DEFAULT_DIMENSIONS;
+            });
+            var ZOID = "zoid", __ZOID__ = "__" + ZOID + "__", POST_MESSAGE = {
+                INIT: ZOID + "_init",
+                PROPS: ZOID + "_props",
+                PROP_CALLBACK: ZOID + "_prop_callback",
+                CLOSE: ZOID + "_close",
+                CHECK_CLOSE: ZOID + "_check_close",
+                REDIRECT: ZOID + "_redirect",
+                RESIZE: ZOID + "_resize",
+                ONRESIZE: ZOID + "_onresize",
+                DELEGATE: ZOID + "_delegate",
+                ALLOW_DELEGATE: ZOID + "_allow_delegate",
+                ERROR: ZOID + "_error",
+                HIDE: ZOID + "_hide",
+                SHOW: ZOID + "_show"
+            }, PROP_TYPES = {
+                STRING: "string",
+                OBJECT: "object",
+                FUNCTION: "function",
+                BOOLEAN: "boolean",
+                NUMBER: "number",
+                ARRAY: "array"
+            }, INITIAL_PROPS = {
+                RAW: "raw",
+                UID: "uid"
+            }, WINDOW_REFERENCES = {
+                OPENER: "opener",
+                TOP: "top",
+                PARENT: "parent",
+                GLOBAL: "global"
+            }, PROP_TYPES_LIST = Object.keys(PROP_TYPES).map(function(key) {
+                return PROP_TYPES[key];
+            }), CONTEXT_TYPES = {
+                IFRAME: "iframe",
+                POPUP: "popup"
+            }, CLASS_NAMES = {
+                ZOID: "" + ZOID,
+                OUTLET: ZOID + "-outlet",
+                COMPONENT_FRAME: ZOID + "-component-frame",
+                PRERENDER_FRAME: ZOID + "-prerender-frame",
+                VISIBLE: ZOID + "-visible",
+                INVISIBLE: ZOID + "-invisible"
+            }, EVENTS = {
+                CLOSE: ZOID + "-close"
+            }, ATTRIBUTES = {
+                IFRAME_PLACEHOLDER: "data-zoid-" + ZOID + "-placeholder"
+            }, ANIMATION_NAMES = {
+                SHOW_CONTAINER: ZOID + "-show-container",
+                SHOW_COMPONENT: ZOID + "-show-component",
+                HIDE_CONTAINER: ZOID + "-hide-container",
+                HIDE_COMPONENT: ZOID + "-hide-component"
+            }, EVENT_NAMES = {
+                CLICK: "click"
+            }, CLOSE_REASONS = {
+                PARENT_CALL: "parent_call",
+                CHILD_CALL: "child_call",
+                CLOSE_DETECTED: "close_detected",
+                USER_CLOSED: "user_closed",
+                PARENT_CLOSE_DETECTED: "parent_close_detected"
+            }, CONTEXT_TYPES_LIST = Object.keys(CONTEXT_TYPES).map(function(key) {
+                return CONTEXT_TYPES[key];
+            }), DELEGATE = {
+                CALL_ORIGINAL: "call_original",
+                CALL_DELEGATE: "call_delegate"
+            }, WILDCARD = "*", DEFAULT_DIMENSIONS = {
+                WIDTH: 300,
+                HEIGHT: 150
+            };
+        },
+        "./node_modules/zoid/src/drivers/angular.js": function(module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.d(__webpack_exports__, "a", function() {
+                return angular;
+            });
+            var __WEBPACK_IMPORTED_MODULE_0__lib__ = __webpack_require__("./node_modules/zoid/src/lib/index.js"), angular = {
+                global: function() {
+                    return window.angular;
+                },
+                register: function(component, ng) {
+                    return ng.module(component.tag, []).directive(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.i)(component.tag), function() {
+                        for (var scope = {}, _i2 = 0, _component$getPropNam2 = component.getPropNames(), _length2 = null == _component$getPropNam2 ? 0 : _component$getPropNam2.length; _i2 < _length2; _i2++) {
+                            var key = _component$getPropNam2[_i2];
+                            scope[key] = "=";
+                        }
+                        component.looseProps && (scope.props = "=");
+                        return {
+                            scope: scope,
+                            restrict: "E",
+                            controller: [ "$scope", "$element", function($scope, $element) {
+                                if (component.looseProps && !$scope.props) throw new Error("For angular bindings to work, prop definitions must be passed to zoid.create");
+                                component.log("instantiate_angular_component");
+                                var getProps = function() {
+                                    var scopeProps = void 0;
+                                    if ($scope.props) scopeProps = $scope.props; else {
+                                        scopeProps = {};
+                                        for (var _i4 = 0, _Object$keys2 = Object.keys(scope), _length4 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i4 < _length4; _i4++) {
+                                            var _key = _Object$keys2[_i4];
+                                            void 0 !== $scope[_key] && (scopeProps[_key] = $scope[_key]);
+                                        }
+                                    }
+                                    return Object(__WEBPACK_IMPORTED_MODULE_0__lib__.Q)(scopeProps, {
+                                        function: function(value) {
+                                            return function() {
+                                                var result = value.apply(this, arguments);
+                                                !function() {
+                                                    if ("$apply" !== $scope.$root.$$phase && "$digest" !== $scope.$root.$$phase) try {
+                                                        $scope.$apply();
+                                                    } catch (err) {}
+                                                }();
+                                                return result;
+                                            };
+                                        }
+                                    });
+                                }, parent = component.init(getProps(), null, $element[0]);
+                                parent.render($element[0]);
+                                $scope.$watch(function() {
+                                    parent.updateProps(getProps());
+                                });
+                            } ]
+                        };
+                    });
+                }
+            };
+        },
+        "./node_modules/zoid/src/drivers/angular2.js": function(module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.d(__webpack_exports__, "a", function() {
+                return angular2;
+            });
+            var __WEBPACK_IMPORTED_MODULE_0__lib__ = __webpack_require__("./node_modules/zoid/src/lib/index.js"), _extends = Object.assign || function(target) {
+                for (var i = 1; i < arguments.length; i++) {
+                    var source = arguments[i];
+                    for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
+                }
+                return target;
+            }, angular2 = {
+                global: function() {},
+                register: function(zoid, _ref) {
+                    var AngularComponent = _ref.Component, NgModule = _ref.NgModule, ElementRef = _ref.ElementRef, NgZone = _ref.NgZone;
+                    zoid.log("initializing angular2 component");
+                    var getProps = function(component) {
+                        return Object(__WEBPACK_IMPORTED_MODULE_0__lib__.Q)(_extends({}, component.internalProps, component.props), {
+                            function: function(value) {
+                                if ("function" == typeof value) return function() {
+                                    var _this = this, _arguments = arguments;
+                                    return component.zone.run(function() {
+                                        return value.apply(_this, _arguments);
+                                    });
+                                };
+                            }
+                        });
+                    }, ComponentInstance = AngularComponent({
+                        selector: zoid.tag,
+                        template: "<div></div>",
+                        inputs: [ "props" ]
+                    }).Class({
+                        constructor: [ ElementRef, NgZone, function(elementRef, zone) {
+                            this.elementRef = elementRef;
+                            this.zone = zone;
+                        } ],
+                        ngOnInit: function() {
+                            var targetElement = this.elementRef.nativeElement, parent = zoid.init(getProps(this), null, targetElement);
+                            parent.render(targetElement);
+                            this.parent = parent;
+                        },
+                        ngOnChanges: function() {
+                            this.parent && this.parent.updateProps(getProps(this));
+                        }
+                    });
+                    return NgModule({
+                        declarations: [ ComponentInstance ],
+                        exports: [ ComponentInstance ]
+                    }).Class({
+                        constructor: function() {}
+                    });
+                }
+            };
+        },
+        "./node_modules/zoid/src/drivers/ember.js": function(module, exports) {},
+        "./node_modules/zoid/src/drivers/glimmer.js": function(module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.d(__webpack_exports__, "a", function() {
+                return glimmer;
+            });
+            var _extends = Object.assign || function(target) {
+                for (var i = 1; i < arguments.length; i++) {
+                    var source = arguments[i];
+                    for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
+                }
+                return target;
+            }, glimmer = {
+                global: function() {},
+                register: function(component, GlimmerComponent) {
+                    return function(_GlimmerComponent) {
+                        !function(subClass, superClass) {
+                            if ("function" != typeof superClass && null !== superClass) throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+                            subClass.prototype = Object.create(superClass && superClass.prototype, {
+                                constructor: {
+                                    value: subClass,
+                                    enumerable: !1,
+                                    writable: !0,
+                                    configurable: !0
+                                }
+                            });
+                            superClass && (Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass);
+                        }(_class, _GlimmerComponent);
+                        function _class() {
+                            !function(instance, Constructor) {
+                                if (!(instance instanceof _class)) throw new TypeError("Cannot call a class as a function");
+                            }(this);
+                            return function(self, call) {
+                                if (!self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+                                return !call || "object" != typeof call && "function" != typeof call ? self : call;
+                            }(this, _GlimmerComponent.apply(this, arguments));
+                        }
+                        _class.prototype.didInsertElement = function() {
+                            component.render(_extends({}, this.args), this.element);
+                        };
+                        return _class;
+                    }(GlimmerComponent);
+                }
+            };
+        },
+        "./node_modules/zoid/src/drivers/index.js": function(module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            var __WEBPACK_IMPORTED_MODULE_0__script__ = __webpack_require__("./node_modules/zoid/src/drivers/script.js");
+            __webpack_require__.d(__webpack_exports__, "script", function() {
+                return __WEBPACK_IMPORTED_MODULE_0__script__.a;
+            });
+            var __WEBPACK_IMPORTED_MODULE_1__react__ = __webpack_require__("./node_modules/zoid/src/drivers/react.js");
+            __webpack_require__.d(__webpack_exports__, "react", function() {
+                return __WEBPACK_IMPORTED_MODULE_1__react__.a;
+            });
+            var __WEBPACK_IMPORTED_MODULE_2__vue__ = __webpack_require__("./node_modules/zoid/src/drivers/vue.js");
+            __webpack_require__.d(__webpack_exports__, "vue", function() {
+                return __WEBPACK_IMPORTED_MODULE_2__vue__.a;
+            });
+            var __WEBPACK_IMPORTED_MODULE_3__angular__ = __webpack_require__("./node_modules/zoid/src/drivers/angular.js");
+            __webpack_require__.d(__webpack_exports__, "angular", function() {
+                return __WEBPACK_IMPORTED_MODULE_3__angular__.a;
+            });
+            var __WEBPACK_IMPORTED_MODULE_4__ember__ = __webpack_require__("./node_modules/zoid/src/drivers/ember.js");
+            __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__ember__);
+            __webpack_require__.o(__WEBPACK_IMPORTED_MODULE_4__ember__, "angular2") && __webpack_require__.d(__webpack_exports__, "angular2", function() {
+                return __WEBPACK_IMPORTED_MODULE_4__ember__.angular2;
+            });
+            __webpack_require__.o(__WEBPACK_IMPORTED_MODULE_4__ember__, "glimmer") && __webpack_require__.d(__webpack_exports__, "glimmer", function() {
+                return __WEBPACK_IMPORTED_MODULE_4__ember__.glimmer;
+            });
+            var __WEBPACK_IMPORTED_MODULE_5__glimmer__ = __webpack_require__("./node_modules/zoid/src/drivers/glimmer.js");
+            __webpack_require__.d(__webpack_exports__, "glimmer", function() {
+                return __WEBPACK_IMPORTED_MODULE_5__glimmer__.a;
+            });
+            var __WEBPACK_IMPORTED_MODULE_6__angular2__ = __webpack_require__("./node_modules/zoid/src/drivers/angular2.js");
+            __webpack_require__.d(__webpack_exports__, "angular2", function() {
+                return __WEBPACK_IMPORTED_MODULE_6__angular2__.a;
+            });
+        },
+        "./node_modules/zoid/src/drivers/react.js": function(module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.d(__webpack_exports__, "a", function() {
+                return react;
+            });
+            var __WEBPACK_IMPORTED_MODULE_0__lib__ = __webpack_require__("./node_modules/zoid/src/lib/index.js"), react = {
+                global: function() {
+                    if (window.React && window.ReactDOM) return {
+                        React: window.React,
+                        ReactDOM: window.ReactDOM
+                    };
+                },
+                register: function(component, _ref) {
+                    var React = _ref.React, ReactDOM = _ref.ReactDOM;
+                    React.createClass ? component.react = React.createClass({
+                        render: function() {
+                            return React.createElement("div", null);
+                        },
+                        componentDidMount: function() {
+                            component.log("instantiate_react_component");
+                            var el = ReactDOM.findDOMNode(this), parent = component.init(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.s)({}, this.props), null, el);
+                            this.setState({
+                                parent: parent
+                            });
+                            parent.render(el);
+                        },
+                        componentDidUpdate: function() {
+                            this.state && this.state.parent && this.state.parent.updateProps(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.s)({}, this.props));
+                        }
+                    }) : component.react = function(_React$Component) {
+                        !function(subClass, superClass) {
+                            if ("function" != typeof superClass && null !== superClass) throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+                            subClass.prototype = Object.create(superClass && superClass.prototype, {
+                                constructor: {
+                                    value: subClass,
+                                    enumerable: !1,
+                                    writable: !0,
+                                    configurable: !0
+                                }
+                            });
+                            superClass && (Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass);
+                        }(_class, _React$Component);
+                        function _class() {
+                            !function(instance, Constructor) {
+                                if (!(instance instanceof _class)) throw new TypeError("Cannot call a class as a function");
+                            }(this);
+                            return function(self, call) {
+                                if (!self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+                                return !call || "object" != typeof call && "function" != typeof call ? self : call;
+                            }(this, _React$Component.apply(this, arguments));
+                        }
+                        _class.prototype.render = function() {
+                            return React.createElement("div", null);
+                        };
+                        _class.prototype.componentDidMount = function() {
+                            component.log("instantiate_react_component");
+                            var el = ReactDOM.findDOMNode(this), parent = component.init(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.s)({}, this.props), null, el);
+                            this.setState({
+                                parent: parent
+                            });
+                            parent.render(el);
+                        };
+                        _class.prototype.componentDidUpdate = function() {
+                            this.state && this.state.parent && this.state.parent.updateProps(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.s)({}, this.props));
+                        };
+                        return _class;
+                    }(React.Component);
+                    return component.react;
+                }
+            };
+        },
+        "./node_modules/zoid/src/drivers/script.js": function(module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.d(__webpack_exports__, "a", function() {
+                return script;
+            });
+            var script = {
+                global: function() {
+                    return window.document;
+                },
+                register: function register(component, document) {
+                    function render(element) {
+                        if (element && element.tagName && "script" === element.tagName.toLowerCase() && element.attributes.type && "application/x-component" === element.attributes.type.value && element.parentNode) {
+                            var tag = element.getAttribute("data-component");
+                            if (tag && tag === component.tag) {
+                                component.log("instantiate_script_component");
+                                var props = element.innerText ? eval("(" + element.innerText + ")") : {}, container = document.createElement("div");
+                                if (!element.parentNode) throw new Error("Element has no parent");
+                                element.parentNode.replaceChild(container, element);
+                                component.render(props, container);
+                            }
+                        }
+                    }
+                    function scan() {
+                        for (var scriptTags = Array.prototype.slice.call(document.getElementsByTagName("script")), _i2 = 0, _length2 = null == scriptTags ? 0 : scriptTags.length; _i2 < _length2; _i2++) render(scriptTags[_i2]);
+                    }
+                    scan();
+                    document.addEventListener("DOMContentLoaded", scan);
+                    window.addEventListener("load", scan);
+                    document.addEventListener("DOMNodeInserted", function(event) {
+                        render(event.target);
+                    });
+                }
+            };
+        },
+        "./node_modules/zoid/src/drivers/vue.js": function(module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.d(__webpack_exports__, "a", function() {
+                return vue;
+            });
+            var __WEBPACK_IMPORTED_MODULE_0__lib__ = __webpack_require__("./node_modules/zoid/src/lib/index.js"), vue = {
+                global: function() {},
+                register: function(component) {
+                    return {
+                        render: function(createElement) {
+                            return createElement("div");
+                        },
+                        inheritAttrs: !1,
+                        mounted: function() {
+                            var el = this.$el;
+                            this.parent = component.init(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.s)({}, this.$attrs), null, el);
+                            this.parent.render(el);
+                        },
+                        beforeUpdate: function() {
+                            this.parent && this.$attrs && this.parent.updateProps(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.s)({}, this.$attrs));
+                        }
+                    };
+                }
+            };
+        },
+        "./node_modules/zoid/src/error.js": function(module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_exports__.b = PopupOpenError;
+            __webpack_exports__.a = IntegrationError;
+            __webpack_exports__.c = RenderError;
+            function PopupOpenError(message) {
+                this.message = message;
+            }
+            PopupOpenError.prototype = Object.create(Error.prototype);
+            function IntegrationError(message) {
+                this.message = message;
+            }
+            IntegrationError.prototype = Object.create(Error.prototype);
+            function RenderError(message) {
+                this.message = message;
+            }
+            RenderError.prototype = Object.create(Error.prototype);
+        },
+        "./node_modules/zoid/src/lib/index.js": function(module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            var src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), zalgo_promise_src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), cross_domain_safe_weakmap_src = __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/index.js"), error = __webpack_require__("./node_modules/zoid/src/error.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+                return typeof obj;
+            } : function(obj) {
+                return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+            };
+            function urlEncode(str) {
+                return str.replace(/\?/g, "%3F").replace(/&/g, "%26").replace(/#/g, "%23").replace(/\+/g, "%2B");
+            }
+            function camelToDasherize(string) {
+                return string.replace(/([A-Z])/g, function(g) {
+                    return "-" + g.toLowerCase();
+                });
+            }
+            function dasherizeToCamel(string) {
+                return string.replace(/-([a-z])/g, function(g) {
+                    return g[1].toUpperCase();
+                });
+            }
+            function extend(obj, source) {
+                if (!source) return obj;
+                for (var key in source) source.hasOwnProperty(key) && (obj[key] = source[key]);
+                return obj;
+            }
+            function values(obj) {
+                var results = [];
+                for (var key in obj) obj.hasOwnProperty(key) && results.push(obj[key]);
+                return results;
+            }
+            function uniqueID() {
+                var chars = "0123456789abcdef";
+                return "xxxxxxxxxx".replace(/./g, function() {
+                    return chars.charAt(Math.floor(Math.random() * chars.length));
+                });
+            }
+            function stringifyWithFunctions(obj) {
+                return JSON.stringify(obj, function(key, val) {
+                    return "function" == typeof val ? val.toString() : val;
+                });
+            }
+            function safeGet(obj, prop) {
+                var result = void 0;
+                try {
+                    result = obj[prop];
+                } catch (err) {}
+                return result;
+            }
+            function capitalizeFirstLetter(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+            }
+            function get(item, path, def) {
+                if (!path) return def;
+                for (var pathParts = path.split("."), i = 0; i < pathParts.length; i++) {
+                    if ("object" !== (void 0 === item ? "undefined" : _typeof(item)) || null === item) return def;
+                    item = item[pathParts[i]];
+                }
+                return void 0 === item ? def : item;
+            }
+            function safeInterval(method, time) {
+                var timeout = void 0;
+                timeout = setTimeout(function runInterval() {
+                    timeout = setTimeout(runInterval, time);
+                    method.call();
+                }, time);
+                return {
+                    cancel: function() {
+                        clearTimeout(timeout);
+                    }
+                };
+            }
+            function safeTimeout(method, time) {
+                var interval = safeInterval(function() {
+                    if ((time -= 100) <= 0) {
+                        interval.cancel();
+                        method();
+                    }
+                }, 100);
+            }
+            function each(item, callback) {
+                if (item) if (Array.isArray(item)) for (var len = item.length, i = 0; i < len; i++) callback(item[i], i); else if ("object" === (void 0 === item ? "undefined" : _typeof(item))) for (var keys = Object.keys(item), _len = keys.length, _i = 0; _i < _len; _i++) {
+                    var key = keys[_i];
+                    callback(item[key], key);
+                }
+            }
+            function replaceObject(item, replacers) {
+                var fullKey = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : "";
+                if (Array.isArray(item)) {
+                    var _ret = function() {
+                        for (var length = item.length, result = [], _loop = function(i) {
+                            Object.defineProperty(result, i, {
+                                configurable: !0,
+                                enumerable: !0,
+                                get: function() {
+                                    var itemKey = fullKey ? fullKey + "." + i : "" + i, child = item[i], type = void 0 === child ? "undefined" : _typeof(child), replacer = replacers[type];
+                                    if (replacer) {
+                                        var replaced = replacer(child, i, itemKey);
+                                        if (void 0 !== replaced) {
+                                            result[i] = replaced;
+                                            return result[i];
+                                        }
+                                    }
+                                    if ("object" === (void 0 === child ? "undefined" : _typeof(child)) && null !== child) {
+                                        result[i] = replaceObject(child, replacers, itemKey);
+                                        return result[i];
+                                    }
+                                    result[i] = child;
+                                    return result[i];
+                                },
+                                set: function(value) {
+                                    delete result[i];
+                                    result[i] = value;
+                                }
+                            });
+                        }, i = 0; i < length; i++) _loop(i);
+                        return {
+                            v: result
+                        };
+                    }();
+                    if ("object" === (void 0 === _ret ? "undefined" : _typeof(_ret))) return _ret.v;
+                } else {
+                    if ("object" !== (void 0 === item ? "undefined" : _typeof(item)) || null === item) throw new Error("Pass an object or array");
+                    var _ret3 = function() {
+                        var result = {}, _loop2 = function(key) {
+                            if (!item.hasOwnProperty(key)) return "continue";
+                            Object.defineProperty(result, key, {
+                                configurable: !0,
+                                enumerable: !0,
+                                get: function() {
+                                    var itemKey = fullKey ? fullKey + "." + key : "" + key, child = item[key], type = void 0 === child ? "undefined" : _typeof(child), replacer = replacers[type];
+                                    if (replacer) {
+                                        var replaced = replacer(child, key, itemKey);
+                                        if (void 0 !== replaced) {
+                                            result[key] = replaced;
+                                            return result[key];
+                                        }
+                                    }
+                                    if ("object" === (void 0 === child ? "undefined" : _typeof(child)) && null !== child) {
+                                        result[key] = replaceObject(child, replacers, itemKey);
+                                        return result[key];
+                                    }
+                                    result[key] = child;
+                                    return result[key];
+                                },
+                                set: function(value) {
+                                    delete result[key];
+                                    result[key] = value;
+                                }
+                            });
+                        };
+                        for (var key in item) _loop2(key);
+                        return {
+                            v: result
+                        };
+                    }();
+                    if ("object" === (void 0 === _ret3 ? "undefined" : _typeof(_ret3))) return _ret3.v;
+                }
+            }
+            function copyProp(source, target, name, def) {
+                if (source.hasOwnProperty(name)) {
+                    var descriptor = Object.getOwnPropertyDescriptor(source, name);
+                    Object.defineProperty(target, name, descriptor);
+                } else target[name] = def;
+            }
+            function dotify(obj) {
+                var prefix = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "", newobj = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
+                prefix = prefix ? prefix + "." : prefix;
+                for (var key in obj) void 0 !== obj[key] && null !== obj[key] && "function" != typeof obj[key] && (obj[key] && Array.isArray(obj[key]) && obj[key].length && obj[key].every(function(val) {
+                    return "object" !== (void 0 === val ? "undefined" : _typeof(val));
+                }) ? newobj["" + prefix + key] = obj[key].join(",") : obj[key] && "object" === _typeof(obj[key]) ? newobj = dotify(obj[key], "" + prefix + key, newobj) : newobj["" + prefix + key] = obj[key].toString());
+                return newobj;
+            }
+            var objectIDs = new cross_domain_safe_weakmap_src.a();
+            function getObjectID(obj) {
+                if (null === obj || void 0 === obj || "object" !== (void 0 === obj ? "undefined" : _typeof(obj)) && "function" != typeof obj) throw new Error("Invalid object");
+                var uid = objectIDs.get(obj);
+                if (!uid) {
+                    uid = (void 0 === obj ? "undefined" : _typeof(obj)) + ":" + uniqueID();
+                    objectIDs.set(obj, uid);
+                }
+                return uid;
+            }
+            function regex(pattern, string) {
+                var start = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : 0;
+                "string" == typeof pattern && (pattern = new RegExp(pattern));
+                var result = string.slice(start).match(pattern);
+                if (result) {
+                    var index = result.index, match = result[0];
+                    return {
+                        text: match,
+                        groups: result.slice(1),
+                        start: start + index,
+                        end: start + index + match.length,
+                        length: match.length,
+                        replace: function(text) {
+                            return match ? "" + match.slice(0, start + index) + text + match.slice(index + match.length) : "";
+                        }
+                    };
+                }
+            }
+            function regexAll(pattern, string) {
+                for (var matches = [], start = 0; ;) {
+                    var match = regex(pattern, string, start);
+                    if (!match) break;
+                    matches.push(match);
+                    start = match.end;
+                }
+                return matches;
+            }
+            function count(str, substr) {
+                for (var startIndex = 0, itemCount = 0; ;) {
+                    var index = str.indexOf(substr, startIndex);
+                    if (-1 === index) break;
+                    startIndex = index;
+                    itemCount += 1;
+                }
+                return itemCount;
+            }
+            function stringify(item) {
+                return "string" == typeof item ? item : item && "function" == typeof item.toString ? item.toString() : Object.prototype.toString.call(item);
+            }
+            function stringifyError(err) {
+                if (err) {
+                    var stack = err.stack, message = err.message;
+                    if ("string" == typeof stack) return stack;
+                    if ("string" == typeof message) return message;
+                }
+                return stringify(err);
+            }
+            function eventEmitter() {
+                var triggered = {}, handlers = {};
+                return {
+                    on: function(eventName, handler) {
+                        var handlerList = handlers[eventName] = handlers[eventName] || [];
+                        handlerList.push(handler);
+                        var cancelled = !1;
+                        return {
+                            cancel: function() {
+                                if (!cancelled) {
+                                    cancelled = !0;
+                                    handlerList.splice(handlerList.indexOf(handler), 1);
+                                }
+                            }
+                        };
+                    },
+                    once: function(eventName, handler) {
+                        var listener = this.on(eventName, function() {
+                            listener.cancel();
+                            handler();
+                        });
+                        return listener;
+                    },
+                    trigger: function(eventName) {
+                        var handlerList = handlers[eventName];
+                        if (handlerList) for (var _i3 = 0, _length2 = null == handlerList ? 0 : handlerList.length; _i3 < _length2; _i3++) (0, 
+                        handlerList[_i3])();
+                    },
+                    triggerOnce: function(eventName) {
+                        if (!triggered[eventName]) {
+                            triggered[eventName] = !0;
+                            this.trigger(eventName);
+                        }
+                    }
+                };
+            }
+            function isDefined(value) {
+                return null !== value && void 0 !== value;
+            }
+            function cycle(method) {
+                return zalgo_promise_src.a.try(method).then(function() {
+                    return cycle(method);
+                });
+            }
+            function promisify(method) {
+                return function() {
+                    var _this = this, _arguments = arguments;
+                    return zalgo_promise_src.a.try(function() {
+                        return method.apply(_this, _arguments);
+                    });
+                };
+            }
+            function noop() {}
+            function once(method) {
+                var called = !1, result = void 0;
+                return function() {
+                    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
+                    if (called) return result;
+                    called = !0;
+                    return result = method.apply(this, arguments);
+                };
+            }
+            function memoize(method) {
+                var results = {};
+                return function() {
+                    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) args[_key2] = arguments[_key2];
+                    var cacheKey = void 0;
+                    try {
+                        cacheKey = JSON.stringify(Array.prototype.slice.call(arguments), function(key, val) {
+                            return "function" == typeof val ? "zoid:memoize[" + getObjectID(val) + "]" : val;
+                        });
+                    } catch (err) {
+                        throw new Error("Arguments not serializable -- can not be used to memoize");
+                    }
+                    results.hasOwnProperty(cacheKey) || (results[cacheKey] = method.apply(this, arguments));
+                    return results[cacheKey];
+                };
+            }
+            function debounce(method) {
+                var time = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 100, timeout = void 0;
+                return function() {
+                    var _this = this, _arguments = arguments;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(function() {
+                        return method.apply(_this, _arguments);
+                    }, time);
+                };
+            }
+            function serializeFunctions(obj) {
+                return replaceObject(obj, {
+                    function: function() {
+                        return {
+                            __type__: "__function__"
+                        };
+                    }
+                });
+            }
+            function deserializeFunctions(obj, handler) {
+                return replaceObject(obj, {
+                    object: function(value, key, fullKey) {
+                        if (value && "__function__" === value.__type__) return function() {
+                            return handler({
+                                key: key,
+                                fullKey: fullKey,
+                                self: this,
+                                args: arguments
+                            });
+                        };
+                    }
+                });
+            }
+            var _extends = Object.assign || function(target) {
+                for (var i = 1; i < arguments.length; i++) {
+                    var source = arguments[i];
+                    for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
+                }
+                return target;
+            }, dom__typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+                return typeof obj;
+            } : function(obj) {
+                return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+            };
+            function appendChild(container, child) {
+                container.appendChild(child);
+            }
+            function querySelectorAll(el, selector) {
+                return Array.prototype.slice.call(el.querySelectorAll(selector));
+            }
+            function getElementSafe(id) {
+                if (function(element) {
+                    return element instanceof window.Element || null !== element && "object" === (void 0 === element ? "undefined" : dom__typeof(element)) && 1 === element.nodeType && "object" === dom__typeof(element.style) && "object" === dom__typeof(element.ownerDocument);
+                }(id)) return id;
+                if ("string" == typeof id) {
+                    var element = document.getElementById(id);
+                    if (element) return element;
+                    document.querySelector && (element = document.querySelector(id));
+                    if (element) return element;
+                }
+            }
+            function getElement(id) {
+                var element = getElementSafe(id);
+                if (element) return element;
+                throw new Error("Can not find element: " + stringify(id));
+            }
+            var documentReady = new zalgo_promise_src.a(function(resolve) {
+                if ("complete" === window.document.readyState) return resolve(window.document);
+                var interval = setInterval(function() {
+                    if ("complete" === window.document.readyState) {
+                        clearInterval(interval);
+                        return resolve(window.document);
+                    }
+                }, 10);
+            });
+            function isDocumentReady() {
+                return "complete" === window.document.readyState;
+            }
+            function elementReady(id) {
+                return new zalgo_promise_src.a(function(resolve, reject) {
+                    var name = stringify(id), el = getElementSafe(id);
+                    if (el) return resolve(el);
+                    if (isDocumentReady()) return reject(new Error("Document is ready and element " + name + " does not exist"));
+                    var interval = setInterval(function() {
+                        if (el = getElementSafe(id)) {
+                            clearInterval(interval);
+                            return resolve(el);
+                        }
+                        if (isDocumentReady()) {
+                            clearInterval(interval);
+                            return reject(new Error("Document is ready and element " + name + " does not exist"));
+                        }
+                    }, 10);
+                });
+            }
+            function popup(url, options) {
+                var params = Object.keys(options).map(function(key) {
+                    if (options[key]) return key + "=" + stringify(options[key]);
+                }).filter(Boolean).join(","), win = void 0;
+                try {
+                    win = window.open(url, options.name, params, !0);
+                } catch (err) {
+                    throw new error.b("Can not open popup window - " + (err.stack || err.message));
+                }
+                if (Object(src.isWindowClosed)(win)) {
+                    var err;
+                    throw new error.b("Can not open popup window - blocked");
+                }
+                return win;
+            }
+            function writeToWindow(win, html) {
+                try {
+                    win.document.open();
+                    win.document.write(html);
+                    win.document.close();
+                } catch (err) {
+                    try {
+                        win.location = "javascript: document.open(); document.write(" + JSON.stringify(html) + "); document.close();";
+                    } catch (err2) {}
+                }
+            }
+            function writeElementToWindow(win, el) {
+                var tag = el.tagName.toLowerCase();
+                if ("html" !== tag) throw new Error("Expected element to be html, got " + tag);
+                for (var documentElement = win.document.documentElement; documentElement.children && documentElement.children.length; ) documentElement.removeChild(documentElement.children[0]);
+                for (;el.children.length; ) documentElement.appendChild(el.children[0]);
+            }
+            function setStyle(el, styleText) {
+                var doc = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : window.document;
+                el.styleSheet ? el.styleSheet.cssText = styleText : el.appendChild(doc.createTextNode(styleText));
+            }
+            function createElement() {
+                var tag = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "div", options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, container = arguments[2];
+                tag = tag.toLowerCase();
+                var element = document.createElement(tag);
+                options.style && extend(element.style, options.style);
+                options.class && (element.className = options.class.join(" "));
+                if (options.attributes) for (var _i2 = 0, _Object$keys2 = Object.keys(options.attributes), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
+                    var key = _Object$keys2[_i2];
+                    element.setAttribute(key, options.attributes[key]);
+                }
+                options.styleSheet && setStyle(element, options.styleSheet);
+                container && appendChild(container, element);
+                if (options.html) if ("iframe" === tag) {
+                    if (!container || !element.contentWindow) throw new Error("Iframe html can not be written unless container provided and iframe in DOM");
+                    writeToWindow(element.contentWindow, options.html);
+                } else element.innerHTML = options.html;
+                return element;
+            }
+            var awaitFrameLoadPromises = new cross_domain_safe_weakmap_src.a();
+            function awaitFrameLoad(frame) {
+                if (awaitFrameLoadPromises.has(frame)) {
+                    var _promise = awaitFrameLoadPromises.get(frame);
+                    if (_promise) return _promise;
+                }
+                var promise = new zalgo_promise_src.a(function(resolve, reject) {
+                    frame.addEventListener("load", function() {
+                        Object(src.linkFrameWindow)(frame);
+                        resolve(frame);
+                    });
+                    frame.addEventListener("error", function(err) {
+                        frame.contentWindow ? resolve(frame) : reject(err);
+                    });
+                });
+                awaitFrameLoadPromises.set(frame, promise);
+                return promise;
+            }
+            function awaitFrameWindow(frame) {
+                return frame.contentWindow ? zalgo_promise_src.a.resolve(frame.contentWindow) : awaitFrameLoad(frame).then(function(loadedFrame) {
+                    if (!loadedFrame.contentWindow) throw new Error("Could not find window in iframe");
+                    return loadedFrame.contentWindow;
+                });
+            }
+            function iframe() {
+                var options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, el = getElement(arguments[1]), attributes = options.attributes || {}, style = options.style || {}, frame = createElement("iframe", {
+                    attributes: _extends({
+                        frameBorder: "0",
+                        allowTransparency: "true"
+                    }, attributes),
+                    style: _extends({
+                        backgroundColor: "transparent"
+                    }, style),
+                    html: options.html,
+                    class: options.class
+                });
+                awaitFrameLoad(frame);
+                el.appendChild(frame);
+                (options.url || window.navigator.userAgent.match(/MSIE|Edge/i)) && frame.setAttribute("src", options.url || "about:blank");
+                return frame;
+            }
+            function addEventListener(obj, event, handler) {
+                obj.addEventListener(event, handler);
+                return {
+                    cancel: function() {
+                        obj.removeEventListener(event, handler);
+                    }
+                };
+            }
+            var parseQuery = memoize(function(queryString) {
+                var params = {};
+                if (!queryString) return params;
+                if (-1 === queryString.indexOf("=")) throw new Error("Can not parse query string params: " + queryString);
+                for (var _i4 = 0, _queryString$split2 = queryString.split("&"), _length4 = null == _queryString$split2 ? 0 : _queryString$split2.length; _i4 < _length4; _i4++) {
+                    var pair = _queryString$split2[_i4];
+                    (pair = pair.split("="))[0] && pair[1] && (params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]));
+                }
+                return params;
+            });
+            function formatQuery() {
+                var obj = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                return Object.keys(obj).filter(function(key) {
+                    return "string" == typeof obj[key];
+                }).map(function(key) {
+                    return urlEncode(key) + "=" + urlEncode(obj[key]);
+                }).join("&");
+            }
+            function extendQuery(originalQuery) {
+                var props = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+                return props && Object.keys(props).length ? formatQuery(_extends({}, parseQuery(originalQuery), props)) : originalQuery;
+            }
+            function extendUrl(url) {
+                var originalHash, options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, query = options.query || {}, hash = options.hash || {}, originalUrl = void 0, _url$split = url.split("#");
+                originalUrl = _url$split[0];
+                originalHash = _url$split[1];
+                var _originalUrl$split = originalUrl.split("?");
+                originalUrl = _originalUrl$split[0];
+                var queryString = extendQuery(_originalUrl$split[1], query), hashString = extendQuery(originalHash, hash);
+                queryString && (originalUrl = originalUrl + "?" + queryString);
+                hashString && (originalUrl = originalUrl + "#" + hashString);
+                return originalUrl;
+            }
+            function elementStoppedMoving(element) {
+                var timeout = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 5e3;
+                return new zalgo_promise_src.a(function(resolve, reject) {
+                    var el = getElement(element), start = el.getBoundingClientRect(), interval = void 0, timer = void 0;
+                    interval = setInterval(function() {
+                        var end = el.getBoundingClientRect();
+                        if (start.top === end.top && start.bottom === end.bottom && start.left === end.left && start.right === end.right && start.width === end.width && start.height === end.height) {
+                            clearTimeout(timer);
+                            clearInterval(interval);
+                            return resolve();
+                        }
+                        start = end;
+                    }, 50);
+                    timer = setTimeout(function() {
+                        clearInterval(interval);
+                        reject(new Error("Timed out waiting for element to stop animating after " + timeout + "ms"));
+                    }, timeout);
+                });
+            }
+            function getCurrentDimensions(el) {
+                return {
+                    width: el.offsetWidth,
+                    height: el.offsetHeight
+                };
+            }
+            function changeStyle(el, styles) {
+                return new zalgo_promise_src.a(function(resolve) {
+                    for (var _i6 = 0, _Object$keys4 = Object.keys(styles), _length6 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i6 < _length6; _i6++) {
+                        var key = _Object$keys4[_i6];
+                        el.style[key] = styles[key];
+                    }
+                    setTimeout(resolve, 1);
+                });
+            }
+            function setOverflow(el) {
+                var value = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "auto", _el$style = el.style, overflow = _el$style.overflow, overflowX = _el$style.overflowX, overflowY = _el$style.overflowY;
+                el.style.overflow = el.style.overflowX = el.style.overflowY = value;
+                return {
+                    reset: function() {
+                        el.style.overflow = overflow;
+                        el.style.overflowX = overflowX;
+                        el.style.overflowY = overflowY;
+                    }
+                };
+            }
+            function trackDimensions(el, _ref2) {
+                var _ref2$width = _ref2.width, width = void 0 === _ref2$width || _ref2$width, _ref2$height = _ref2.height, height = void 0 === _ref2$height || _ref2$height, _ref2$threshold = _ref2.threshold, threshold = void 0 === _ref2$threshold ? 0 : _ref2$threshold, currentDimensions = getCurrentDimensions(el);
+                return {
+                    check: function() {
+                        var newDimensions = getCurrentDimensions(el);
+                        return {
+                            changed: function(one, two, _ref) {
+                                var _ref$width = _ref.width, _ref$height = _ref.height, height = void 0 === _ref$height || _ref$height, _ref$threshold = _ref.threshold, threshold = void 0 === _ref$threshold ? 0 : _ref$threshold;
+                                return !(void 0 !== _ref$width && !_ref$width || !(Math.abs(one.width - two.width) > threshold)) || !!(height && Math.abs(one.height - two.height) > threshold);
+                            }(currentDimensions, newDimensions, {
+                                width: width,
+                                height: height,
+                                threshold: threshold
+                            }),
+                            dimensions: newDimensions
+                        };
+                    },
+                    reset: function() {
+                        currentDimensions = getCurrentDimensions(el);
+                    }
+                };
+            }
+            function onDimensionsChange(el, _ref3) {
+                var _ref3$width = _ref3.width, width = void 0 === _ref3$width || _ref3$width, _ref3$height = _ref3.height, height = void 0 === _ref3$height || _ref3$height, _ref3$delay = _ref3.delay, delay = void 0 === _ref3$delay ? 50 : _ref3$delay, _ref3$threshold = _ref3.threshold, threshold = void 0 === _ref3$threshold ? 0 : _ref3$threshold;
+                return new zalgo_promise_src.a(function(resolve) {
+                    var tracker = trackDimensions(el, {
+                        width: width,
+                        height: height,
+                        threshold: threshold
+                    }), interval = void 0, resolver = debounce(function(dimensions) {
+                        clearInterval(interval);
+                        return resolve(dimensions);
+                    }, 4 * delay);
+                    interval = setInterval(function() {
+                        var _tracker$check = tracker.check(), changed = _tracker$check.changed, dimensions = _tracker$check.dimensions;
+                        if (changed) {
+                            tracker.reset();
+                            return resolver(dimensions);
+                        }
+                    }, delay);
+                    window.addEventListener("resize", function onWindowResize() {
+                        var _tracker$check2 = tracker.check(), changed = _tracker$check2.changed, dimensions = _tracker$check2.dimensions;
+                        if (changed) {
+                            tracker.reset();
+                            window.removeEventListener("resize", onWindowResize);
+                            resolver(dimensions);
+                        }
+                    });
+                });
+            }
+            function dimensionsMatchViewport(el, _ref4) {
+                var width = _ref4.width, height = _ref4.height, dimensions = getCurrentDimensions(el);
+                return !(width && dimensions.width !== window.innerWidth || height && dimensions.height !== window.innerHeight);
+            }
+            function bindEvents(element, eventNames, handler) {
+                handler = once(handler);
+                for (var _i8 = 0, _length8 = null == eventNames ? 0 : eventNames.length; _i8 < _length8; _i8++) {
+                    var eventName = eventNames[_i8];
+                    element.addEventListener(eventName, handler);
+                }
+                return {
+                    cancel: once(function() {
+                        for (var _i10 = 0, _length10 = null == eventNames ? 0 : eventNames.length; _i10 < _length10; _i10++) {
+                            var _eventName = eventNames[_i10];
+                            element.removeEventListener(_eventName, handler);
+                        }
+                    })
+                };
+            }
+            var VENDOR_PREFIXES = [ "webkit", "moz", "ms", "o" ];
+            function setVendorCSS(element, name, value) {
+                element.style[name] = value;
+                for (var capitalizedName = capitalizeFirstLetter(name), _i12 = 0, _length12 = null == VENDOR_PREFIXES ? 0 : VENDOR_PREFIXES.length; _i12 < _length12; _i12++) {
+                    var prefix = VENDOR_PREFIXES[_i12];
+                    element.style["" + prefix + capitalizedName] = value;
+                }
+            }
+            var CSSRule = window.CSSRule, KEYFRAMES_RULE = CSSRule.KEYFRAMES_RULE || CSSRule.WEBKIT_KEYFRAMES_RULE || CSSRule.MOZ_KEYFRAMES_RULE || CSSRule.O_KEYFRAMES_RULE || CSSRule.MS_KEYFRAMES_RULE, ANIMATION_START_EVENTS = [ "animationstart", "webkitAnimationStart", "oAnimationStart", "MSAnimationStart" ], ANIMATION_END_EVENTS = [ "animationend", "webkitAnimationEnd", "oAnimationEnd", "MSAnimationEnd" ];
+            function animate(element, name, clean) {
+                var timeout = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : 1e3;
+                return new zalgo_promise_src.a(function(resolve, reject) {
+                    var el = getElement(element);
+                    if (!el || !function(element, name) {
+                        var stylesheets = el.ownerDocument.styleSheets;
+                        try {
+                            for (var i = 0; i < stylesheets.length; i++) {
+                                var cssRules = stylesheets[i].cssRules;
+                                if (cssRules) for (var j = 0; j < cssRules.length; j++) {
+                                    var cssRule = cssRules[j];
+                                    if (cssRule && cssRule.type === KEYFRAMES_RULE && cssRule.name === name) return !0;
+                                }
+                            }
+                        } catch (err) {
+                            return !1;
+                        }
+                        return !1;
+                    }(0, name)) return resolve();
+                    var hasStarted = !1, startTimeout = void 0, endTimeout = void 0, startEvent = void 0, endEvent = void 0;
+                    function cleanUp() {
+                        setVendorCSS(el, "animationName", "");
+                        clearTimeout(startTimeout);
+                        clearTimeout(endTimeout);
+                        startEvent.cancel();
+                        endEvent.cancel();
+                    }
+                    startEvent = bindEvents(el, ANIMATION_START_EVENTS, function(event) {
+                        if (event.target === el && event.animationName === name) {
+                            clearTimeout(startTimeout);
+                            event.stopPropagation();
+                            startEvent.cancel();
+                            hasStarted = !0;
+                            endTimeout = setTimeout(function() {
+                                cleanUp();
+                                resolve();
+                            }, timeout);
+                        }
+                    });
+                    endEvent = bindEvents(el, ANIMATION_END_EVENTS, function(event) {
+                        if (event.target === el && event.animationName === name) {
+                            cleanUp();
+                            return "string" == typeof event.animationName && event.animationName !== name ? reject("Expected animation name to be " + name + ", found " + event.animationName) : resolve();
+                        }
+                    });
+                    setVendorCSS(el, "animationName", name);
+                    startTimeout = setTimeout(function() {
+                        if (!hasStarted) {
+                            cleanUp();
+                            return resolve();
+                        }
+                    }, 200);
+                    clean && clean(cleanUp);
+                });
+            }
+            var STYLE = {
+                DISPLAY: {
+                    NONE: "none",
+                    BLOCK: "block"
+                },
+                VISIBILITY: {
+                    VISIBLE: "visible",
+                    HIDDEN: "hidden"
+                },
+                IMPORTANT: "important"
+            };
+            function makeElementVisible(element) {
+                element.style.setProperty("visibility", "");
+            }
+            function makeElementInvisible(element) {
+                element.style.setProperty("visibility", STYLE.VISIBILITY.HIDDEN, STYLE.IMPORTANT);
+            }
+            function showElement(element) {
+                element.style.setProperty("display", "");
+            }
+            function hideElement(element) {
+                element.style.setProperty("display", STYLE.DISPLAY.NONE, STYLE.IMPORTANT);
+            }
+            function destroyElement(element) {
+                element.parentNode && element.parentNode.removeChild(element);
+            }
+            function showAndAnimate(element, name, clean) {
+                var animation = animate(element, name, clean);
+                showElement(element);
+                return animation;
+            }
+            function animateAndHide(element, name, clean) {
+                return animate(element, name, clean).then(function() {
+                    hideElement(element);
+                });
+            }
+            function addClass(element, name) {
+                element.classList ? element.classList.add(name) : -1 === element.className.split(/\s+/).indexOf(name) && (element.className += " " + name);
+            }
+            function removeClass(element, name) {
+                element.classList ? element.classList.remove(name) : -1 !== element.className.split(/\s+/).indexOf(name) && (element.className = element.className.replace(name, ""));
+            }
+            function getCurrentScriptDir() {
+                console.warn("Do not use zoid.getCurrentScriptDir() in production -- browser support is limited");
+                return document.currentScript ? document.currentScript.src.split("/").slice(0, -1).join("/") : ".";
+            }
+            function getElementName(element) {
+                if ("string" == typeof element) return element;
+                if (!element || !element.tagName) return "<unknown>";
+                var name = element.tagName.toLowerCase();
+                element.id ? name += "#" + element.id : element.className && (name += "." + element.className.split(" ").join("."));
+                return name;
+            }
+            function isElementClosed(el) {
+                return !el || !el.parentNode;
+            }
+            function watchElementForClose(element, handler) {
+                handler = once(handler);
+                var interval = void 0;
+                isElementClosed(element) ? handler() : interval = safeInterval(function() {
+                    if (isElementClosed(element)) {
+                        interval.cancel();
+                        handler();
+                    }
+                }, 50);
+                return {
+                    cancel: function() {
+                        interval && interval.cancel();
+                    }
+                };
+            }
+            function getHttpType(contentType, url) {
+                return new zalgo_promise_src.a(function(resolve, reject) {
+                    var req = new window.XMLHttpRequest();
+                    req.open("GET", url);
+                    req.setRequestHeader("Accept", contentType);
+                    req.send(null);
+                    req.onload = function() {
+                        resolve(req.responseText);
+                    };
+                    req.onerror = function() {
+                        return reject(new Error("prefetch failed"));
+                    };
+                });
+            }
+            function getHTML(url) {
+                return getHttpType("text/html", url);
+            }
+            function getCSS(url) {
+                return getHttpType("text/css", url);
+            }
+            function getScript(url) {
+                return getHttpType("*/*", url);
+            }
+            function prefetchPage(url) {
+                return getHTML(url);
+            }
+            var JSX_EVENTS = {
+                onClick: "click"
+            };
+            function fixScripts(el) {
+                for (var doc = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : window.document, _i14 = 0, _querySelectorAll2 = querySelectorAll(el, "script"), _length14 = null == _querySelectorAll2 ? 0 : _querySelectorAll2.length; _i14 < _length14; _i14++) {
+                    var script = _querySelectorAll2[_i14], newScript = doc.createElement("script");
+                    newScript.text = script.textContent;
+                    script.parentNode.replaceChild(newScript, script);
+                }
+            }
+            function jsxDom(element, props) {
+                for (var _len = arguments.length, children = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) children[_key - 2] = arguments[_key];
+                if ("function" == typeof element) return element(props, children);
+                var name = element.toLowerCase(), doc = this && this.createElement ? this : window.document, el = doc.createElement(name);
+                for (var prop in props) if (prop in JSX_EVENTS) el.addEventListener(JSX_EVENTS[prop], props[prop]); else if ("innerHTML" === prop) {
+                    el.innerHTML = props[prop];
+                    fixScripts(el, doc);
+                } else el.setAttribute(prop, props[prop]);
+                var content = children[0], remaining = children.slice(1);
+                if ("style" === name) {
+                    if ("string" != typeof content) throw new TypeError("Expected " + name + " tag content to be string, got " + (void 0 === content ? "undefined" : dom__typeof(content)));
+                    if (remaining.length) throw new Error("Expected only text content for " + name + " tag");
+                    setStyle(el, content, doc);
+                } else if ("iframe" === name) {
+                    if (remaining.length) throw new Error("Expected only single child node for iframe");
+                    el.addEventListener("load", function() {
+                        var win = el.contentWindow;
+                        if (!win) throw new Error("Expected frame to have contentWindow");
+                        "string" == typeof content ? writeToWindow(win, content) : writeElementToWindow(win, content);
+                    });
+                } else if ("script" === name) {
+                    if ("string" != typeof content) throw new TypeError("Expected " + name + " tag content to be string, got " + (void 0 === content ? "undefined" : dom__typeof(content)));
+                    if (remaining.length) throw new Error("Expected only text content for " + name + " tag");
+                    el.text = content;
+                } else for (var i = 0; i < children.length; i++) if ("string" == typeof children[i]) {
+                    var textNode = doc.createTextNode(children[i]);
+                    appendChild(el, textNode);
+                } else appendChild(el, children[i]);
+                return el;
+            }
+            function isPerc(str) {
+                return "string" == typeof str && /^[0-9]+%$/.test(str);
+            }
+            function isPx(str) {
+                return "string" == typeof str && /^[0-9]+px$/.test(str);
+            }
+            function toNum(val) {
+                if ("number" == typeof val) return val;
+                var match = val.match(/^([0-9]+)(px|%)$/);
+                if (!match) throw new Error("Could not match css value from " + val);
+                return parseInt(match[1], 10);
+            }
+            function toPx(val) {
+                return toNum(val) + "px";
+            }
+            function toCSS(val) {
+                return "number" == typeof val ? toPx(val) : isPerc(val) ? val : toPx(val);
+            }
+            function percOf(num, perc) {
+                return parseInt(num * toNum(perc) / 100, 10);
+            }
+            function normalizeDimension(dim, max) {
+                if ("number" == typeof dim) return dim;
+                if (isPerc(dim)) return percOf(max, dim);
+                if (isPx(dim)) return toNum(dim);
+                throw new Error("Can not normalize dimension: " + dim);
+            }
+            function memoized(target, name, descriptor) {
+                var method = descriptor.value;
+                descriptor.value = function() {
+                    this.__memoized__ = this.__memoized__ || {};
+                    this.__memoized__.hasOwnProperty(name) || (this.__memoized__[name] = method.apply(this, arguments));
+                    return this.__memoized__[name];
+                };
+                descriptor.value.displayName = name + ":memoized";
+            }
+            function decorators_promise(target, name, descriptor) {
+                var method = descriptor.value;
+                descriptor.value = function() {
+                    return zalgo_promise_src.a.try(method, this, arguments);
+                };
+                descriptor.value.displayName = name + ":promisified";
+            }
+            var logger = void 0;
+            function useLogger(newLogger) {
+                logger = newLogger;
+            }
+            function info(name, event) {
+                var payload = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
+                logger && logger.info("xc_" + name + "_" + event, payload);
+            }
+            function warn(name, event) {
+                var payload = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
+                logger && logger.warn("xc_" + name + "_" + event, payload);
+            }
+            function logger_error(name, event) {
+                var payload = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
+                logger && logger.error("xc_" + name + "_" + event, payload);
+            }
+            var constants = __webpack_require__("./node_modules/zoid/src/constants.js");
+            function globalFor(win) {
+                if (Object(src.isSameDomain)(win)) {
+                    win[constants.__ZOID__] || (win[constants.__ZOID__] = {});
+                    return win[constants.__ZOID__];
+                }
+            }
+            function localGlobal() {
+                var global = globalFor(window);
+                if (!global) throw new Error("Could not get local global");
+                return global;
+            }
+            var global = localGlobal();
+            __webpack_require__.d(__webpack_exports__, "d", function() {
+                return appendChild;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return querySelectorAll;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return getElementSafe;
+            });
+            __webpack_require__.d(__webpack_exports__, "w", function() {
+                return getElement;
+            });
+            __webpack_require__.d(__webpack_exports__, "m", function() {
+                return documentReady;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return isDocumentReady;
+            });
+            __webpack_require__.d(__webpack_exports__, "o", function() {
+                return elementReady;
+            });
+            __webpack_require__.d(__webpack_exports__, "M", function() {
+                return popup;
+            });
+            __webpack_require__.d(__webpack_exports__, "_4", function() {
+                return writeToWindow;
+            });
+            __webpack_require__.d(__webpack_exports__, "_3", function() {
+                return writeElementToWindow;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return setStyle;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return createElement;
+            });
+            __webpack_require__.d(__webpack_exports__, "e", function() {
+                return awaitFrameLoad;
+            });
+            __webpack_require__.d(__webpack_exports__, "f", function() {
+                return awaitFrameWindow;
+            });
+            __webpack_require__.d(__webpack_exports__, "A", function() {
+                return iframe;
+            });
+            __webpack_require__.d(__webpack_exports__, "b", function() {
+                return addEventListener;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return parseQuery;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return formatQuery;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return extendQuery;
+            });
+            __webpack_require__.d(__webpack_exports__, "t", function() {
+                return extendUrl;
+            });
+            __webpack_require__.d(__webpack_exports__, "p", function() {
+                return elementStoppedMoving;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return getCurrentDimensions;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return changeStyle;
+            });
+            __webpack_require__.d(__webpack_exports__, "S", function() {
+                return setOverflow;
+            });
+            __webpack_require__.d(__webpack_exports__, "Y", function() {
+                return trackDimensions;
+            });
+            __webpack_require__.d(__webpack_exports__, "K", function() {
+                return onDimensionsChange;
+            });
+            __webpack_require__.d(__webpack_exports__, "l", function() {
+                return dimensionsMatchViewport;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return bindEvents;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return setVendorCSS;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return animate;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return makeElementVisible;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return makeElementInvisible;
+            });
+            __webpack_require__.d(__webpack_exports__, "U", function() {
+                return showElement;
+            });
+            __webpack_require__.d(__webpack_exports__, "z", function() {
+                return hideElement;
+            });
+            __webpack_require__.d(__webpack_exports__, "k", function() {
+                return destroyElement;
+            });
+            __webpack_require__.d(__webpack_exports__, "T", function() {
+                return showAndAnimate;
+            });
+            __webpack_require__.d(__webpack_exports__, "c", function() {
+                return animateAndHide;
+            });
+            __webpack_require__.d(__webpack_exports__, "a", function() {
+                return addClass;
+            });
+            __webpack_require__.d(__webpack_exports__, "P", function() {
+                return removeClass;
+            });
+            __webpack_require__.d(__webpack_exports__, "v", function() {
+                return getCurrentScriptDir;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return getElementName;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return isElementClosed;
+            });
+            __webpack_require__.d(__webpack_exports__, "_2", function() {
+                return watchElementForClose;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return getHttpType;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return getHTML;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return getCSS;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return getScript;
+            });
+            __webpack_require__.d(__webpack_exports__, "N", function() {
+                return prefetchPage;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return fixScripts;
+            });
+            __webpack_require__.d(__webpack_exports__, "F", function() {
+                return jsxDom;
+            });
+            __webpack_require__.d(__webpack_exports__, "I", function() {
+                return noop;
+            });
+            __webpack_require__.d(__webpack_exports__, "L", function() {
+                return once;
+            });
+            __webpack_require__.d(__webpack_exports__, "G", function() {
+                return memoize;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return debounce;
+            });
+            __webpack_require__.d(__webpack_exports__, "R", function() {
+                return serializeFunctions;
+            });
+            __webpack_require__.d(__webpack_exports__, "j", function() {
+                return deserializeFunctions;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return urlEncode;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return camelToDasherize;
+            });
+            __webpack_require__.d(__webpack_exports__, "i", function() {
+                return dasherizeToCamel;
+            });
+            __webpack_require__.d(__webpack_exports__, "s", function() {
+                return extend;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return values;
+            });
+            __webpack_require__.d(__webpack_exports__, "Z", function() {
+                return uniqueID;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return stringifyWithFunctions;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return safeGet;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return capitalizeFirstLetter;
+            });
+            __webpack_require__.d(__webpack_exports__, "u", function() {
+                return get;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return safeInterval;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return safeTimeout;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return each;
+            });
+            __webpack_require__.d(__webpack_exports__, "Q", function() {
+                return replaceObject;
+            });
+            __webpack_require__.d(__webpack_exports__, "g", function() {
+                return copyProp;
+            });
+            __webpack_require__.d(__webpack_exports__, "n", function() {
+                return dotify;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return getObjectID;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return regex;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return regexAll;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return count;
+            });
+            __webpack_require__.d(__webpack_exports__, "V", function() {
+                return stringify;
+            });
+            __webpack_require__.d(__webpack_exports__, "W", function() {
+                return stringifyError;
+            });
+            __webpack_require__.d(__webpack_exports__, "r", function() {
+                return eventEmitter;
+            });
+            __webpack_require__.d(__webpack_exports__, "C", function() {
+                return isDefined;
+            });
+            __webpack_require__.d(__webpack_exports__, "h", function() {
+                return cycle;
+            });
+            __webpack_require__.d(__webpack_exports__, "O", function() {
+                return promisify;
+            });
+            __webpack_require__.d(__webpack_exports__, "D", function() {
+                return isPerc;
+            });
+            __webpack_require__.d(__webpack_exports__, "E", function() {
+                return isPx;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return toNum;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return toPx;
+            });
+            __webpack_require__.d(__webpack_exports__, "X", function() {
+                return toCSS;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return percOf;
+            });
+            __webpack_require__.d(__webpack_exports__, "J", function() {
+                return normalizeDimension;
+            });
+            __webpack_require__.d(__webpack_exports__, "H", function() {
+                return memoized;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return decorators_promise;
+            });
+            __webpack_require__.d(__webpack_exports__, "_0", function() {
+                return useLogger;
+            });
+            __webpack_require__.d(__webpack_exports__, "B", function() {
+                return info;
+            });
+            __webpack_require__.d(__webpack_exports__, "_1", function() {
+                return warn;
+            });
+            __webpack_require__.d(__webpack_exports__, "q", function() {
+                return logger_error;
+            });
+            __webpack_require__.d(__webpack_exports__, "y", function() {
+                return globalFor;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return localGlobal;
+            });
+            __webpack_require__.d(__webpack_exports__, "x", function() {
+                return global;
+            });
+        },
+        "./node_modules/zoid/src/types.js": function(module, exports) {},
         "./src/index.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
             Object.defineProperty(__webpack_exports__, "__esModule", {
                 value: !0
             });
             var interface_namespaceObject = {};
-            __webpack_require__.d(interface_namespaceObject, "create", function() {
-                return create;
+            __webpack_require__.d(interface_namespaceObject, "cleanUpWindow", function() {
+                return cleanUpWindow;
             });
-            __webpack_require__.d(interface_namespaceObject, "getByTag", function() {
-                return getByTag;
+            __webpack_require__.d(interface_namespaceObject, "Promise", function() {
+                return src.a;
             });
-            __webpack_require__.d(interface_namespaceObject, "getCurrentScriptDir", function() {
-                return lib.w;
+            __webpack_require__.d(interface_namespaceObject, "bridge", function() {
+                return bridge;
             });
-            __webpack_require__.d(interface_namespaceObject, "destroyAll", function() {
-                return interface_destroyAll;
+            __webpack_require__.d(interface_namespaceObject, "init", function() {
+                return interface_init;
             });
-            __webpack_require__.d(interface_namespaceObject, "postRobot", function() {
-                return postRobot;
+            __webpack_require__.d(interface_namespaceObject, "parent", function() {
+                return public_parent;
+            });
+            __webpack_require__.d(interface_namespaceObject, "send", function() {
+                return _send;
+            });
+            __webpack_require__.d(interface_namespaceObject, "request", function() {
+                return request;
+            });
+            __webpack_require__.d(interface_namespaceObject, "sendToParent", function() {
+                return client_sendToParent;
+            });
+            __webpack_require__.d(interface_namespaceObject, "client", function() {
+                return client;
+            });
+            __webpack_require__.d(interface_namespaceObject, "on", function() {
+                return _on;
+            });
+            __webpack_require__.d(interface_namespaceObject, "listen", function() {
+                return server_listen;
+            });
+            __webpack_require__.d(interface_namespaceObject, "once", function() {
+                return once;
+            });
+            __webpack_require__.d(interface_namespaceObject, "listener", function() {
+                return server_listener;
+            });
+            __webpack_require__.d(interface_namespaceObject, "CONFIG", function() {
+                return conf.a;
             });
             __webpack_require__.d(interface_namespaceObject, "CONSTANTS", function() {
-                return CONSTANTS;
+                return conf.b;
             });
-            __webpack_require__.d(interface_namespaceObject, "PopupOpenError", function() {
+            __webpack_require__.d(interface_namespaceObject, "disable", function() {
+                return disable;
+            });
+            var src_namespaceObject = {};
+            __webpack_require__.d(src_namespaceObject, "default", function() {
+                return post_robot_src;
+            });
+            __webpack_require__.d(src_namespaceObject, "cleanUpWindow", function() {
+                return cleanUpWindow;
+            });
+            __webpack_require__.d(src_namespaceObject, "Promise", function() {
+                return src.a;
+            });
+            __webpack_require__.d(src_namespaceObject, "bridge", function() {
+                return bridge;
+            });
+            __webpack_require__.d(src_namespaceObject, "init", function() {
+                return interface_init;
+            });
+            __webpack_require__.d(src_namespaceObject, "parent", function() {
+                return public_parent;
+            });
+            __webpack_require__.d(src_namespaceObject, "send", function() {
+                return _send;
+            });
+            __webpack_require__.d(src_namespaceObject, "request", function() {
+                return request;
+            });
+            __webpack_require__.d(src_namespaceObject, "sendToParent", function() {
+                return client_sendToParent;
+            });
+            __webpack_require__.d(src_namespaceObject, "client", function() {
+                return client;
+            });
+            __webpack_require__.d(src_namespaceObject, "on", function() {
+                return _on;
+            });
+            __webpack_require__.d(src_namespaceObject, "listen", function() {
+                return server_listen;
+            });
+            __webpack_require__.d(src_namespaceObject, "once", function() {
+                return once;
+            });
+            __webpack_require__.d(src_namespaceObject, "listener", function() {
+                return server_listener;
+            });
+            __webpack_require__.d(src_namespaceObject, "CONFIG", function() {
+                return conf.a;
+            });
+            __webpack_require__.d(src_namespaceObject, "CONSTANTS", function() {
+                return conf.b;
+            });
+            __webpack_require__.d(src_namespaceObject, "disable", function() {
+                return disable;
+            });
+            var src_interface_namespaceObject = {};
+            __webpack_require__.d(src_interface_namespaceObject, "create", function() {
+                return create;
+            });
+            __webpack_require__.d(src_interface_namespaceObject, "getByTag", function() {
+                return getByTag;
+            });
+            __webpack_require__.d(src_interface_namespaceObject, "getCurrentScriptDir", function() {
+                return src_lib.v;
+            });
+            __webpack_require__.d(src_interface_namespaceObject, "useLogger", function() {
+                return src_lib._0;
+            });
+            __webpack_require__.d(src_interface_namespaceObject, "destroyAll", function() {
+                return interface_destroyAll;
+            });
+            __webpack_require__.d(src_interface_namespaceObject, "postRobot", function() {
+                return postRobot;
+            });
+            __webpack_require__.d(src_interface_namespaceObject, "CONSTANTS", function() {
+                return interface_CONSTANTS;
+            });
+            __webpack_require__.d(src_interface_namespaceObject, "PopupOpenError", function() {
                 return src_error.b;
             });
-            __webpack_require__.d(interface_namespaceObject, "IntegrationError", function() {
+            __webpack_require__.d(src_interface_namespaceObject, "IntegrationError", function() {
                 return src_error.a;
             });
-            __webpack_require__.d(interface_namespaceObject, "RenderError", function() {
+            __webpack_require__.d(src_interface_namespaceObject, "RenderError", function() {
                 return src_error.c;
             });
-            var src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), post_robot_src = __webpack_require__("./node_modules/post-robot/src/index.js"), cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), lib = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), base_BaseComponent = function() {
+            var src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), lib = __webpack_require__("./node_modules/post-robot/src/lib/index.js"), cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), conf = __webpack_require__("./node_modules/post-robot/src/conf/index.js"), src_global = __webpack_require__("./node_modules/post-robot/src/global.js"), SEND_MESSAGE_STRATEGIES = {};
+            SEND_MESSAGE_STRATEGIES[conf.b.SEND_STRATEGIES.POST_MESSAGE] = function(win, serializedMessage, domain) {
+                try {
+                    __webpack_require__("./node_modules/post-robot/src/compat/index.js").emulateIERestrictions(window, win);
+                } catch (err) {
+                    return;
+                }
+                (Array.isArray(domain) ? domain : "string" == typeof domain ? [ domain ] : [ conf.b.WILDCARD ]).map(function(dom) {
+                    if (0 === dom.indexOf(conf.b.MOCK_PROTOCOL)) {
+                        if (window.location.protocol === conf.b.FILE_PROTOCOL) return conf.b.WILDCARD;
+                        if (!Object(cross_domain_utils_src.isActuallySameDomain)(win)) throw new Error("Attempting to send messsage to mock domain " + dom + ", but window is actually cross-domain");
+                        return Object(cross_domain_utils_src.getActualDomain)(win);
+                    }
+                    return 0 === dom.indexOf(conf.b.FILE_PROTOCOL) ? conf.b.WILDCARD : dom;
+                }).forEach(function(dom) {
+                    return win.postMessage(serializedMessage, dom);
+                });
+            };
+            var _require = __webpack_require__("./node_modules/post-robot/src/bridge/index.js"), sendBridgeMessage = _require.sendBridgeMessage, needsBridgeForBrowser = _require.needsBridgeForBrowser, isBridge = _require.isBridge;
+            SEND_MESSAGE_STRATEGIES[conf.b.SEND_STRATEGIES.BRIDGE] = function(win, serializedMessage, domain) {
+                if (needsBridgeForBrowser() || isBridge()) {
+                    if (Object(cross_domain_utils_src.isSameDomain)(win)) throw new Error("Post message through bridge disabled between same domain windows");
+                    if (!1 !== Object(cross_domain_utils_src.isSameTopWindow)(window, win)) throw new Error("Can only use bridge to communicate between two different windows, not between frames");
+                    return sendBridgeMessage(win, serializedMessage, domain);
+                }
+            };
+            SEND_MESSAGE_STRATEGIES[conf.b.SEND_STRATEGIES.GLOBAL] = function(win, serializedMessage) {
+                if (Object(lib.i)()) {
+                    if (!Object(cross_domain_utils_src.isSameDomain)(win)) throw new Error("Post message through global disabled between different domain windows");
+                    if (!1 !== Object(cross_domain_utils_src.isSameTopWindow)(window, win)) throw new Error("Can only use global to communicate between two different windows, not between frames");
+                    var foreignGlobal = win[conf.b.WINDOW_PROPS.POSTROBOT];
+                    if (!foreignGlobal) throw new Error("Can not find postRobot global on foreign window");
+                    return foreignGlobal.receiveMessage({
+                        source: window,
+                        origin: Object(cross_domain_utils_src.getDomain)(),
+                        data: serializedMessage
+                    });
+                }
+            };
+            var _extends = Object.assign || function(target) {
+                for (var i = 1; i < arguments.length; i++) {
+                    var source = arguments[i];
+                    for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
+                }
+                return target;
+            };
+            function sendMessage(win, message, domain) {
+                return src.a.try(function() {
+                    var _jsonStringify;
+                    message = function(win, message) {
+                        var options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, id = Object(lib.q)(), type = Object(lib.c)(), sourceDomain = Object(cross_domain_utils_src.getDomain)(window);
+                        return _extends({}, message, options, {
+                            sourceDomain: sourceDomain,
+                            id: message.id || id,
+                            windowType: type
+                        });
+                    }(win, message, {
+                        data: Object(lib.o)(win, domain, message.data),
+                        domain: domain
+                    });
+                    if (win === window && !conf.a.ALLOW_SAME_ORIGIN) throw new Error("Attemping to send message to self");
+                    if (Object(cross_domain_utils_src.isWindowClosed)(win)) throw new Error("Window is closed");
+                    var messages = [], serializedMessage = Object(lib.g)(((_jsonStringify = {})[conf.b.WINDOW_PROPS.POSTROBOT] = message, 
+                    _jsonStringify), null, 2);
+                    return src.a.map(Object.keys(SEND_MESSAGE_STRATEGIES), function(strategyName) {
+                        return src.a.try(function() {
+                            if (!conf.a.ALLOWED_POST_MESSAGE_METHODS[strategyName]) throw new Error("Strategy disallowed: " + strategyName);
+                            return SEND_MESSAGE_STRATEGIES[strategyName](win, serializedMessage, domain);
+                        }).then(function() {
+                            messages.push(strategyName + ": success");
+                            return !0;
+                        }, function(err) {
+                            messages.push(strategyName + ": " + Object(lib.p)(err) + "\n");
+                            return !1;
+                        });
+                    }).then(function(results) {
+                        var success = results.some(Boolean), status = message.type + " " + message.name + " " + (success ? "success" : "error") + ":\n  - " + messages.join("\n  - ") + "\n";
+                        if (!success) throw new Error(status);
+                    });
+                });
+            }
+            var cross_domain_safe_weakmap_src = __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/index.js");
+            src_global.a.responseListeners = src_global.a.responseListeners || {};
+            src_global.a.requestListeners = src_global.a.requestListeners || {};
+            src_global.a.WINDOW_WILDCARD = src_global.a.WINDOW_WILDCARD || new function() {}();
+            src_global.a.erroredResponseListeners = src_global.a.erroredResponseListeners || {};
+            var _RECEIVE_MESSAGE_TYPE, __DOMAIN_REGEX__ = "__domain_regex__";
+            function getResponseListener(hash) {
+                return src_global.a.responseListeners[hash];
+            }
+            function deleteResponseListener(hash) {
+                delete src_global.a.responseListeners[hash];
+            }
+            function isResponseListenerErrored(hash) {
+                return Boolean(src_global.a.erroredResponseListeners[hash]);
+            }
+            function getRequestListener(_ref) {
+                var name = _ref.name, win = _ref.win, domain = _ref.domain;
+                win === conf.b.WILDCARD && (win = null);
+                domain === conf.b.WILDCARD && (domain = null);
+                if (!name) throw new Error("Name required to get request listener");
+                var nameListeners = src_global.a.requestListeners[name];
+                if (nameListeners) for (var _i2 = 0, _ref3 = [ win, src_global.a.WINDOW_WILDCARD ], _length2 = null == _ref3 ? 0 : _ref3.length; _i2 < _length2; _i2++) {
+                    var winQualifier = _ref3[_i2], winListeners = winQualifier && nameListeners.get(winQualifier);
+                    if (winListeners) {
+                        if (domain && "string" == typeof domain) {
+                            if (winListeners[domain]) return winListeners[domain];
+                            if (winListeners[__DOMAIN_REGEX__]) for (var _i4 = 0, _winListeners$__DOMAI2 = winListeners[__DOMAIN_REGEX__], _length4 = null == _winListeners$__DOMAI2 ? 0 : _winListeners$__DOMAI2.length; _i4 < _length4; _i4++) {
+                                var _ref5 = _winListeners$__DOMAI2[_i4], regex = _ref5.regex, listener = _ref5.listener;
+                                if (Object(cross_domain_utils_src.matchDomain)(regex, domain)) return listener;
+                            }
+                        }
+                        if (winListeners[conf.b.WILDCARD]) return winListeners[conf.b.WILDCARD];
+                    }
+                }
+            }
+            var types__extends = Object.assign || function(target) {
+                for (var i = 1; i < arguments.length; i++) {
+                    var source = arguments[i];
+                    for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
+                }
+                return target;
+            }, RECEIVE_MESSAGE_TYPES = ((_RECEIVE_MESSAGE_TYPE = {})[conf.b.POST_MESSAGE_TYPE.ACK] = function(source, origin, message) {
+                if (!isResponseListenerErrored(message.hash)) {
+                    var options = getResponseListener(message.hash);
+                    if (!options) throw new Error("No handler found for post message ack for message: " + message.name + " from " + origin + " in " + window.location.protocol + "//" + window.location.host + window.location.pathname);
+                    if (!Object(cross_domain_utils_src.matchDomain)(options.domain, origin)) throw new Error("Ack origin " + origin + " does not match domain " + options.domain.toString());
+                    options.ack = !0;
+                }
+            }, _RECEIVE_MESSAGE_TYPE[conf.b.POST_MESSAGE_TYPE.REQUEST] = function(source, origin, message) {
+                var options = getRequestListener({
+                    name: message.name,
+                    win: source,
+                    domain: origin
+                });
+                function respond(data) {
+                    return message.fireAndForget || Object(cross_domain_utils_src.isWindowClosed)(source) ? src.a.resolve() : sendMessage(source, types__extends({
+                        target: message.originalSource,
+                        hash: message.hash,
+                        name: message.name
+                    }, data), origin);
+                }
+                return src.a.all([ respond({
+                    type: conf.b.POST_MESSAGE_TYPE.ACK
+                }), src.a.try(function() {
+                    if (!options) throw new Error("No handler found for post message: " + message.name + " from " + origin + " in " + window.location.protocol + "//" + window.location.host + window.location.pathname);
+                    if (!Object(cross_domain_utils_src.matchDomain)(options.domain, origin)) throw new Error("Request origin " + origin + " does not match domain " + options.domain.toString());
+                    var data = message.data;
+                    return options.handler({
+                        source: source,
+                        origin: origin,
+                        data: data
+                    });
+                }).then(function(data) {
+                    return respond({
+                        type: conf.b.POST_MESSAGE_TYPE.RESPONSE,
+                        ack: conf.b.POST_MESSAGE_ACK.SUCCESS,
+                        data: data
+                    });
+                }, function(err) {
+                    var error = Object(lib.p)(err).replace(/^Error: /, ""), code = err.code;
+                    return respond({
+                        type: conf.b.POST_MESSAGE_TYPE.RESPONSE,
+                        ack: conf.b.POST_MESSAGE_ACK.ERROR,
+                        error: error,
+                        code: code
+                    });
+                }) ]).then(lib.j).catch(function(err) {
+                    if (options && options.handleError) return options.handleError(err);
+                    throw err;
+                });
+            }, _RECEIVE_MESSAGE_TYPE[conf.b.POST_MESSAGE_TYPE.RESPONSE] = function(source, origin, message) {
+                if (!isResponseListenerErrored(message.hash)) {
+                    var options = getResponseListener(message.hash);
+                    if (!options) throw new Error("No handler found for post message response for message: " + message.name + " from " + origin + " in " + window.location.protocol + "//" + window.location.host + window.location.pathname);
+                    if (!Object(cross_domain_utils_src.matchDomain)(options.domain, origin)) throw new Error("Response origin " + origin + " does not match domain " + Object(cross_domain_utils_src.stringifyDomainPattern)(options.domain));
+                    deleteResponseListener(message.hash);
+                    if (message.ack === conf.b.POST_MESSAGE_ACK.ERROR) {
+                        var err = new Error(message.error);
+                        message.code && (err.code = message.code);
+                        return options.respond(err, null);
+                    }
+                    if (message.ack === conf.b.POST_MESSAGE_ACK.SUCCESS) {
+                        var data = message.data || message.response;
+                        return options.respond(null, {
+                            source: source,
+                            origin: origin,
+                            data: data
+                        });
+                    }
+                }
+            }, _RECEIVE_MESSAGE_TYPE), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+                return typeof obj;
+            } : function(obj) {
+                return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+            };
+            src_global.a.receivedMessages = src_global.a.receivedMessages || [];
+            function receiveMessage(event) {
+                if (!window || window.closed) throw new Error("Message recieved in closed window");
+                try {
+                    if (!event.source) return;
+                } catch (err) {
+                    return;
+                }
+                var source = event.source, origin = event.origin, message = function(message) {
+                    var parsedMessage = void 0;
+                    try {
+                        parsedMessage = Object(lib.f)(message);
+                    } catch (err) {
+                        return;
+                    }
+                    if (parsedMessage && "object" === (void 0 === parsedMessage ? "undefined" : _typeof(parsedMessage)) && null !== parsedMessage && (parsedMessage = parsedMessage[conf.b.WINDOW_PROPS.POSTROBOT]) && "object" === (void 0 === parsedMessage ? "undefined" : _typeof(parsedMessage)) && null !== parsedMessage && parsedMessage.type && "string" == typeof parsedMessage.type && RECEIVE_MESSAGE_TYPES[parsedMessage.type]) return parsedMessage;
+                }(event.data);
+                if (message) {
+                    if (!message.sourceDomain || "string" != typeof message.sourceDomain) throw new Error("Expected message to have sourceDomain");
+                    0 !== message.sourceDomain.indexOf(conf.b.MOCK_PROTOCOL) && 0 !== message.sourceDomain.indexOf(conf.b.FILE_PROTOCOL) || (origin = message.sourceDomain);
+                    if (-1 === src_global.a.receivedMessages.indexOf(message.id)) {
+                        src_global.a.receivedMessages.push(message.id);
+                        if (!Object(cross_domain_utils_src.isWindowClosed)(source) || message.fireAndForget) {
+                            message.data && (message.data = Object(lib.b)(source, origin, message.data));
+                            RECEIVE_MESSAGE_TYPES[message.type](source, origin, message);
+                        }
+                    }
+                }
+            }
+            function messageListener(event) {
+                try {
+                    Object(lib.j)(event.source);
+                } catch (err) {
+                    return;
+                }
+                var messageEvent = {
+                    source: event.source || event.sourceElement,
+                    origin: event.origin || event.originalEvent && event.originalEvent.origin,
+                    data: event.data
+                };
+                try {
+                    __webpack_require__("./node_modules/post-robot/src/compat/index.js").emulateIERestrictions(messageEvent.source, window);
+                } catch (err) {
+                    return;
+                }
+                receiveMessage(messageEvent);
+            }
+            src_global.a.receiveMessage = receiveMessage;
+            src_global.a.requestPromises = src_global.a.requestPromises || new cross_domain_safe_weakmap_src.a();
+            function request(options) {
+                return src.a.try(function() {
+                    if (!options.name) throw new Error("Expected options.name");
+                    var name = options.name, targetWindow = void 0, domain = void 0;
+                    if ("string" == typeof options.window) {
+                        var el = document.getElementById(options.window);
+                        if (!el) throw new Error("Expected options.window " + Object.prototype.toString.call(options.window) + " to be a valid element id");
+                        if ("iframe" !== el.tagName.toLowerCase()) throw new Error("Expected options.window " + Object.prototype.toString.call(options.window) + " to be an iframe");
+                        if (!el.contentWindow) throw new Error("Iframe must have contentWindow.  Make sure it has a src attribute and is in the DOM.");
+                        targetWindow = el.contentWindow;
+                    } else if (options.window instanceof HTMLIFrameElement) {
+                        if ("iframe" !== options.window.tagName.toLowerCase()) throw new Error("Expected options.window " + Object.prototype.toString.call(options.window) + " to be an iframe");
+                        if (options.window && !options.window.contentWindow) throw new Error("Iframe must have contentWindow.  Make sure it has a src attribute and is in the DOM.");
+                        options.window && options.window.contentWindow && (targetWindow = options.window.contentWindow);
+                    } else targetWindow = options.window;
+                    if (!targetWindow) throw new Error("Expected options.window to be a window object, iframe, or iframe element id.");
+                    var win = targetWindow;
+                    domain = options.domain || conf.b.WILDCARD;
+                    var hash = options.name + "_" + Object(lib.q)();
+                    if (Object(cross_domain_utils_src.isWindowClosed)(win)) throw new Error("Target window is closed");
+                    var hasResult = !1, requestPromises = src_global.a.requestPromises.get(win);
+                    if (!requestPromises) {
+                        requestPromises = [];
+                        src_global.a.requestPromises.set(win, requestPromises);
+                    }
+                    var requestPromise = src.a.try(function() {
+                        if (Object(cross_domain_utils_src.isAncestor)(window, win)) return Object(lib.k)(win, options.timeout || conf.a.CHILD_WINDOW_TIMEOUT);
+                    }).then(function() {
+                        var origin = (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}).origin;
+                        if (Object(lib.e)(domain) && !origin) return Object(lib.n)(win);
+                    }).then(function() {
+                        var origin = (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}).origin;
+                        if (Object(lib.e)(domain)) {
+                            if (!Object(cross_domain_utils_src.matchDomain)(domain, origin)) throw new Error("Remote window domain " + origin + " does not match regex: " + domain.toString());
+                            domain = origin;
+                        }
+                        if ("string" != typeof domain && !Array.isArray(domain)) throw new TypeError("Expected domain to be a string or array");
+                        var actualDomain = domain;
+                        return new src.a(function(resolve, reject) {
+                            var responseListener = void 0;
+                            options.fireAndForget || function(hash, listener) {
+                                src_global.a.responseListeners[hash] = listener;
+                            }(hash, responseListener = {
+                                name: name,
+                                window: win,
+                                domain: actualDomain,
+                                respond: function(err, result) {
+                                    if (!err) {
+                                        hasResult = !0;
+                                        requestPromises.splice(requestPromises.indexOf(requestPromise, 1));
+                                    }
+                                    err ? reject(err) : resolve(result);
+                                }
+                            });
+                            sendMessage(win, {
+                                type: conf.b.POST_MESSAGE_TYPE.REQUEST,
+                                hash: hash,
+                                name: name,
+                                data: options.data,
+                                fireAndForget: options.fireAndForget
+                            }, actualDomain).catch(reject);
+                            if (options.fireAndForget) return resolve();
+                            var ackTimeout = conf.a.ACK_TIMEOUT, resTimeout = options.timeout || conf.a.RES_TIMEOUT, cycleTime = 100;
+                            setTimeout(function cycle() {
+                                if (!hasResult) {
+                                    if (Object(cross_domain_utils_src.isWindowClosed)(win)) return responseListener.ack ? reject(new Error("Window closed for " + name + " before response")) : reject(new Error("Window closed for " + name + " before ack"));
+                                    ackTimeout = Math.max(ackTimeout - cycleTime, 0);
+                                    -1 !== resTimeout && (resTimeout = Math.max(resTimeout - cycleTime, 0));
+                                    if (responseListener.ack) {
+                                        if (-1 === resTimeout) return;
+                                        cycleTime = Math.min(resTimeout, 2e3);
+                                    } else {
+                                        if (0 === ackTimeout) return reject(new Error("No ack for postMessage " + name + " in " + Object(cross_domain_utils_src.getDomain)() + " in " + conf.a.ACK_TIMEOUT + "ms"));
+                                        if (0 === resTimeout) return reject(new Error("No response for postMessage " + name + " in " + Object(cross_domain_utils_src.getDomain)() + " in " + (options.timeout || conf.a.RES_TIMEOUT) + "ms"));
+                                    }
+                                    setTimeout(cycle, cycleTime);
+                                }
+                            }, cycleTime);
+                        });
+                    });
+                    requestPromise.catch(function() {
+                        !function(hash) {
+                            src_global.a.erroredResponseListeners[hash] = !0;
+                        }(hash);
+                        deleteResponseListener(hash);
+                    });
+                    requestPromises.push(requestPromise);
+                    return requestPromise;
+                });
+            }
+            function _send(window, name, data, options) {
+                (options = options || {}).window = window;
+                options.name = name;
+                options.data = data;
+                return request(options);
+            }
+            function client_sendToParent(name, data, options) {
+                var win = Object(cross_domain_utils_src.getAncestor)();
+                return win ? _send(win, name, data, options) : new src.a(function(resolve, reject) {
+                    return reject(new Error("Window does not have a parent"));
+                });
+            }
+            function client() {
+                var options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                if (!options.window) throw new Error("Expected options.window");
+                var win = options.window;
+                return {
+                    send: function(name, data) {
+                        return _send(win, name, data, options);
+                    }
+                };
+            }
+            src_global.a.send = _send;
+            var server__typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+                return typeof obj;
+            } : function(obj) {
+                return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+            };
+            function server_listen(options) {
+                if (!options.name) throw new Error("Expected options.name");
+                if (!options.handler) throw new Error("Expected options.handler");
+                var name = options.name, win = options.window, domain = options.domain, listenerOptions = {
+                    handler: options.handler,
+                    handleError: options.errorHandler || function(err) {
+                        throw err;
+                    },
+                    window: win,
+                    domain: domain || conf.b.WILDCARD,
+                    name: name
+                }, requestListener = function addRequestListener(_ref6, listener) {
+                    var name = _ref6.name, win = _ref6.win, domain = _ref6.domain;
+                    if (!name || "string" != typeof name) throw new Error("Name required to add request listener");
+                    if (Array.isArray(win)) {
+                        for (var listenersCollection = [], _i6 = 0, _win2 = win, _length6 = null == _win2 ? 0 : _win2.length; _i6 < _length6; _i6++) {
+                            var item = _win2[_i6];
+                            listenersCollection.push(addRequestListener({
+                                name: name,
+                                domain: domain,
+                                win: item
+                            }, listener));
+                        }
+                        return {
+                            cancel: function() {
+                                for (var _i8 = 0, _length8 = null == listenersCollection ? 0 : listenersCollection.length; _i8 < _length8; _i8++) listenersCollection[_i8].cancel();
+                            }
+                        };
+                    }
+                    if (Array.isArray(domain)) {
+                        for (var _listenersCollection = [], _i10 = 0, _domain2 = domain, _length10 = null == _domain2 ? 0 : _domain2.length; _i10 < _length10; _i10++) {
+                            var _item = _domain2[_i10];
+                            _listenersCollection.push(addRequestListener({
+                                name: name,
+                                win: win,
+                                domain: _item
+                            }, listener));
+                        }
+                        return {
+                            cancel: function() {
+                                for (var _i12 = 0, _length12 = null == _listenersCollection ? 0 : _listenersCollection.length; _i12 < _length12; _i12++) _listenersCollection[_i12].cancel();
+                            }
+                        };
+                    }
+                    var existingListener = getRequestListener({
+                        name: name,
+                        win: win,
+                        domain: domain
+                    });
+                    win && win !== conf.b.WILDCARD || (win = src_global.a.WINDOW_WILDCARD);
+                    domain = domain || conf.b.WILDCARD;
+                    if (existingListener) throw win && domain ? new Error("Request listener already exists for " + name + " on domain " + domain.toString() + " for " + (win === src_global.a.WINDOW_WILDCARD ? "wildcard" : "specified") + " window") : win ? new Error("Request listener already exists for " + name + " for " + (win === src_global.a.WINDOW_WILDCARD ? "wildcard" : "specified") + " window") : domain ? new Error("Request listener already exists for " + name + " on domain " + domain.toString()) : new Error("Request listener already exists for " + name);
+                    var requestListeners = src_global.a.requestListeners, nameListeners = requestListeners[name];
+                    if (!nameListeners) {
+                        nameListeners = new cross_domain_safe_weakmap_src.a();
+                        requestListeners[name] = nameListeners;
+                    }
+                    var winListeners = nameListeners.get(win);
+                    if (!winListeners) {
+                        winListeners = {};
+                        nameListeners.set(win, winListeners);
+                    }
+                    var strDomain = domain.toString(), regexListeners = winListeners[__DOMAIN_REGEX__], regexListener = void 0;
+                    if (Object(lib.e)(domain)) {
+                        if (!regexListeners) {
+                            regexListeners = [];
+                            winListeners[__DOMAIN_REGEX__] = regexListeners;
+                        }
+                        regexListener = {
+                            regex: domain,
+                            listener: listener
+                        };
+                        regexListeners.push(regexListener);
+                    } else winListeners[strDomain] = listener;
+                    return {
+                        cancel: function() {
+                            if (winListeners) {
+                                delete winListeners[strDomain];
+                                win && 0 === Object.keys(winListeners).length && nameListeners.delete(win);
+                                regexListener && regexListeners.splice(regexListeners.indexOf(regexListener, 1));
+                            }
+                        }
+                    };
+                }({
+                    name: name,
+                    win: win,
+                    domain: domain
+                }, listenerOptions);
+                if (options.once) {
+                    var _handler = listenerOptions.handler;
+                    listenerOptions.handler = Object(lib.l)(function() {
+                        requestListener.cancel();
+                        return _handler.apply(this, arguments);
+                    });
+                }
+                if (listenerOptions.window && options.errorOnClose) var interval = Object(lib.m)(function() {
+                    if (win && "object" === (void 0 === win ? "undefined" : server__typeof(win)) && Object(cross_domain_utils_src.isWindowClosed)(win)) {
+                        interval.cancel();
+                        listenerOptions.handleError(new Error("Post message target window is closed"));
+                    }
+                }, 50);
+                return {
+                    cancel: function() {
+                        requestListener.cancel();
+                    }
+                };
+            }
+            function _on(name, options, handler) {
+                if ("function" == typeof options) {
+                    handler = options;
+                    options = {};
+                }
+                (options = options || {}).name = name;
+                options.handler = handler || options.handler;
+                return server_listen(options);
+            }
+            function once(name) {
+                var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, handler = arguments[2];
+                if ("function" == typeof options) {
+                    handler = options;
+                    options = {};
+                }
+                options = options || {};
+                handler = handler || options.handler;
+                var errorHandler = options.errorHandler, promise = new src.a(function(resolve, reject) {
+                    (options = options || {}).name = name;
+                    options.once = !0;
+                    options.handler = function(event) {
+                        resolve(event);
+                        if (handler) return handler(event);
+                    };
+                    options.errorHandler = function(err) {
+                        reject(err);
+                        if (errorHandler) return errorHandler(err);
+                    };
+                }), onceListener = server_listen(options);
+                promise.cancel = onceListener.cancel;
+                return promise;
+            }
+            function server_listener() {
+                var options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                return {
+                    on: function(name, handler) {
+                        return _on(name, options, handler);
+                    }
+                };
+            }
+            src_global.a.on = _on;
+            function disable() {
+                delete window[conf.b.WINDOW_PROPS.POSTROBOT];
+                window.removeEventListener("message", messageListener);
+            }
+            var public_parent = Object(cross_domain_utils_src.getAncestor)();
+            function cleanUpWindow(win) {
+                var requestPromises = src_global.a.requestPromises.get(win);
+                if (requestPromises) for (var _i2 = 0, _length2 = null == requestPromises ? 0 : requestPromises.length; _i2 < _length2; _i2++) requestPromises[_i2].reject(new Error("No response from window - cleaned up"));
+                src_global.a.popupWindowsByWin && src_global.a.popupWindowsByWin.delete(win);
+                src_global.a.remoteWindows && src_global.a.remoteWindows.delete(win);
+                src_global.a.requestPromises.delete(win);
+                src_global.a.methods.delete(win);
+                src_global.a.readyPromises.delete(win);
+            }
+            var bridge = __webpack_require__("./node_modules/post-robot/src/bridge/interface.js");
+            function interface_init() {
+                if (!src_global.a.initialized) {
+                    Object(lib.a)(window, "message", messageListener);
+                    __webpack_require__("./node_modules/post-robot/src/bridge/index.js").openTunnelToOpener();
+                    Object(lib.d)();
+                    Object(lib.h)({
+                        on: _on,
+                        send: _send
+                    });
+                }
+                src_global.a.initialized = !0;
+            }
+            interface_init();
+            var post_robot_src = interface_namespaceObject, src_lib = __webpack_require__("./node_modules/zoid/src/lib/index.js"), base_BaseComponent = function() {
                 function BaseComponent() {
                     !function(instance, Constructor) {
                         if (!(instance instanceof BaseComponent)) throw new TypeError("Cannot call a class as a function");
@@ -5144,14 +4558,14 @@
                                 var item = tasks[_i2];
                                 item.name === name && results.push(item.run());
                             }
-                            return src.a.all(results).then(lib.I);
+                            return src.a.all(results).then(src_lib.I);
                         }
                     });
                     var obj, tasks, cleaned;
-                    this.event = Object(lib.s)();
+                    this.event = Object(src_lib.r)();
                 }
                 BaseComponent.prototype.addProp = function(options, name, def) {
-                    Object(lib.g)(options, this, name, def);
+                    Object(src_lib.g)(options, this, name, def);
                 };
                 BaseComponent.prototype.on = function(eventName, handler) {
                     return this.event.on(eventName, handler);
@@ -5160,16 +4574,16 @@
                     throw new Error("Expected listeners to be implemented");
                 };
                 BaseComponent.prototype.error = function(err) {
-                    throw new Error("Expected error to be implemented - got " + Object(lib.X)(err));
+                    throw new Error("Expected error to be implemented - got " + Object(src_lib.W)(err));
                 };
                 BaseComponent.prototype.listen = function(win, domain) {
                     var _this = this;
                     if (!win) throw this.component.createError("window to listen to not set");
                     if (!domain) throw new Error("Must pass domain to listen to");
                     if (this.listeners) for (var listeners = this.listeners(), _loop = function(_i4, _Object$keys2, _length4) {
-                        var listenerName = _Object$keys2[_i4], name = listenerName.replace(/^xcomponent_/, ""), errorHandler = function(err) {
+                        var listenerName = _Object$keys2[_i4], name = listenerName.replace(/^zoid_/, ""), errorHandler = function(err) {
                             _this.error(err);
-                        }, listener = Object(post_robot_src.on)(listenerName, {
+                        }, listener = _on(listenerName, {
                             window: win,
                             domain: domain,
                             errorHandler: errorHandler
@@ -5177,7 +4591,7 @@
                             var source = _ref.source, data = _ref.data;
                             _this.component.log("listener_" + name);
                             return listeners[listenerName].call(_this, source, data);
-                        }), errorListener = Object(post_robot_src.on)(listenerName, {
+                        }), errorListener = _on(listenerName, {
                             window: win,
                             errorHandler: errorHandler
                         }, function(_ref2) {
@@ -5195,24 +4609,19 @@
                     }, _i4 = 0, _Object$keys2 = Object.keys(listeners), _length4 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i4 < _length4; _i4++) _loop(_i4, _Object$keys2);
                 };
                 return BaseComponent;
-            }(), client = __webpack_require__("./node_modules/beaver-logger/client/index.js"), base32 = __webpack_require__("./node_modules/hi-base32/src/base32.js"), base32_default = __webpack_require__.n(base32), constants = __webpack_require__("./node_modules/xcomponent/src/constants.js");
-            function normalize(str) {
-                return str.replace(/^[^a-z0-9A-Z]+|[^a-z0-9A-Z]+$/g, "").replace(/[^a-z0-9A-Z]+/g, "_");
-            }
-            var isXComponentWindow = Object(lib.G)(function() {
-                return !!window.name && window.name.split("__")[0] === constants.XCOMPONENT;
-            }), getComponentMeta = Object(lib.G)(function() {
+            }(), base32 = __webpack_require__("./node_modules/hi-base32/src/base32.js"), base32_default = __webpack_require__.n(base32), constants = __webpack_require__("./node_modules/zoid/src/constants.js"), isZoidComponentWindow = Object(src_lib.G)(function() {
+                return !!window.name && "xcomponent" === window.name.split("__")[0];
+            }), getComponentMeta = Object(src_lib.G)(function() {
                 if (!window.name) throw new Error("Can not get component meta without window name");
-                var _window$name$split2 = window.name.split("__"), xcomp = _window$name$split2[0], name = _window$name$split2[1], version = _window$name$split2[2], encodedOptions = _window$name$split2[3];
-                if (xcomp !== constants.XCOMPONENT) throw new Error("Window not rendered by xcomponent - got " + xcomp);
+                var _window$name$split2 = window.name.split("__"), zoidcomp = _window$name$split2[0], name = _window$name$split2[1], encodedOptions = _window$name$split2[2];
+                if ("xcomponent" !== zoidcomp) throw new Error("Window not rendered by zoid - got " + zoidcomp);
                 var str, componentMeta = void 0;
                 try {
                     componentMeta = JSON.parse((str = encodedOptions, base32_default.a.decode(str.toUpperCase())));
                 } catch (err) {
-                    throw new Error("Can not decode component-meta: " + encodedOptions + " " + Object(lib.X)(err));
+                    throw new Error("Can not decode component-meta: " + encodedOptions + " " + Object(src_lib.W)(err));
                 }
                 componentMeta.name = name;
-                componentMeta.version = version.replace(/_/g, ".");
                 return componentMeta;
             });
             function window_getParentDomain() {
@@ -5224,7 +4633,7 @@
                 if (ref === constants.WINDOW_REFERENCES.GLOBAL) {
                     var ancestor = Object(cross_domain_utils_src.getAncestor)(window);
                     if (ancestor) for (var _i2 = 0, _getAllFramesInWindow2 = Object(cross_domain_utils_src.getAllFramesInWindow)(ancestor), _length2 = null == _getAllFramesInWindow2 ? 0 : _getAllFramesInWindow2.length; _i2 < _length2; _i2++) {
-                        var frame = _getAllFramesInWindow2[_i2], global = Object(lib.z)(frame);
+                        var frame = _getAllFramesInWindow2[_i2], global = Object(src_lib.y)(frame);
                         if (global && global.windows && global.windows[uid]) {
                             result = global.windows[uid];
                             break;
@@ -5234,26 +4643,26 @@
                 if (!result) throw new Error("Unable to find window by ref");
                 return result;
             }
-            var window_getParentComponentWindow = Object(lib.G)(function() {
+            var window_getParentComponentWindow = Object(src_lib.G)(function() {
                 var componentMeta = getComponentMeta();
-                if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by xcomponent");
+                if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by zoid");
                 return getWindowByRef(componentMeta.componentParent);
-            }), window_getParentRenderWindow = Object(lib.G)(function() {
+            }), window_getParentRenderWindow = Object(src_lib.G)(function() {
                 var componentMeta = getComponentMeta();
-                if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by xcomponent");
+                if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by zoid");
                 return getWindowByRef(componentMeta.renderParent);
-            }), src_error = __webpack_require__("./node_modules/xcomponent/src/error.js");
+            }), src_error = __webpack_require__("./node_modules/zoid/src/error.js");
             function normalizeChildProp(component, props, key, value) {
                 var prop = component.getProp(key);
                 return prop ? "function" == typeof prop.childDecorate ? prop.childDecorate(value) : value : component.looseProps ? value : void 0;
             }
-            var _extends = Object.assign || function(target) {
+            var child__extends = Object.assign || function(target) {
                 for (var i = 1; i < arguments.length; i++) {
                     var source = arguments[i];
                     for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
                 }
                 return target;
-            }, _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+            }, child__typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
                 return typeof obj;
             } : function(obj) {
                 return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
@@ -5362,16 +4771,16 @@
                             if ("file:" === window.location.protocol) throw new Error("Can not get props from file:// domain");
                             throw new Error("Parent component window is on a different domain - expected " + Object(cross_domain_utils_src.getDomain)() + " - can not retrieve props");
                         }
-                        var global = Object(lib.z)(parentComponentWindow);
+                        var global = Object(src_lib.y)(parentComponentWindow);
                         if (!global) throw new Error("Can not find global for parent component - can not retrieve props");
                         props = JSON.parse(global.props[componentMeta.uid]);
                     }
                     if (!props) throw new Error("Initial props not found");
-                    return Object(lib.k)(props, function(_ref6) {
+                    return Object(src_lib.j)(props, function(_ref6) {
                         var fullKey = _ref6.fullKey, self = _ref6.self, args = _ref6.args;
                         return _this3.onInit.then(function() {
-                            var func = Object(lib.v)(_this3.props, fullKey);
-                            if ("function" != typeof func) throw new TypeError("Expected " + fullKey + " to be function, got " + (void 0 === func ? "undefined" : _typeof(func)));
+                            var func = Object(src_lib.u)(_this3.props, fullKey);
+                            if ("function" != typeof func) throw new TypeError("Expected " + fullKey + " to be function, got " + (void 0 === func ? "undefined" : child__typeof(func)));
                             return func.apply(self, args);
                         });
                     });
@@ -5393,21 +4802,20 @@
                         }
                         return result;
                     }(this.component, props, origin, required);
-                    Object(lib.t)(this.props, normalizedProps);
-                    this.props.logLevel && Object(lib.S)(this.props.logLevel);
+                    Object(src_lib.s)(this.props, normalizedProps);
                     for (var _i6 = 0, _onPropHandlers2 = this.onPropHandlers, _length6 = null == _onPropHandlers2 ? 0 : _onPropHandlers2.length; _i6 < _length6; _i6++) _onPropHandlers2[_i6].call(this, this.props);
                 };
                 ChildComponent.prototype.sendToParent = function(name) {
                     var data = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, parentWindow = window_getParentComponentWindow();
                     if (!parentWindow) throw new Error("Can not find parent component window to message");
                     this.component.log("send_to_parent_" + name);
-                    return Object(post_robot_src.send)(parentWindow, name, data, _extends({
+                    return _send(parentWindow, name, data, child__extends({
                         domain: window_getParentDomain()
                     }, options));
                 };
                 ChildComponent.prototype.setWindows = function() {
-                    if (window.__activeXComponent__) throw this.component.createError("Can not attach multiple components to the same window");
-                    window.__activeXComponent__ = this;
+                    if (window.__activeZoidComponent__) throw this.component.createError("Can not attach multiple components to the same window");
+                    window.__activeZoidComponent__ = this;
                     if (!window_getParentComponentWindow()) throw this.component.createError("Can not find parent window");
                     var componentMeta = getComponentMeta();
                     if (componentMeta.tag !== this.component.tag) throw this.component.createError("Parent is " + componentMeta.tag + " - can not attach " + this.component.tag);
@@ -5429,7 +4837,7 @@
                 };
                 ChildComponent.prototype.getAutoResize = function() {
                     var width = !1, height = !1, autoResize = this.autoResize || this.component.autoResize;
-                    if ("object" === (void 0 === autoResize ? "undefined" : _typeof(autoResize))) {
+                    if ("object" === (void 0 === autoResize ? "undefined" : child__typeof(autoResize))) {
                         width = Boolean(autoResize.width);
                         height = Boolean(autoResize.height);
                     } else if (autoResize) {
@@ -5439,7 +4847,7 @@
                     return {
                         width: width,
                         height: height,
-                        element: autoResize.element ? Object(lib.x)(autoResize.element) : window.navigator.userAgent.match(/MSIE (9|10)\./) ? document.body : document.documentElement
+                        element: autoResize.element ? Object(src_lib.w)(autoResize.element) : window.navigator.userAgent.match(/MSIE (9|10)\./) ? document.body : document.documentElement
                     };
                 };
                 ChildComponent.prototype.watchForResize = function() {
@@ -5447,9 +4855,9 @@
                     if ((width || height) && this.context !== constants.CONTEXT_TYPES.POPUP && !this.watchingForResize) {
                         this.watchingForResize = !0;
                         return src.a.try(function() {
-                            return lib.n;
+                            return src_lib.m;
                         }).then(function() {
-                            if (!Object(lib.m)(element, {
+                            if (!Object(src_lib.l)(element, {
                                 width: width,
                                 height: height
                             })) return _this5.resizeToElement(element, {
@@ -5457,8 +4865,8 @@
                                 height: height
                             });
                         }).then(function() {
-                            return Object(lib.h)(function() {
-                                return Object(lib.K)(element, {
+                            return Object(src_lib.h)(function() {
+                                return Object(src_lib.K)(element, {
                                     width: width,
                                     height: height
                                 }).then(function() {
@@ -5491,20 +4899,20 @@
                     var _this7 = this;
                     return src.a.resolve().then(function() {
                         _this7.component.log("resize", {
-                            width: Object(lib.W)(width),
-                            height: Object(lib.W)(height)
+                            width: Object(src_lib.V)(width),
+                            height: Object(src_lib.V)(height)
                         });
                         if (_this7.context !== constants.CONTEXT_TYPES.POPUP) return _this7.sendToParent(constants.POST_MESSAGE.RESIZE, {
                             width: width,
                             height: height
-                        }).then(lib.I);
+                        }).then(src_lib.I);
                     });
                 };
                 ChildComponent.prototype.resizeToElement = function(el, _ref8) {
                     var _this8 = this, width = _ref8.width, height = _ref8.height, history = [];
                     return function resize() {
                         return src.a.try(function() {
-                            for (var tracker = Object(lib.Z)(el, {
+                            for (var tracker = Object(src_lib.Y)(el, {
                                 width: width,
                                 height: height
                             }), dimensions = tracker.check().dimensions, _i8 = 0, _length8 = null == history ? 0 : history.length; _i8 < _length8; _i8++) {
@@ -5522,10 +4930,10 @@
                     }();
                 };
                 ChildComponent.prototype.hide = function() {
-                    return this.sendToParent(constants.POST_MESSAGE.HIDE).then(lib.I);
+                    return this.sendToParent(constants.POST_MESSAGE.HIDE).then(src_lib.I);
                 };
                 ChildComponent.prototype.show = function() {
-                    return this.sendToParent(constants.POST_MESSAGE.SHOW).then(lib.I);
+                    return this.sendToParent(constants.POST_MESSAGE.SHOW).then(src_lib.I);
                 };
                 ChildComponent.prototype.userClose = function() {
                     return this.close(constants.CLOSE_REASONS.USER_CLOSED);
@@ -5543,7 +4951,7 @@
                     });
                 };
                 ChildComponent.prototype.destroy = function() {
-                    return Object(client.c)().then(function() {
+                    return src.a.try(function() {
                         window.close();
                     });
                 };
@@ -5552,13 +4960,13 @@
                     window.focus();
                 };
                 ChildComponent.prototype.error = function(err) {
-                    var stringifiedError = Object(lib.X)(err);
+                    var stringifiedError = Object(src_lib.W)(err);
                     this.component.logError("error", {
                         error: stringifiedError
                     });
                     return this.sendToParent(constants.POST_MESSAGE.ERROR, {
                         error: stringifiedError
-                    }).then(lib.I);
+                    }).then(src_lib.I);
                 };
                 return ChildComponent;
             }(base_BaseComponent), drivers__extends = Object.assign || function(target) {
@@ -5576,7 +4984,7 @@
                 needsBridge: !1,
                 open: function(url) {
                     var _this = this, attributes = this.component.attributes.iframe || {};
-                    this.iframe = Object(lib.B)({
+                    this.iframe = Object(src_lib.A)({
                         url: url,
                         attributes: drivers__extends({
                             name: this.childWindowName,
@@ -5585,7 +4993,7 @@
                         }, attributes),
                         class: [ constants.CLASS_NAMES.COMPONENT_FRAME, constants.CLASS_NAMES.INVISIBLE ]
                     }, this.element);
-                    return Object(lib.f)(this.iframe).then(function(frameWindow) {
+                    return Object(src_lib.f)(this.iframe).then(function(frameWindow) {
                         _this.window = frameWindow;
                         var detectClose = function() {
                             return src.a.try(function() {
@@ -5593,14 +5001,14 @@
                             }).finally(function() {
                                 return _this.destroy();
                             });
-                        }, iframeWatcher = Object(lib._2)(_this.iframe, detectClose), elementWatcher = Object(lib._2)(_this.element, detectClose);
+                        }, iframeWatcher = Object(src_lib._2)(_this.iframe, detectClose), elementWatcher = Object(src_lib._2)(_this.element, detectClose);
                         _this.clean.register("destroyWindow", function() {
                             iframeWatcher.cancel();
                             elementWatcher.cancel();
-                            Object(post_robot_src.cleanUpWindow)(_this.window);
+                            cleanUpWindow(_this.window);
                             delete _this.window;
                             if (_this.iframe) {
-                                Object(lib.l)(_this.iframe);
+                                Object(src_lib.k)(_this.iframe);
                                 delete _this.iframe;
                             }
                         });
@@ -5608,18 +5016,18 @@
                 },
                 openPrerender: function() {
                     var _this2 = this, attributes = this.component.attributes.iframe || {};
-                    this.prerenderIframe = Object(lib.B)({
+                    this.prerenderIframe = Object(src_lib.A)({
                         attributes: drivers__extends({
                             name: "__prerender__" + this.childWindowName,
                             scrolling: this.component.scrolling ? "yes" : "no"
                         }, attributes),
                         class: [ constants.CLASS_NAMES.PRERENDER_FRAME, constants.CLASS_NAMES.VISIBLE ]
                     }, this.element);
-                    return Object(lib.f)(this.prerenderIframe).then(function(prerenderFrameWindow) {
+                    return Object(src_lib.f)(this.prerenderIframe).then(function(prerenderFrameWindow) {
                         _this2.prerenderWindow = prerenderFrameWindow;
                         _this2.clean.register("destroyPrerender", function() {
                             if (_this2.prerenderIframe) {
-                                Object(lib.l)(_this2.prerenderIframe);
+                                Object(src_lib.k)(_this2.prerenderIframe);
                                 delete _this2.prerenderIframe;
                             }
                         });
@@ -5627,12 +5035,12 @@
                 },
                 switchPrerender: function() {
                     var _this3 = this;
-                    Object(lib.a)(this.prerenderIframe, constants.CLASS_NAMES.INVISIBLE);
-                    Object(lib.P)(this.prerenderIframe, constants.CLASS_NAMES.VISIBLE);
-                    Object(lib.a)(this.iframe, constants.CLASS_NAMES.VISIBLE);
-                    Object(lib.P)(this.iframe, constants.CLASS_NAMES.INVISIBLE);
+                    Object(src_lib.a)(this.prerenderIframe, constants.CLASS_NAMES.INVISIBLE);
+                    Object(src_lib.P)(this.prerenderIframe, constants.CLASS_NAMES.VISIBLE);
+                    Object(src_lib.a)(this.iframe, constants.CLASS_NAMES.VISIBLE);
+                    Object(src_lib.P)(this.iframe, constants.CLASS_NAMES.INVISIBLE);
                     setTimeout(function() {
-                        _this3.prerenderIframe && Object(lib.l)(_this3.prerenderIframe);
+                        _this3.prerenderIframe && Object(src_lib.k)(_this3.prerenderIframe);
                     }, 1e3);
                 },
                 delegateOverrides: {
@@ -5668,19 +5076,19 @@
                 },
                 resize: function(width, height) {
                     if (width) {
-                        this.container.style.width = Object(lib.Y)(width);
-                        this.element.style.width = Object(lib.Y)(width);
+                        this.container.style.width = Object(src_lib.X)(width);
+                        this.element.style.width = Object(src_lib.X)(width);
                     }
                     if (height) {
-                        this.container.style.height = Object(lib.Y)(height);
-                        this.element.style.height = Object(lib.Y)(height);
+                        this.container.style.height = Object(src_lib.X)(height);
+                        this.element.style.height = Object(src_lib.X)(height);
                     }
                 },
                 show: function() {
-                    Object(lib.V)(this.element);
+                    Object(src_lib.U)(this.element);
                 },
                 hide: function() {
-                    Object(lib.A)(this.element);
+                    Object(src_lib.z)(this.element);
                 },
                 loadUrl: function(url) {
                     this.iframe.setAttribute("src", url);
@@ -5704,10 +5112,10 @@
                                 y: y
                             };
                         }({
-                            width: width = Object(lib.J)(width, window.outerWidth),
-                            height: height = Object(lib.J)(height, window.outerWidth)
+                            width: width = Object(src_lib.J)(width, window.outerWidth),
+                            height: height = Object(src_lib.J)(height, window.outerWidth)
                         }), x = _getPosition.x, y = _getPosition.y, attributes = _this5.component.attributes.popup || {};
-                        _this5.window = Object(lib.M)(url || "", drivers__extends({
+                        _this5.window = Object(src_lib.M)(url || "", drivers__extends({
                             name: _this5.childWindowName,
                             width: width,
                             height: height,
@@ -5723,7 +5131,7 @@
                         _this5.clean.register("destroyWindow", function() {
                             if (_this5.window) {
                                 _this5.window.close();
-                                Object(post_robot_src.cleanUpWindow)(_this5.window);
+                                cleanUpWindow(_this5.window);
                                 delete _this5.window;
                                 delete _this5.prerenderWindow;
                             }
@@ -5732,7 +5140,7 @@
                     });
                 },
                 openPrerender: function() {
-                    return src.a.try(lib.I);
+                    return src.a.try(src_lib.I);
                 },
                 resize: function() {},
                 hide: function() {
@@ -5771,65 +5179,11 @@
                     this.window.location = url;
                 }
             };
-            var validate__typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+            var _class, props__typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
                 return typeof obj;
             } : function(obj) {
                 return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-            };
-            function validateProp(prop, key, value, props) {
-                var required = !(arguments.length > 4 && void 0 !== arguments[4]) || arguments[4];
-                if (null !== value && void 0 !== value && "" !== value) {
-                    if (!value || "function" != typeof value.then || !prop.promise) {
-                        if ("function" === prop.type) {
-                            if ("function" != typeof value) throw new TypeError("Prop is not of type function: " + key);
-                        } else if ("string" === prop.type) {
-                            if ("string" != typeof value) throw new TypeError("Prop is not of type string: " + key);
-                        } else if ("object" === prop.type) try {
-                            JSON.stringify(value);
-                        } catch (err) {
-                            throw new Error("Unable to serialize prop: " + key);
-                        } else if ("number" === prop.type && isNaN(parseInt(value, 10))) throw new TypeError("Prop is not a number: " + key);
-                        "function" == typeof prop.validate && value && prop.validate(value, props);
-                    }
-                } else if (required && !1 !== prop.required && !prop.hasOwnProperty("def")) throw new Error("Prop is required: " + key);
-            }
-            var props__typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
-                return typeof obj;
-            } : function(obj) {
-                return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-            };
-            function normalizeProp(component, instance, props, key, value) {
-                var prop = component.getProp(key), resultValue = void 0;
-                !(resultValue = prop.value ? prop.value : !prop.def || props.hasOwnProperty(key) && function(value) {
-                    return null !== value && void 0 !== value && "" !== value;
-                }(value) ? value : prop.def.call(component, props)) && prop.alias && props[prop.alias] && (resultValue = props[prop.alias]);
-                var decorated = !1;
-                if (prop.decorate && null !== resultValue && void 0 !== resultValue) {
-                    resultValue = prop.decorate.call(instance, resultValue, props);
-                    decorated = !0;
-                }
-                var type = prop.type;
-                if ("boolean" === type) resultValue = Boolean(resultValue); else if ("function" === type) {
-                    if (!resultValue && prop.noop) {
-                        resultValue = lib.I;
-                        !decorated && prop.decorate && (resultValue = prop.decorate.call(instance, lib.I, props));
-                    }
-                    if (resultValue && "function" == typeof resultValue) {
-                        resultValue = resultValue.bind(instance);
-                        prop.denodeify && (resultValue = Object(lib.j)(resultValue));
-                        prop.promisify && (resultValue = Object(lib.O)(resultValue));
-                        var original = resultValue;
-                        resultValue = function() {
-                            component.log("call_prop_" + key);
-                            return original.apply(this, arguments);
-                        };
-                        prop.once && (resultValue = Object(lib.L)(resultValue));
-                        prop.memoize && (resultValue = Object(lib.G)(resultValue));
-                    }
-                } else "string" === type || "object" === type || "number" === type && void 0 !== resultValue && (resultValue = parseInt(resultValue, 10));
-                return resultValue;
-            }
-            var _class, parent__extends = Object.assign || function(target) {
+            }, parent__extends = Object.assign || function(target) {
                 for (var i = 1; i < arguments.length; i++) {
                     var source = arguments[i];
                     for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
@@ -5876,8 +5230,8 @@
                 }
                 return desc;
             }
-            lib.y.props = lib.y.props || {};
-            lib.y.windows = lib.y.windows || {};
+            src_lib.x.props = src_lib.x.props || {};
+            src_lib.x.windows = src_lib.x.windows || {};
             var parent_ParentComponent = (_applyDecoratedDescriptor((_class = function(_BaseComponent) {
                 !function(subClass, superClass) {
                     if ("function" != typeof superClass && null !== superClass) throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
@@ -5904,7 +5258,6 @@
                     _this.validateParentDomain();
                     _this.context = context;
                     _this.setProps(props);
-                    _this.props.logLevel && Object(lib.S)(_this.props.logLevel);
                     _this.childWindowName = _this.buildChildWindowName({
                         renderTo: window
                     });
@@ -5923,7 +5276,7 @@
                         _this2.component.log("render_" + _this2.context, {
                             context: _this2.context,
                             element: element,
-                            loadUrl: Object(lib.W)(loadUrl)
+                            loadUrl: Object(src_lib.V)(loadUrl)
                         });
                         var tasks = {};
                         tasks.onRender = _this2.props.onRender();
@@ -5955,7 +5308,7 @@
                         });
                         tasks.linkDomain = src.a.all([ tasks.getDomain, tasks.open ]).then(function(_ref3) {
                             var domain = _ref3[0];
-                            if (post_robot_src.bridge && "string" == typeof domain) return post_robot_src.bridge.linkUrl(_this2.window, domain);
+                            if (bridge && "string" == typeof domain) return bridge.linkUrl(_this2.window, domain);
                         });
                         if (!_this2.html) {
                             tasks.createPrerenderTemplate = tasks.openPrerender.then(function() {
@@ -5990,7 +5343,7 @@
                 };
                 ParentComponent.prototype.getOutlet = function() {
                     var outlet = document.createElement("div");
-                    Object(lib.a)(outlet, constants.CLASS_NAMES.OUTLET);
+                    Object(src_lib.a)(outlet, constants.CLASS_NAMES.OUTLET);
                     return outlet;
                 };
                 ParentComponent.prototype.validateParentDomain = function() {
@@ -6005,7 +5358,7 @@
                         if (element && "string" != typeof element) throw new Error("Element passed to renderTo must be a string selector, got " + (void 0 === element ? "undefined" : parent__typeof(element)) + " " + element);
                         _this3.checkAllowRenderTo(win);
                         _this3.component.log("render_" + _this3.context + "_to_win", {
-                            element: Object(lib.W)(element),
+                            element: Object(src_lib.V)(element),
                             context: _this3.context
                         });
                         _this3.childWindowName = _this3.buildChildWindowName({
@@ -6019,7 +5372,7 @@
                     var _this4 = this;
                     return src.a.try(function() {
                         _this4.html = _this4.buildUrl().then(function(url) {
-                            return Object(lib.N)(url).then(function(html) {
+                            return Object(src_lib.N)(url).then(function(html) {
                                 return '\n                        <base href="' + url.split("/").slice(0, 3).join("/") + '">\n\n                        ' + html + "\n\n                        <script>\n                            if (window.history && window.history.pushState) {\n                                window.history.pushState({}, '', '/" + url.split("/").slice(3).join("/") + "');\n                            }\n                        <\/script>\n                    ";
                             });
                         });
@@ -6030,7 +5383,7 @@
                     return src.a.try(function() {
                         if (!_this5.html) throw new Error("Html not prefetched");
                         return _this5.html.then(function(html) {
-                            return Object(lib._4)(_this5.window, html);
+                            return Object(src_lib._4)(_this5.window, html);
                         });
                     });
                 };
@@ -6060,10 +5413,10 @@
                         ref: constants.WINDOW_REFERENCES.PARENT,
                         distance: Object(cross_domain_utils_src.getDistanceFromTop)(window)
                     };
-                    var uid = Object(lib._0)();
-                    lib.y.windows[uid] = window;
+                    var uid = Object(src_lib.Z)();
+                    src_lib.x.windows[uid] = window;
                     this.clean.register(function() {
-                        delete lib.y.windows[uid];
+                        delete src_lib.x.windows[uid];
                     });
                     return {
                         ref: constants.WINDOW_REFERENCES.GLOBAL,
@@ -6073,10 +5426,10 @@
                 ParentComponent.prototype.getRenderParentRef = function() {
                     var renderToWindow = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window;
                     if (renderToWindow === window) return this.getComponentParentRef(renderToWindow);
-                    var uid = Object(lib._0)();
-                    lib.y.windows[uid] = renderToWindow;
+                    var uid = Object(src_lib.Z)();
+                    src_lib.x.windows[uid] = renderToWindow;
                     this.clean.register(function() {
-                        delete lib.y.windows[uid];
+                        delete src_lib.x.windows[uid];
                     });
                     return {
                         ref: constants.WINDOW_REFERENCES.GLOBAL,
@@ -6084,7 +5437,7 @@
                     };
                 };
                 ParentComponent.prototype.buildChildWindowName = function() {
-                    var _ref6$renderTo = (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}).renderTo, renderTo = void 0 === _ref6$renderTo ? window : _ref6$renderTo, sameDomain = Object(cross_domain_utils_src.isSameDomain)(renderTo), uid = Object(lib._0)(), tag = this.component.tag, sProps = Object(lib.R)(this.getPropsForChild()), componentParent = this.getComponentParentRef(renderTo), renderParent = this.getRenderParentRef(renderTo), props = sameDomain || this.component.unsafeRenderTo ? {
+                    var _ref6$renderTo = (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}).renderTo, renderTo = void 0 === _ref6$renderTo ? window : _ref6$renderTo, sameDomain = Object(cross_domain_utils_src.isSameDomain)(renderTo), uid = Object(src_lib.Z)(), tag = this.component.tag, sProps = Object(src_lib.R)(this.getPropsForChild()), componentParent = this.getComponentParentRef(renderTo), renderParent = this.getRenderParentRef(renderTo), props = sameDomain || this.component.unsafeRenderTo ? {
                         type: constants.INITIAL_PROPS.RAW,
                         value: sProps
                     } : {
@@ -6092,21 +5445,20 @@
                         uid: uid
                     };
                     if (props.type === constants.INITIAL_PROPS.UID) {
-                        lib.y.props[uid] = JSON.stringify(sProps);
+                        src_lib.x.props[uid] = JSON.stringify(sProps);
                         this.clean.register(function() {
-                            delete lib.y.props[uid];
+                            delete src_lib.x.props[uid];
                         });
                     }
-                    return function(name, version) {
-                        var options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-                        options.id = Object(lib._0)();
+                    return function(name) {
+                        var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+                        options.id = Object(src_lib.Z)();
                         options.domain = Object(cross_domain_utils_src.getDomain)(window);
-                        var str, encodedName = normalize(name), encodedVersion = normalize(version), encodedOptions = (str = JSON.stringify(options), 
+                        var str, encodedName = name.replace(/^[^a-z0-9A-Z]+|[^a-z0-9A-Z]+$/g, "").replace(/[^a-z0-9A-Z]+/g, "_"), encodedOptions = (str = JSON.stringify(options), 
                         base32_default.a.encode(str).replace(/\=/g, "").toLowerCase());
                         if (!encodedName) throw new Error("Invalid name: " + name + " - must contain alphanumeric characters");
-                        if (!encodedVersion) throw new Error("Invalid version: " + version + " - must contain alphanumeric characters");
-                        return [ constants.XCOMPONENT, encodedName, encodedVersion, encodedOptions, "" ].join("__");
-                    }(this.component.name, this.component.version, {
+                        return [ "xcomponent", encodedName, encodedOptions, "" ].join("__");
+                    }(this.component.name, {
                         uid: uid,
                         tag: tag,
                         componentParent: componentParent,
@@ -6117,61 +5469,59 @@
                 ParentComponent.prototype.sendToParent = function(name, data) {
                     if (!window_getParentComponentWindow()) throw new Error("Can not find parent component window to message");
                     this.component.log("send_to_parent_" + name);
-                    return Object(post_robot_src.send)(window_getParentComponentWindow(), name, data, {
+                    return _send(window_getParentComponentWindow(), name, data, {
                         domain: window_getParentDomain()
                     });
                 };
                 ParentComponent.prototype.setProps = function(props) {
-                    var required = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
-                    !function(component, props) {
-                        var required = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
-                        if ((props = props || {}).env && "object" === validate__typeof(component.url) && !component.url[props.env]) throw new Error("Invalid env: " + props.env);
-                        for (var _i2 = 0, _component$getPropNam2 = component.getPropNames(), _length2 = null == _component$getPropNam2 ? 0 : _component$getPropNam2.length; _i2 < _length2; _i2++) {
-                            var key = _component$getPropNam2[_i2], prop = component.getProp(key);
-                            if (prop.alias && props.hasOwnProperty(prop.alias)) {
-                                var value = props[prop.alias];
-                                delete props[prop.alias];
-                                props[key] || (props[key] = value);
-                            }
-                        }
-                        for (var _i4 = 0, _Object$keys2 = Object.keys(props), _length4 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i4 < _length4; _i4++) {
-                            var _key = _Object$keys2[_i4], _prop = component.getProp(_key), _value = props[_key];
-                            _prop && validateProp(_prop, _key, _value, props, required);
-                        }
-                        for (var _i6 = 0, _component$getPropNam4 = component.getPropNames(), _length6 = null == _component$getPropNam4 ? 0 : _component$getPropNam4.length; _i6 < _length6; _i6++) {
-                            var _key2 = _component$getPropNam4[_i6], _prop2 = component.getProp(_key2), _value2 = props[_key2];
-                            _prop2 && !props.hasOwnProperty(_key2) && validateProp(_prop2, _key2, _value2, props, required);
-                        }
-                    }(this.component, props, required);
+                    var isUpdate = arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
                     this.component.validate && this.component.validate(this.component, props);
                     this.props = this.props || {};
-                    Object(lib.t)(this.props, function(component, instance, props) {
-                        var result = {};
+                    Object(src_lib.s)(this.props, function(component, instance, props) {
+                        var isUpdate = arguments.length > 3 && void 0 !== arguments[3] && arguments[3], result = {};
                         props = props || {};
-                        for (var _i2 = 0, _Object$keys2 = Object.keys(props), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
+                        for (var propNames = isUpdate ? [] : component.getPropNames(), _i2 = 0, _Object$keys2 = Object.keys(props), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
                             var key = _Object$keys2[_i2];
-                            -1 !== component.getPropNames().indexOf(key) ? result[key] = normalizeProp(component, instance, props, key, props[key]) : result[key] = props[key];
+                            -1 === propNames.indexOf(key) && propNames.push(key);
                         }
-                        for (var _i4 = 0, _component$getPropNam2 = component.getPropNames(), _length4 = null == _component$getPropNam2 ? 0 : _component$getPropNam2.length; _i4 < _length4; _i4++) {
-                            var _key = _component$getPropNam2[_i4];
-                            if (!(props.hasOwnProperty(_key) || instance.props && instance.props.hasOwnProperty(_key))) {
-                                var normalizedProp = normalizeProp(component, instance, props, _key, props[_key]);
-                                void 0 !== normalizedProp && (result[_key] = normalizedProp);
+                        for (var _i4 = 0, _length4 = null == propNames ? 0 : propNames.length; _i4 < _length4; _i4++) {
+                            var _key = propNames[_i4], propDef = component.getProp(_key), value = props[_key];
+                            if (!propDef) {
+                                if (component.looseProps) {
+                                    result[_key] = value;
+                                    continue;
+                                }
+                                throw new Error("Unrecognized prop: " + _key);
+                            }
+                            !Object(src_lib.C)(value) && propDef.alias && (value = props[propDef.alias]);
+                            !Object(src_lib.C)(value) && propDef.value && (value = propDef.value());
+                            !Object(src_lib.C)(value) && propDef.def && (value = propDef.def(props, component));
+                            if (Object(src_lib.C)(value)) {
+                                if ("array" === propDef.type ? !Array.isArray(value) : (void 0 === value ? "undefined" : props__typeof(value)) !== propDef.type) throw new TypeError("Prop is not of type " + propDef.type + ": " + _key);
+                            } else if (!1 !== propDef.required) throw new Error("Expected prop " + _key + " to be passed");
+                            result[_key] = value;
+                        }
+                        for (var _i6 = 0, _Object$keys4 = Object.keys(result), _length6 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i6 < _length6; _i6++) {
+                            var _key2 = _Object$keys4[_i6], _propDef = component.getProp(_key2), _value = result[_key2];
+                            if (_propDef) {
+                                _propDef.validate && _propDef.validate(_value, result);
+                                _propDef.decorate && (result[_key2] = _propDef.decorate(_value, result));
+                                result[_key2] && "function" === _propDef.type && (result[_key2] = result[_key2].bind(instance));
                             }
                         }
                         return result;
-                    }(this.component, this, props));
+                    }(this.component, this, props, isUpdate));
                 };
                 ParentComponent.prototype.buildUrl = function() {
                     var propsDef, props, params, _this7 = this;
-                    return src.a.all([ this.props.url, (propsDef = parent__extends({}, this.component.props, this.component.builtinProps), 
+                    return (propsDef = parent__extends({}, this.component.props, this.component.builtinProps), 
                     props = this.props, params = {}, src.a.all(Object.keys(props).map(function(key) {
                         var prop = propsDef[key];
                         if (prop) return src.a.resolve().then(function() {
                             var value = props[key];
                             if (value && prop.queryParam) return value;
                         }).then(function(value) {
-                            if (value) return src.a.all([ function(prop, key, value) {
+                            if (null !== value && void 0 !== value) return src.a.all([ function(prop, key, value) {
                                 return src.a.try(function() {
                                     return "function" == typeof prop.queryParam ? prop.queryParam(value) : "string" == typeof prop.queryParam ? prop.queryParam : key;
                                 });
@@ -6181,13 +5531,13 @@
                                 });
                             }(prop, 0, value) ]).then(function(_ref) {
                                 var queryParam = _ref[0], queryValue = _ref[1], result = void 0;
-                                if ("boolean" == typeof queryValue) result = "1"; else if ("string" == typeof queryValue) result = queryValue.toString(); else {
+                                if ("boolean" == typeof queryValue) result = queryValue.toString(); else if ("string" == typeof queryValue) result = queryValue.toString(); else {
                                     if ("function" == typeof queryValue) return;
                                     if ("object" === (void 0 === queryValue ? "undefined" : props__typeof(queryValue)) && null !== queryValue) {
                                         if ("json" !== prop.serialization) {
-                                            result = Object(lib.o)(queryValue, key);
-                                            for (var _i6 = 0, _Object$keys4 = Object.keys(result), _length6 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i6 < _length6; _i6++) {
-                                                var dotkey = _Object$keys4[_i6];
+                                            result = Object(src_lib.n)(queryValue, key);
+                                            for (var _i8 = 0, _Object$keys6 = Object.keys(result), _length8 = null == _Object$keys6 ? 0 : _Object$keys6.length; _i8 < _length8; _i8++) {
+                                                var dotkey = _Object$keys6[_i8];
                                                 params[dotkey] = result[dotkey];
                                             }
                                             return;
@@ -6200,24 +5550,17 @@
                         });
                     })).then(function() {
                         return params;
-                    })) ]).then(function(_ref7) {
-                        var url = _ref7[0], query = _ref7[1];
-                        return url && !_this7.component.getValidDomain(url) ? url : src.a.try(function() {
-                            return url || _this7.component.getUrl(_this7.props.env, _this7.props);
-                        }).then(function(finalUrl) {
-                            query[constants.XCOMPONENT] = "1";
-                            return Object(lib.u)(finalUrl, {
-                                query: query
-                            });
+                    })).then(function(query) {
+                        var url = _this7.component.getUrl(_this7.props.env, _this7.props);
+                        return Object(src_lib.t)(url, {
+                            query: parent__extends({}, query)
                         });
                     });
                 };
                 ParentComponent.prototype.getDomain = function() {
                     var _this8 = this;
                     return src.a.try(function() {
-                        return _this8.props.url;
-                    }).then(function(url) {
-                        return _this8.component.getDomain(url, _this8.props.env) || (_this8.component.buildUrl ? src.a.try(function() {
+                        return _this8.component.getDomain(null, _this8.props.env) || (_this8.component.buildUrl ? src.a.try(function() {
                             return _this8.component.buildUrl(_this8.props);
                         }).then(function(builtUrl) {
                             return _this8.component.getDomain(builtUrl, _this8.props.env);
@@ -6236,7 +5579,7 @@
                 };
                 ParentComponent.prototype.updateProps = function(props) {
                     var _this9 = this;
-                    this.setProps(props, !1);
+                    this.setProps(props, !0);
                     return this.onInit.then(function() {
                         if (_this9.childExports) return _this9.childExports.updateProps(_this9.getPropsForChild());
                         throw new Error("Child exports were not available");
@@ -6245,25 +5588,20 @@
                 ParentComponent.prototype.openBridge = function(domain) {
                     var _this10 = this;
                     return src.a.try(function() {
-                        if (post_robot_src.bridge && _this10.driver.needsBridge) {
+                        if (bridge && _this10.driver.needsBridge) {
                             var needsBridgeParams = {
                                 win: _this10.window
                             };
                             domain && (needsBridgeParams.domain = domain);
-                            var needsBridge = post_robot_src.bridge.needsBridge(needsBridgeParams), bridgeUrl = _this10.component.getBridgeUrl(_this10.props.env);
+                            var needsBridge = bridge.needsBridge(needsBridgeParams), bridgeUrl = _this10.component.getBridgeUrl(_this10.props.env);
                             if (bridgeUrl) {
-                                bridgeUrl = Object(lib.u)(bridgeUrl, {
-                                    query: {
-                                        version: _this10.component.version
-                                    }
-                                });
                                 var bridgeDomain = _this10.component.getBridgeDomain(_this10.props.env);
                                 if (!bridgeDomain) throw new Error("Can not determine domain for bridge");
-                                return needsBridge ? post_robot_src.bridge.openBridge(bridgeUrl, bridgeDomain).then(function(result) {
+                                return needsBridge ? bridge.openBridge(bridgeUrl, bridgeDomain).then(function(result) {
                                     if (result) return result;
                                 }) : void 0;
                             }
-                            if (needsBridge && domain && !post_robot_src.bridge.hasBridge(domain, domain)) throw new Error("Bridge url needed to render " + _this10.context);
+                            if (needsBridge && domain && !bridge.hasBridge(domain, domain)) throw new Error("Bridge url needed to render " + _this10.context);
                         }
                     });
                 };
@@ -6289,7 +5627,7 @@
                     });
                 };
                 ParentComponent.prototype.elementReady = function(element) {
-                    return Object(lib.p)(element).then(lib.I);
+                    return Object(src_lib.o)(element).then(src_lib.I);
                 };
                 ParentComponent.prototype.delegate = function(win) {
                     var _this14 = this;
@@ -6303,7 +5641,7 @@
                         var propName = _component$getPropNam2[_i4];
                         this.component.getProp(propName).allowDelegate && (props[propName] = this.props[propName]);
                     }
-                    for (var delegate = Object(post_robot_src.send)(win, constants.POST_MESSAGE.DELEGATE + "_" + this.component.name, {
+                    for (var delegate = _send(win, constants.POST_MESSAGE.DELEGATE + "_" + this.component.name, {
                         context: this.context,
                         env: this.props.env,
                         options: {
@@ -6328,12 +5666,12 @@
                                 }
                             }
                         }
-                    }).then(function(_ref8) {
-                        var data = _ref8.data;
+                    }).then(function(_ref7) {
+                        var data = _ref7.data;
                         _this14.clean.register(data.destroy);
                         return data;
                     }).catch(function(err) {
-                        throw new Error("Unable to delegate rendering. Possibly the component is not loaded in the target window.\n\n" + Object(lib.X)(err));
+                        throw new Error("Unable to delegate rendering. Possibly the component is not loaded in the target window.\n\n" + Object(src_lib.W)(err));
                     }), overrides = this.driver.delegateOverrides, _loop = function(_i6, _Object$keys4, _length6) {
                         var key = _Object$keys4[_i6], val = overrides[key];
                         if (val === constants.DELEGATE.CALL_ORIGINAL) return "continue";
@@ -6361,11 +5699,10 @@
                     this.clean.register("destroyCloseWindowListener", closeWindowListener.cancel);
                 };
                 ParentComponent.prototype.watchForUnload = function() {
-                    var _this17 = this, onunload = Object(lib.L)(function() {
+                    var _this17 = this, onunload = Object(src_lib.L)(function() {
                         _this17.component.log("navigate_away");
-                        Object(client.c)();
                         _this17.destroyComponent();
-                    }), unloadWindowListener = Object(lib.b)(window, "unload", onunload);
+                    }), unloadWindowListener = Object(src_lib.b)(window, "unload", onunload);
                     this.clean.register("destroyUnloadWindowListener", unloadWindowListener.cancel);
                 };
                 ParentComponent.prototype.loadUrl = function(url) {
@@ -6374,15 +5711,12 @@
                         _this18.component.log("load_url");
                         if (window.location.href.split("#")[0] === url.split("#")[0]) {
                             var _query;
-                            url = Object(lib.u)(url, {
-                                query: (_query = {}, _query[Object(lib._0)()] = "1", _query)
+                            url = Object(src_lib.t)(url, {
+                                query: (_query = {}, _query[Object(src_lib.Z)()] = "1", _query)
                             });
                         }
                         return _this18.driver.loadUrl.call(_this18, url);
                     });
-                };
-                ParentComponent.prototype.hijack = function(targetElement) {
-                    targetElement.target = this.childWindowName;
                 };
                 ParentComponent.prototype.runTimeout = function() {
                     var _this19 = this, timeout = this.props.timeout;
@@ -6402,8 +5736,8 @@
                     }
                 };
                 ParentComponent.prototype.listeners = function() {
-                    var _ref9;
-                    return (_ref9 = {})[constants.POST_MESSAGE.INIT] = function(source, data) {
+                    var _ref8;
+                    return (_ref8 = {})[constants.POST_MESSAGE.INIT] = function(source, data) {
                         this.childExports = data.exports;
                         this.onInit.resolve(this);
                         this.timeout && clearTimeout(this.timeout);
@@ -6411,48 +5745,48 @@
                             props: this.getPropsForChild(),
                             context: this.context
                         };
-                    }, _ref9[constants.POST_MESSAGE.CLOSE] = function(source, data) {
+                    }, _ref8[constants.POST_MESSAGE.CLOSE] = function(source, data) {
                         this.close(data.reason);
-                    }, _ref9[constants.POST_MESSAGE.CHECK_CLOSE] = function() {
+                    }, _ref8[constants.POST_MESSAGE.CHECK_CLOSE] = function() {
                         this.checkClose();
-                    }, _ref9[constants.POST_MESSAGE.RESIZE] = function(source, data) {
+                    }, _ref8[constants.POST_MESSAGE.RESIZE] = function(source, data) {
                         var _this20 = this;
                         return src.a.try(function() {
                             if (_this20.driver.allowResize) return _this20.resize(data.width, data.height);
                         });
-                    }, _ref9[constants.POST_MESSAGE.ONRESIZE] = function() {
+                    }, _ref8[constants.POST_MESSAGE.ONRESIZE] = function() {
                         this.event.trigger("resize");
-                    }, _ref9[constants.POST_MESSAGE.HIDE] = function() {
+                    }, _ref8[constants.POST_MESSAGE.HIDE] = function() {
                         this.hide();
-                    }, _ref9[constants.POST_MESSAGE.SHOW] = function() {
+                    }, _ref8[constants.POST_MESSAGE.SHOW] = function() {
                         this.show();
-                    }, _ref9[constants.POST_MESSAGE.ERROR] = function(source, data) {
+                    }, _ref8[constants.POST_MESSAGE.ERROR] = function(source, data) {
                         this.error(new Error(data.error));
-                    }, _ref9;
+                    }, _ref8;
                 };
                 ParentComponent.prototype.resize = function(width, height) {
-                    var _this21 = this, _ref10$waitForTransit = (arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}).waitForTransition, waitForTransition = void 0 === _ref10$waitForTransit || _ref10$waitForTransit;
+                    var _this21 = this, _ref9$waitForTransiti = (arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}).waitForTransition, waitForTransition = void 0 === _ref9$waitForTransiti || _ref9$waitForTransiti;
                     return src.a.try(function() {
                         _this21.component.log("resize", {
-                            height: Object(lib.W)(height),
-                            width: Object(lib.W)(width)
+                            height: Object(src_lib.V)(height),
+                            width: Object(src_lib.V)(width)
                         });
                         _this21.driver.resize.call(_this21, width, height);
                         if (waitForTransition && (_this21.element || _this21.iframe)) {
                             var overflow = void 0;
-                            _this21.element && (overflow = Object(lib.T)(_this21.element, "hidden"));
-                            return Object(lib.q)(_this21.element || _this21.iframe).then(function() {
+                            _this21.element && (overflow = Object(src_lib.S)(_this21.element, "hidden"));
+                            return Object(src_lib.p)(_this21.element || _this21.iframe).then(function() {
                                 overflow && overflow.reset();
                             });
                         }
                     });
                 };
                 ParentComponent.prototype.hide = function() {
-                    this.container && Object(lib.A)(this.container);
+                    this.container && Object(src_lib.z)(this.container);
                     return this.driver.hide.call(this);
                 };
                 ParentComponent.prototype.show = function() {
-                    this.container && Object(lib.V)(this.container);
+                    this.container && Object(src_lib.U)(this.container);
                     return this.driver.show.call(this);
                 };
                 ParentComponent.prototype.checkClose = function() {
@@ -6508,7 +5842,7 @@
                     }).then(function() {
                         return _this26.destroyComponent();
                     }).then(function() {
-                        _this26.childExports && _this26.context === constants.CONTEXT_TYPES.POPUP && !Object(cross_domain_utils_src.isWindowClosed)(win) && _this26.childExports.close().catch(lib.I);
+                        _this26.childExports && _this26.context === constants.CONTEXT_TYPES.POPUP && !Object(cross_domain_utils_src.isWindowClosed)(win) && _this26.childExports.close().catch(src_lib.I);
                     });
                 };
                 ParentComponent.prototype.destroyComponent = function() {
@@ -6522,7 +5856,7 @@
                     return src.a.try(function() {
                         if (_this27.props.onDisplay) return _this27.props.onDisplay();
                     }).then(function() {
-                        if (_this27.container) return Object(lib.U)(_this27.container, constants.ANIMATION_NAMES.SHOW_CONTAINER, _this27.clean.register);
+                        if (_this27.container) return Object(src_lib.T)(_this27.container, constants.ANIMATION_NAMES.SHOW_CONTAINER, _this27.clean.register);
                     });
                 };
                 ParentComponent.prototype.showComponent = function() {
@@ -6530,19 +5864,19 @@
                     return src.a.try(function() {
                         if (_this28.props.onDisplay) return _this28.props.onDisplay();
                     }).then(function() {
-                        if (_this28.element) return Object(lib.U)(_this28.element, constants.ANIMATION_NAMES.SHOW_COMPONENT, _this28.clean.register);
+                        if (_this28.element) return Object(src_lib.T)(_this28.element, constants.ANIMATION_NAMES.SHOW_COMPONENT, _this28.clean.register);
                     });
                 };
                 ParentComponent.prototype.hideContainer = function() {
                     var _this29 = this;
                     return src.a.try(function() {
-                        return _this29.container ? Object(lib.c)(_this29.container, constants.ANIMATION_NAMES.HIDE_CONTAINER, _this29.clean.register) : src.a.resolve();
+                        return _this29.container ? Object(src_lib.c)(_this29.container, constants.ANIMATION_NAMES.HIDE_CONTAINER, _this29.clean.register) : src.a.resolve();
                     });
                 };
                 ParentComponent.prototype.hideComponent = function() {
                     var _this30 = this;
                     return src.a.try(function() {
-                        return _this30.element ? Object(lib.c)(_this30.element, constants.ANIMATION_NAMES.HIDE_COMPONENT, _this30.clean.register) : src.a.resolve();
+                        return _this30.element ? Object(src_lib.c)(_this30.element, constants.ANIMATION_NAMES.HIDE_COMPONENT, _this30.clean.register) : src.a.resolve();
                     });
                 };
                 ParentComponent.prototype.focus = function() {
@@ -6554,7 +5888,7 @@
                     var _this31 = this;
                     return src.a.try(function() {
                         return _this31.component.prerenderTemplate ? src.a.try(function() {
-                            return _this31.prerenderIframe ? Object(lib.e)(_this31.prerenderIframe).then(function() {
+                            return _this31.prerenderIframe ? Object(src_lib.e)(_this31.prerenderIframe).then(function() {
                                 return _this31.prerenderWindow;
                             }) : _this31.prerenderWindow;
                         }).then(function(win) {
@@ -6564,34 +5898,20 @@
                             } catch (err) {
                                 return;
                             }
-                            var el = void 0;
+                            var el = _this31.renderTemplate(_this31.component.prerenderTemplate, {
+                                jsxDom: src_lib.F.bind(doc),
+                                document: doc
+                            });
                             try {
-                                el = _this31.renderTemplate(_this31.component.prerenderTemplate, {
-                                    jsxDom: lib.F.bind(doc),
-                                    document: doc
-                                });
-                            } catch (err) {
-                                _this31.component.logError("preprender_error", {
-                                    err: err.stack ? err.stack : err.toString()
-                                });
-                                console.error(err.stack ? err.stack : err);
-                                return;
-                            }
-                            try {
-                                Object(lib._3)(win, el);
-                            } catch (err) {
-                                _this31.component.logError("preprender_error", {
-                                    err: err.stack ? err.stack : err.toString()
-                                });
-                                console.error(err.stack ? err.stack : err);
-                            }
+                                Object(src_lib._3)(win, el);
+                            } catch (err) {}
                         }) : src.a.resolve();
                     });
                 };
                 ParentComponent.prototype.renderTemplate = function(renderer) {
-                    var _this32 = this, options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, _ref11 = this.component.dimensions || {}, _ref11$width = _ref11.width, width = void 0 === _ref11$width ? constants.DEFAULT_DIMENSIONS.WIDTH + "px" : _ref11$width, _ref11$height = _ref11.height, height = void 0 === _ref11$height ? constants.DEFAULT_DIMENSIONS.HEIGHT + "px" : _ref11$height;
+                    var _this32 = this, options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, _ref10 = this.component.dimensions || {}, _ref10$width = _ref10.width, width = void 0 === _ref10$width ? constants.DEFAULT_DIMENSIONS.WIDTH + "px" : _ref10$width, _ref10$height = _ref10.height, height = void 0 === _ref10$height ? constants.DEFAULT_DIMENSIONS.HEIGHT + "px" : _ref10$height;
                     return renderer.call(this, parent__extends({
-                        id: constants.CLASS_NAMES.XCOMPONENT + "-" + this.component.tag + "-" + this.props.uid,
+                        id: constants.CLASS_NAMES.ZOID + "-" + this.component.tag + "-" + this.props.uid,
                         props: renderer.__xdomain__ ? null : this.props,
                         tag: this.component.tag,
                         context: this.context,
@@ -6611,7 +5931,7 @@
                         on: function(eventName, handler) {
                             return _this32.on(eventName, handler);
                         },
-                        jsxDom: lib.F,
+                        jsxDom: src_lib.F,
                         document: document,
                         dimensions: {
                             width: width,
@@ -6623,19 +5943,19 @@
                     var _this33 = this;
                     return src.a.try(function() {
                         var el;
-                        if (!(el = element ? Object(lib.x)(element) : document.body)) throw new Error("Could not find element to open container into");
+                        if (!(el = element ? Object(src_lib.w)(element) : document.body)) throw new Error("Could not find element to open container into");
                         if (_this33.component.containerTemplate) {
                             var container = _this33.renderTemplate(_this33.component.containerTemplate, {
                                 container: el
                             });
                             _this33.container = container;
-                            Object(lib.A)(_this33.container);
-                            Object(lib.d)(el, _this33.container);
+                            Object(src_lib.z)(_this33.container);
+                            Object(src_lib.d)(el, _this33.container);
                             if (_this33.driver.renderedIntoContainerTemplate) {
                                 _this33.element = _this33.getOutlet();
-                                Object(lib.A)(_this33.element);
+                                Object(src_lib.z)(_this33.element);
                                 if (!_this33.element) throw new Error("Could not find element to render component into");
-                                Object(lib.A)(_this33.element);
+                                Object(src_lib.z)(_this33.element);
                             }
                             _this33.clean.register("destroyContainerTemplate", function() {
                                 _this33.container && _this33.container.parentNode && _this33.container.parentNode.removeChild(_this33.container);
@@ -6652,7 +5972,6 @@
                     return src.a.try(function() {
                         if (_this34.clean.hasTasks()) {
                             _this34.component.log("destroy");
-                            Object(client.c)();
                             return _this34.clean.all();
                         }
                     });
@@ -6677,14 +5996,14 @@
                     }).then(function() {
                         if (_this36.props.onError) return _this36.props.onError(err);
                     }).catch(function(errErr) {
-                        throw new Error("An error was encountered while handling error:\n\n " + Object(lib.X)(err) + "\n\n" + Object(lib.X)(errErr));
+                        throw new Error("An error was encountered while handling error:\n\n " + Object(src_lib.W)(err) + "\n\n" + Object(src_lib.W)(errErr));
                     }).then(function() {
                         if (!_this36.props.onError) throw err;
                     });
                 };
                 ParentComponent.destroyAll = function() {
                     for (var results = []; ParentComponent.activeComponents.length; ) results.push(ParentComponent.activeComponents[0].destroy());
-                    return src.a.all(results).then(lib.I);
+                    return src.a.all(results).then(src_lib.I);
                 };
                 _createClass(ParentComponent, [ {
                     key: "driver",
@@ -6694,23 +6013,23 @@
                     }
                 } ]);
                 return ParentComponent;
-            }(base_BaseComponent)).prototype, "getOutlet", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "getOutlet"), _class.prototype), 
-            _applyDecoratedDescriptor(_class.prototype, "prefetch", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "prefetch"), _class.prototype), 
-            _applyDecoratedDescriptor(_class.prototype, "loadHTML", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "loadHTML"), _class.prototype), 
-            _applyDecoratedDescriptor(_class.prototype, "buildUrl", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "buildUrl"), _class.prototype), 
-            _applyDecoratedDescriptor(_class.prototype, "open", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "open"), _class.prototype), 
-            _applyDecoratedDescriptor(_class.prototype, "openPrerender", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "openPrerender"), _class.prototype), 
-            _applyDecoratedDescriptor(_class.prototype, "switchPrerender", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "switchPrerender"), _class.prototype), 
-            _applyDecoratedDescriptor(_class.prototype, "close", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "close"), _class.prototype), 
-            _applyDecoratedDescriptor(_class.prototype, "closeContainer", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "closeContainer"), _class.prototype), 
-            _applyDecoratedDescriptor(_class.prototype, "destroyContainer", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "destroyContainer"), _class.prototype), 
-            _applyDecoratedDescriptor(_class.prototype, "closeComponent", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "closeComponent"), _class.prototype), 
-            _applyDecoratedDescriptor(_class.prototype, "showContainer", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "showContainer"), _class.prototype), 
-            _applyDecoratedDescriptor(_class.prototype, "showComponent", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "showComponent"), _class.prototype), 
-            _applyDecoratedDescriptor(_class.prototype, "hideContainer", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "hideContainer"), _class.prototype), 
-            _applyDecoratedDescriptor(_class.prototype, "hideComponent", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "hideComponent"), _class.prototype), 
-            _applyDecoratedDescriptor(_class.prototype, "createPrerenderTemplate", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "createPrerenderTemplate"), _class.prototype), 
-            _applyDecoratedDescriptor(_class.prototype, "openContainer", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "openContainer"), _class.prototype), 
+            }(base_BaseComponent)).prototype, "getOutlet", [ src_lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "getOutlet"), _class.prototype), 
+            _applyDecoratedDescriptor(_class.prototype, "prefetch", [ src_lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "prefetch"), _class.prototype), 
+            _applyDecoratedDescriptor(_class.prototype, "loadHTML", [ src_lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "loadHTML"), _class.prototype), 
+            _applyDecoratedDescriptor(_class.prototype, "buildUrl", [ src_lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "buildUrl"), _class.prototype), 
+            _applyDecoratedDescriptor(_class.prototype, "open", [ src_lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "open"), _class.prototype), 
+            _applyDecoratedDescriptor(_class.prototype, "openPrerender", [ src_lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "openPrerender"), _class.prototype), 
+            _applyDecoratedDescriptor(_class.prototype, "switchPrerender", [ src_lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "switchPrerender"), _class.prototype), 
+            _applyDecoratedDescriptor(_class.prototype, "close", [ src_lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "close"), _class.prototype), 
+            _applyDecoratedDescriptor(_class.prototype, "closeContainer", [ src_lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "closeContainer"), _class.prototype), 
+            _applyDecoratedDescriptor(_class.prototype, "destroyContainer", [ src_lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "destroyContainer"), _class.prototype), 
+            _applyDecoratedDescriptor(_class.prototype, "closeComponent", [ src_lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "closeComponent"), _class.prototype), 
+            _applyDecoratedDescriptor(_class.prototype, "showContainer", [ src_lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "showContainer"), _class.prototype), 
+            _applyDecoratedDescriptor(_class.prototype, "showComponent", [ src_lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "showComponent"), _class.prototype), 
+            _applyDecoratedDescriptor(_class.prototype, "hideContainer", [ src_lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "hideContainer"), _class.prototype), 
+            _applyDecoratedDescriptor(_class.prototype, "hideComponent", [ src_lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "hideComponent"), _class.prototype), 
+            _applyDecoratedDescriptor(_class.prototype, "createPrerenderTemplate", [ src_lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "createPrerenderTemplate"), _class.prototype), 
+            _applyDecoratedDescriptor(_class.prototype, "openContainer", [ src_lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "openContainer"), _class.prototype), 
             _class);
             parent_ParentComponent.activeComponents = [];
             var delegate__createClass = function() {
@@ -6766,7 +6085,7 @@
                         return options.overrides.focus.call(_this);
                     };
                     _this.clean.register("destroyFocusOverride", function() {
-                        _this.focus = lib.I;
+                        _this.focus = src_lib.I;
                     });
                     _this.userClose = options.overrides.userClose;
                     _this.getDomain = options.overrides.getDomain;
@@ -6807,7 +6126,7 @@
                     }
                 } ]);
                 return DelegateComponent;
-            }(base_BaseComponent), drivers = __webpack_require__("./node_modules/xcomponent/src/drivers/index.js"), component_validate__typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+            }(base_BaseComponent), drivers = __webpack_require__("./node_modules/zoid/src/drivers/index.js"), validate__typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
                 return typeof obj;
             } : function(obj) {
                 return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
@@ -6816,7 +6135,7 @@
                 var id = _ref.id, tag = _ref.tag, context = _ref.context, CLASS = _ref.CLASS, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _ref$dimensions = _ref.dimensions, width = _ref$dimensions.width, height = _ref$dimensions.height;
                 return jsxDom("div", {
                     id: id,
-                    class: CLASS.XCOMPONENT + " " + CLASS.XCOMPONENT + "-tag-" + tag + " " + CLASS.XCOMPONENT + "-context-" + context
+                    class: CLASS.ZOID + " " + CLASS.ZOID + "-tag-" + tag + " " + CLASS.ZOID + "-context-" + context
                 }, jsxDom("style", null, "\n                    #" + id + ", #" + id + " > ." + CLASS.OUTLET + " {\n                        width: " + width + ";\n                        height: " + height + ";\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        position: relative;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        height: 100%;\n                        width: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                        transition: opacity .2s ease-in-out;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                    }\n                "), outlet);
             }
             function defaultPrerenderTemplate(_ref) {
@@ -6828,7 +6147,7 @@
                     class: "loader"
                 }))));
             }
-            __webpack_require__("./node_modules/xcomponent/src/types.js");
+            __webpack_require__("./node_modules/zoid/src/types.js");
             var component__class, component__typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
                 return typeof obj;
             } : function(obj) {
@@ -6884,18 +6203,18 @@
                         if (!options) throw new Error("Expecred options to be passed");
                         if (!options.tag || !options.tag.match(/^[a-z0-9-]+$/)) throw new Error("Invalid options.tag: " + options.tag);
                         !function(options) {
-                            if (options.props && "object" !== component_validate__typeof(options.props)) throw new Error("Expected options.props to be an object");
+                            if (options.props && "object" !== validate__typeof(options.props)) throw new Error("Expected options.props to be an object");
                             if (options.props) for (var _i2 = 0, _Object$keys2 = Object.keys(options.props), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
                                 var key = _Object$keys2[_i2], prop = options.props[key];
-                                if (!prop || "object" !== (void 0 === prop ? "undefined" : component_validate__typeof(prop))) throw new Error("Expected options.props." + key + " to be an object");
+                                if (!prop || "object" !== (void 0 === prop ? "undefined" : validate__typeof(prop))) throw new Error("Expected options.props." + key + " to be an object");
                                 if (!prop.type) throw new Error("Expected prop.type");
                                 if (-1 === constants.PROP_TYPES_LIST.indexOf(prop.type)) throw new Error("Expected prop.type to be one of " + constants.PROP_TYPES_LIST.join(", "));
                                 if (prop.required && prop.def) throw new Error("Required prop can not have a default value");
                             }
                         }(options);
                         if (options.dimensions) {
-                            if (options.dimensions && !Object(lib.E)(options.dimensions.width) && !Object(lib.D)(options.dimensions.width)) throw new Error("Expected options.dimensions.width to be a px or % string value");
-                            if (options.dimensions && !Object(lib.E)(options.dimensions.height) && !Object(lib.D)(options.dimensions.height)) throw new Error("Expected options.dimensions.height to be a px or % string value");
+                            if (options.dimensions && !Object(src_lib.E)(options.dimensions.width) && !Object(src_lib.D)(options.dimensions.width)) throw new Error("Expected options.dimensions.width to be a px or % string value");
+                            if (options.dimensions && !Object(src_lib.E)(options.dimensions.height) && !Object(src_lib.D)(options.dimensions.height)) throw new Error("Expected options.dimensions.height to be a px or % string value");
                         }
                         if (options.contexts) {
                             options.contexts.popup;
@@ -6913,10 +6232,10 @@
                         if (options.url && options.buildUrl) throw new Error("Can not pass both options.url and options.buildUrl");
                         if (options.defaultEnv) {
                             if ("string" != typeof options.defaultEnv) throw new TypeError("Expected options.defaultEnv to be a string");
-                            if (!options.buildUrl && "object" !== component_validate__typeof(options.url)) throw new Error("Expected options.url to be an object mapping env->url");
-                            if (options.url && "object" === component_validate__typeof(options.url) && !options.url[options.defaultEnv]) throw new Error("No url found for default env: " + options.defaultEnv);
+                            if (!options.buildUrl && "object" !== validate__typeof(options.url)) throw new Error("Expected options.url to be an object mapping env->url");
+                            if (options.url && "object" === validate__typeof(options.url) && !options.url[options.defaultEnv]) throw new Error("No url found for default env: " + options.defaultEnv);
                         }
-                        if (options.url && "object" === component_validate__typeof(options.url)) {
+                        if (options.url && "object" === validate__typeof(options.url)) {
                             if (!options.defaultEnv) throw new Error("Must pass options.defaultEnv with env->url mapping");
                             for (var _i6 = 0, _Object$keys6 = Object.keys(options.url), _length6 = null == _Object$keys6 ? 0 : _Object$keys6.length; _i6 < _length6; _i6++) {
                                 var env = _Object$keys6[_i6];
@@ -6927,52 +6246,28 @@
                         if (options.containerTemplate && "function" != typeof options.containerTemplate) throw new Error("Expected options.containerTemplate to be a function");
                     }(options);
                     _this.addProp(options, "tag");
-                    _this.addProp(options, "defaultLogLevel", "info");
                     _this.addProp(options, "allowedParentDomains", constants.WILDCARD);
-                    Object(lib.S)(_this.defaultLogLevel);
                     if (Component.components[_this.tag]) throw new Error("Can not register multiple components with the same tag");
                     _this.addProp(options, "name", _this.tag.replace(/-/g, "_"));
                     _this.builtinProps = {
                         env: {
                             type: "string",
-                            required: !1,
                             queryParam: !0,
-                            def: function() {
-                                return this.defaultEnv;
+                            required: !1,
+                            def: function(props, component) {
+                                return component.defaultEnv;
                             }
                         },
                         uid: {
                             type: "string",
                             def: function() {
-                                return Object(lib._0)();
+                                return Object(src_lib.Z)();
                             },
                             queryParam: !0
-                        },
-                        logLevel: {
-                            type: "string",
-                            required: !1,
-                            queryParam: !0,
-                            def: function() {
-                                return this.defaultLogLevel;
-                            }
-                        },
-                        url: {
-                            type: "string",
-                            required: !1,
-                            promise: !0,
-                            sendToChild: !1
                         },
                         dimensions: {
                             type: "object",
                             required: !1
-                        },
-                        version: {
-                            type: "string",
-                            required: !1,
-                            queryParam: !0,
-                            def: function() {
-                                return this.version;
-                            }
                         },
                         timeout: {
                             type: "number",
@@ -6982,58 +6277,73 @@
                         onDisplay: {
                             type: "function",
                             required: !1,
-                            noop: !0,
-                            promisify: !0,
-                            memoize: !0,
-                            sendToChild: !1
+                            sendToChild: !1,
+                            def: function() {
+                                return src_lib.I;
+                            },
+                            decorate: function(onDisplay) {
+                                return Object(src_lib.G)(Object(src_lib.O)(onDisplay));
+                            }
                         },
                         onEnter: {
                             type: "function",
                             required: !1,
-                            noop: !0,
-                            promisify: !0,
-                            sendToChild: !1
+                            sendToChild: !1,
+                            def: function() {
+                                return src_lib.I;
+                            },
+                            decorate: function(onEnter) {
+                                return Object(src_lib.O)(onEnter);
+                            }
                         },
                         onRender: {
                             type: "function",
                             required: !1,
-                            noop: !0,
-                            promisify: !0,
-                            sendToChild: !1
+                            sendToChild: !1,
+                            def: function() {
+                                return src_lib.I;
+                            },
+                            decorate: function(onRender) {
+                                return Object(src_lib.O)(onRender);
+                            }
                         },
                         onClose: {
                             type: "function",
                             required: !1,
-                            noop: !0,
-                            once: !0,
-                            promisify: !0,
-                            sendToChild: !1
+                            sendToChild: !1,
+                            def: function() {
+                                return src_lib.I;
+                            },
+                            decorate: function(onClose) {
+                                return Object(src_lib.L)(Object(src_lib.O)(onClose));
+                            }
                         },
                         onTimeout: {
                             type: "function",
                             required: !1,
-                            memoize: !0,
-                            promisify: !0,
                             sendToChild: !1,
                             def: function() {
                                 return function(err) {
-                                    if (this.props.onError) return this.props.onError(err);
-                                    throw err;
+                                    return this.props.onError(err);
                                 };
+                            },
+                            decorate: function(onTimeout) {
+                                return Object(src_lib.G)(Object(src_lib.O)(onTimeout));
                             }
                         },
                         onError: {
                             type: "function",
                             required: !1,
-                            promisify: !0,
                             sendToChild: !0,
-                            once: !0,
                             def: function() {
                                 return function(err) {
                                     setTimeout(function() {
                                         throw err;
                                     });
                                 };
+                            },
+                            decorate: function(onError) {
+                                return Object(src_lib.L)(Object(src_lib.O)(onError));
                             }
                         }
                     };
@@ -7042,7 +6352,6 @@
                     _this.addProp(options, "dimensions");
                     _this.addProp(options, "scrolling");
                     _this.addProp(options, "listenForResize");
-                    _this.addProp(options, "version", "latest");
                     _this.addProp(options, "defaultEnv");
                     _this.addProp(options, "buildUrl");
                     _this.addProp(options, "url");
@@ -7099,10 +6408,10 @@
                 };
                 Component.prototype.listenDelegate = function() {
                     var _this3 = this;
-                    Object(post_robot_src.on)(constants.POST_MESSAGE.ALLOW_DELEGATE + "_" + this.name, function() {
+                    _on(constants.POST_MESSAGE.ALLOW_DELEGATE + "_" + this.name, function() {
                         return !0;
                     });
-                    Object(post_robot_src.on)(constants.POST_MESSAGE.DELEGATE + "_" + this.name, function(_ref) {
+                    _on(constants.POST_MESSAGE.DELEGATE + "_" + this.name, function(_ref) {
                         var source = _ref.source, origin = _ref.origin, data = _ref.data, domain = _this3.getDomain(null, data.env || _this3.defaultEnv);
                         if (!domain) throw new Error("Could not determine domain to allow remote render");
                         if (!Object(cross_domain_utils_src.matchDomain)(domain, origin)) throw new Error("Can not render from " + origin + " - expected " + domain.toString());
@@ -7116,7 +6425,7 @@
                     });
                 };
                 Component.prototype.canRenderTo = function(win) {
-                    return Object(post_robot_src.send)(win, constants.POST_MESSAGE.ALLOW_DELEGATE + "_" + this.name).then(function(_ref2) {
+                    return _send(win, constants.POST_MESSAGE.ALLOW_DELEGATE + "_" + this.name).then(function(_ref2) {
                         return _ref2.data;
                     }).catch(function() {
                         return !1;
@@ -7162,11 +6471,11 @@
                     if (this.buildUrl) return this.buildUrl(props);
                     throw new Error("Unable to get url");
                 };
-                Component.prototype.isXComponent = function() {
-                    return isXComponentWindow();
+                Component.prototype.isZoidComponent = function() {
+                    return isZoidComponentWindow();
                 };
                 Component.prototype.isChild = function() {
-                    return isXComponentWindow() && getComponentMeta().tag === this.tag;
+                    return isZoidComponentWindow() && getComponentMeta().tag === this.tag;
                 };
                 Component.prototype.createError = function(message, tag) {
                     return new Error("[" + (tag || this.tag) + "] " + message);
@@ -7266,19 +6575,19 @@
                 };
                 Component.prototype.log = function(event) {
                     var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                    Object(lib.C)(this.name, event, payload);
+                    Object(src_lib.B)(this.name, event, payload);
                 };
                 Component.prototype.logWarning = function(event, payload) {
-                    Object(lib._1)(this.name, event, payload);
+                    Object(src_lib._1)(this.name, event, payload);
                 };
                 Component.prototype.logError = function(event, payload) {
-                    Object(lib.r)(this.name, event, payload);
+                    Object(src_lib.q)(this.name, event, payload);
                 };
                 Component.getByTag = function(tag) {
                     return Component.components[tag];
                 };
                 return Component;
-            }(base_BaseComponent)).prototype, 0, [ lib.G ], Object.getOwnPropertyDescriptor(component__class.prototype, "getPropNames"), component__class.prototype), 
+            }(base_BaseComponent)).prototype, 0, [ src_lib.G ], Object.getOwnPropertyDescriptor(component__class.prototype, "getPropNames"), component__class.prototype), 
             component__class);
             component_Component.components = {};
             function create(options) {
@@ -7290,8 +6599,8 @@
             function interface_destroyAll() {
                 return parent_ParentComponent.destroyAll();
             }
-            var postRobot = post_robot_src, CONSTANTS = constants, LoginXComponent = create({
-                tag: "login-xcomponent",
+            var postRobot = src_namespaceObject, interface_CONSTANTS = constants, LoginZoidComponent = create({
+                tag: "login-component",
                 defaultEnv: "demo",
                 url: {
                     demo: "./login.htm",
@@ -7326,8 +6635,8 @@
                     }))));
                 }
             });
-            __webpack_require__.d(__webpack_exports__, "LoginXComponent", function() {
-                return LoginXComponent;
+            __webpack_require__.d(__webpack_exports__, "LoginZoidComponent", function() {
+                return LoginZoidComponent;
             });
         }
     });

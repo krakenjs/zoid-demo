@@ -1,11 +1,11 @@
 
 /* @jsx jsxDom */
 
-import { create } from 'xcomponent/src';
+import { create } from 'zoid/src';
 
-export var LoginXComponent = create({
+export var LoginZoidComponent = create({
 
-    tag: 'login-xcomponent',
+    tag: 'login-component',
 
     defaultEnv: 'demo',
 
