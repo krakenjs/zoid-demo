@@ -2,4 +2,7 @@
 
 let xcomponentGlobals = require('xcomponent/globals');
 
-module.exports = Object.assign({}, xcomponentGlobals);
+module.exports = Object.assign({
+    __DEFAULT_CONTEXT__: 'iframe',
+    __POPUP_SUPPORT__:   true
+}, xcomponentGlobals);
