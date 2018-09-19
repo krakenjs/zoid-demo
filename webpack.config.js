@@ -8,12 +8,15 @@ import webpack from 'webpack';
 import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
 import CircularDependencyPlugin from 'circular-dependency-plugin';
 
+import globals from './globals';
+
 const FILE_NAME = 'xcomponent-demo';
 const MODULE_NAME = 'xclogin';
 
 const DEFAULT_VARS = {
     __TEST__:                           false,
     __MIN__:                            false,
+    __DEBUG__:                          false,
     __IE_POPUP_SUPPORT__:               false,
     __CHILD_WINDOW_ENFORCE_LOG_LEVEL__: false,
     __SEND_POPUP_LOGS_TO_OPENER__:      false,
@@ -134,6 +137,7 @@ export let WEBPACK_CONFIG_FRAME_MIN = getWebpackConfig({
     modulename: MODULE_NAME,
     minify:     true,
     vars:       {
+        ...globals,
         __MIN__: true
     }
 });
@@ -142,6 +146,7 @@ export let WEBPACK_CONFIG_POPUP = getWebpackConfig({
     filename:   `${ FILE_NAME }.popup.js`,
     modulename: MODULE_NAME,
     vars:       {
+        ...globals,
         __DEFAULT_CONTEXT__:  'popup',
         __POPUP_SUPPORT__:    true,
         __IE_POPUP_SUPPORT__: true
@@ -153,6 +158,7 @@ export let WEBPACK_CONFIG_POPUP_MIN = getWebpackConfig({
     modulename: MODULE_NAME,
     minify:     true,
     vars:       {
+        ...globals,
         __DEFAULT_CONTEXT__:  'popup',
         __POPUP_SUPPORT__:    true,
         __IE_POPUP_SUPPORT__: true,
@@ -167,6 +173,7 @@ export let WEBPACK_CONFIG_TEST = getWebpackConfig({
         devtool: 'inline-source-map'
     },
     vars: {
+        ...globals,
         __TEST__: true
     }
 });
