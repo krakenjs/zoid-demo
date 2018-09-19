@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/4.0.2/bootstrap-material-design.css" />
     <link rel="stylesheet" href="./index.css" />
 
-    <script src="../../dist/xcomponent-demo.popup.js"></script>
+    <script src="../../dist/login-zoid-component.popup.js"></script>
 </head>
 
 <body>
@@ -30,7 +30,7 @@
 
             // Render the component and pass down props to the popup
 
-            xclogin.LoginXComponent.render({
+            zoidlogin.LoginZoidComponent.render({
 
                 env: 'demo',
 
@@ -51,33 +51,3 @@
     </script>
 
 </body>
-
-
-    <!-- <button id="popupLogin" class="btn btn-primary">Popup Log In</button>
-    
-        <div id="result"></div>
-    
-        <script>
-    
-            // To render a popup we need to wait for a click event
-    
-            document.querySelector('#popupLogin').addEventListener('click', function() {
-    
-                // Hide the button
-    
-                document.querySelector('#popupLogin').style.display = 'none';
-    
-                // Render the component
-    
-                MyLoginXComponent.render({
-    
-                    prefilledEmail: 'foo@bar.com',
-    
-                    onLogin: function(email) {
-                        console.log('User logged in with email:', email);
-                        document.querySelector('#result').innerText = email + ' logged in!';
-                    }
-                });
-            });
-    
-        </script> -->

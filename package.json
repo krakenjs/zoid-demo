@@ -53,6 +53,6 @@
     "mocha": "^4.0.1"
   },
   "dependencies": {
-    "xcomponent": "^6.0.8"
+    "zoid": "^7.0.8"
   }
 }

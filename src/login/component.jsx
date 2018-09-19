@@ -1,11 +1,11 @@
 /* @flow */
 /* @jsx jsxDom */
 
-import { create } from 'xcomponent/src';
+import { create } from 'zoid/src';
 
-export let LoginXComponent = create({
+export let LoginZoidComponent = create({
 
-    tag: 'login-xcomponent',
+    tag: 'login-component',
 
     defaultEnv: 'demo',
 
