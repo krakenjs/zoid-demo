@@ -9,7 +9,7 @@
     "flow-typed": "rm -rf ./flow-typed && flow-typed install",
     "flow": "flow",
     "demo": "echo 'Navigate to http://localhost:1337/demo/iframe/index.htm or http://localhost:1337/demo/popup/index.htm' && serve . --port 1337 --silent",
-    "karma": "cross-env NODE_ENV=test babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/.bin/karma start",
+    "karma": "cross-env NODE_ENV=test babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/karma/bin/karma start",
     "babel": "babel src/ --out-dir dist/module",
     "webpack": "babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/.bin/webpack --progress",
     "test": "npm run lint && npm run flow-typed && npm run flow && npm run karma",
