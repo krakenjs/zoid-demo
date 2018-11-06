@@ -1,9 +1,9 @@
-xcomponent demo
+zoid demo
 ---------------
 
-A forkable demo repo for [xcomponent](https://github.com/krakenjs/xcomponent) to help you get started.
+A forkable demo repo for [zoid](https://github.com/krakenjs/zoid) to help you get started.
 
-[xcomponent](https://github.com/krakenjs/xcomponent) is a cross-domain component library which helps you render iframes and popups, pass down props, accept callbacks, and much more. This repo sets you up with the best possible starting point for building an xcomponent, including:
+[zoid](https://github.com/krakenjs/zoid) is a cross-domain component library which helps you render iframes and popups, pass down props, accept callbacks, and much more. This repo sets you up with the best possible starting point for building an xcomponent, including:
 
 - Predefined webpack, babel, karma etc. configs for working with xcomponent
 - Predefined test-setup, including a mock component frame
@@ -91,6 +91,6 @@ Notes
 
 - The karma tests use a mock for the component window (i.e. everything displayed in the popup window or iframe window). This can be seen [here](./test/windows/login). When writing tests which need to consume `window.xprops` and call callbacks like `window.xprops.onLogin()`, you'll need to do that here.
 
-- This module imports from `xcomponent/src` rather than `xcomponent/dist`, allowing your build to take advantage of tree-shaking, flow-types, etc. from `xcomponent` and all of its dependencies. That means that various babel plugins etc. that are required by `xcomponent` and its dependencies are included in this module. If this isn't to your liking, you're free to switch to `xcomponent/dist`, but be warned that you will lose out on some benefits this way. It will reduce the build time though.
+- This module imports from `zoid/src` rather than `zoid/dist`, allowing your build to take advantage of tree-shaking, flow-types, etc. from `zoid` and all of its dependencies. That means that various babel plugins etc. that are required by `zoid` and its dependencies are included in this module. If this isn't to your liking, you're free to switch to `zoid/dist`, but be warned that you will lose out on some benefits this way. It will reduce the build time though.
 
-- This module is forked from [grumbler](https://github.com/krakenjs/grumbler), which gives a solid (but opinionated) default setup for front-end javascript libraries, including webpack, karma, babel, flowtype, etc. You're free to switch out any of these technologies, but the existing setup is likely to give the best compatibility especially given the previous note around importing from `xcomponent/src`.
+- This module is forked from [grumbler](https://github.com/krakenjs/grumbler), which gives a solid (but opinionated) default setup for front-end javascript libraries, including webpack, karma, babel, flowtype, etc. You're free to switch out any of these technologies, but the existing setup is likely to give the best compatibility especially given the previous note around importing from `zoid/src`.
