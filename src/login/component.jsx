@@ -2,6 +2,7 @@
 /* @jsx jsxDom */
 
 import { create } from 'zoid/src';
+import type { ElementNode } from 'jsx-pragmatic/src';
 
 export let LoginZoidComponent = create({
 
@@ -39,7 +40,7 @@ export let LoginZoidComponent = create({
         popup:  __POPUP_SUPPORT__
     },
 
-    prerenderTemplate({ jsxDom }) : HTMLElement {
+    prerenderTemplate({ jsxDom }) : ElementNode {
         return (
             <html>
                 <head>
