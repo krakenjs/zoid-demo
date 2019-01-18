@@ -1,5 +1,5 @@
 /* @flow */
-/* eslint import/no-nodejs-modules: off */
+/* eslint import/no-default-export: off, import/no-nodejs-modules: off */
 
 import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 
@@ -8,15 +8,16 @@ import globals from './globals';
 const FILE_NAME = 'login-zoid-component';
 const MODULE_NAME = 'zoidlogin';
 
-export let WEBPACK_CONFIG_FRAME = getWebpackConfig({
+export const WEBPACK_CONFIG_FRAME = getWebpackConfig({
     filename:   `${ FILE_NAME }.frame.js`,
     modulename: MODULE_NAME,
+    minify:     false,
     vars:       {
         ...globals
     }
 });
 
-export let WEBPACK_CONFIG_FRAME_MIN = getWebpackConfig({
+export const WEBPACK_CONFIG_FRAME_MIN = getWebpackConfig({
     filename:   `${ FILE_NAME }.frame.min.js`,
     modulename: MODULE_NAME,
     minify:     true,
@@ -26,9 +27,10 @@ export let WEBPACK_CONFIG_FRAME_MIN = getWebpackConfig({
     }
 });
 
-export let WEBPACK_CONFIG_POPUP = getWebpackConfig({
+export const WEBPACK_CONFIG_POPUP = getWebpackConfig({
     filename:   `${ FILE_NAME }.popup.js`,
     modulename: MODULE_NAME,
+    minify:     false,
     vars:       {
         ...globals,
         __DEFAULT_CONTEXT__:  'popup',
@@ -37,7 +39,7 @@ export let WEBPACK_CONFIG_POPUP = getWebpackConfig({
     }
 });
 
-export let WEBPACK_CONFIG_POPUP_MIN = getWebpackConfig({
+export const WEBPACK_CONFIG_POPUP_MIN = getWebpackConfig({
     filename:   `${ FILE_NAME }.popup.min.js`,
     modulename: MODULE_NAME,
     minify:     true,
@@ -50,8 +52,7 @@ export let WEBPACK_CONFIG_POPUP_MIN = getWebpackConfig({
     }
 });
 
-export let WEBPACK_CONFIG_TEST = getWebpackConfig({
-    filename:   `${ FILE_NAME }.js`,
+export const WEBPACK_CONFIG_TEST = getWebpackConfig({
     modulename: MODULE_NAME,
     test:       true,
     vars:       {

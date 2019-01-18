@@ -6,10 +6,11 @@
 .*/node_modules/cross-domain-utils/dist
 .*/node_modules/cross-domain-utils/test
 .*/node_modules/npm
+.*/node_modules/jsonlint
 .*/dist/module
 [include]
 [libs]
-src/types.js
+src/declarations.js
 node_modules/grumbler-scripts/declarations.js
 node_modules/zoid/src/declarations.js
 node_modules/post-robot/src/declarations.js

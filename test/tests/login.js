@@ -6,9 +6,14 @@ describe('button cases', () => {
 
     it('should render the component and log in', (done) => {
 
-        let email = 'foo@bar.com';
+        const body = document.body;
+        if (!body) {
+            throw new Error(`Expected body to be present`);
+        }
 
-        LoginZoidComponent.render({
+        const email = 'foo@bar.com';
+
+        LoginZoidComponent({
 
             env: 'test',
 
@@ -23,6 +28,6 @@ describe('button cases', () => {
                 return done();
             }
 
-        }, document.body);
+        }).render(body);
     });
 });

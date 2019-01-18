@@ -1,46 +1,44 @@
 /* @flow */
-/* @jsx jsxDom */
+/** @jsx node */
 
 import { create } from 'zoid/src';
-import type { ElementNode } from 'jsx-pragmatic/src';
+import { node, dom } from 'jsx-pragmatic/src';
 
 export let LoginZoidComponent = create({
 
     tag: 'login-component',
 
-    defaultEnv: 'demo',
-
-    url: {
-        demo:       './login.htm',
-        test:       '/base/test/windows/login/index.htm',
-        production: 'https://my-site.com/login'
+    dimensions: {
+        width:  '300px',
+        height: '150px'
     },
 
-    domain: {
-        test: 'mock://www.my-site.com'
+    url: ({ props }) => {
+        return {
+            demo:       './login.htm',
+            production: 'https://my-site.com/login',
+            test:       'mock://www.my-site.com/base/test/windows/login/index.htm',
+        }[props.env];
     },
 
     props: {
+        env: {
+            type:    'string',
+            default: () => 'production'
+        },
 
         prefilledEmail: {
-            type:     'string',
-            required: true
+            type: 'string'
         },
 
         onLogin: {
-            type:     'function',
-            required: true
+            type: 'function'
         }
     },
 
     defaultContext: __DEFAULT_CONTEXT__,
 
-    contexts: {
-        iframe: true,
-        popup:  __POPUP_SUPPORT__
-    },
-
-    prerenderTemplate({ jsxDom }) : ElementNode {
+    prerenderTemplate({ doc } : { doc : Document }) : HTMLElement {
         return (
             <html>
                 <head>
@@ -96,6 +94,6 @@ export let LoginZoidComponent = create({
                     </div>
                 </body>
             </html>
-        );
+        ).render(dom({ doc }));
     }
 });
