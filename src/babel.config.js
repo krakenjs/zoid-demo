@@ -1,6 +1,6 @@
 /* @flow */
-/* eslint import/no-commonjs: off */
 
+// eslint-disable-next-line import/no-commonjs
 module.exports = {
     extends: 'grumbler-scripts/config/.babelrc-browser'
 };

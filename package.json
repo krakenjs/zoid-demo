@@ -5,8 +5,10 @@
   "main": "index.js",
   "module": "dist/module/index.js",
   "scripts": {
-    "lint": "eslint src/ test/ *.js",
-    "flow-typed": "rm -rf ./flow-typed && flow-typed install",
+    "dev": "babel-node $(npm bin)/webpack-dev-server --config webpack.config.dev.js --port 9000 --open-page demo/dev/index.htm --hot=false --inline=false",
+    "setup": "npm install && npm run flow-typed",
+    "lint": "eslint src/ test/ *.js --ext .js,.jsx",
+    "flow-typed": "rm -rf ./flow-typed && flow-typed install && flow-typed install mocha@4",
     "flow": "flow",
     "demo": "echo 'Navigate to http://localhost:1337/demo/iframe/index.htm or http://localhost:1337/demo/popup/index.htm' && serve . -l 1337",
     "karma": "cross-env NODE_ENV=test babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/karma/bin/karma start",

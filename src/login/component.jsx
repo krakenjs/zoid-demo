@@ -10,7 +10,7 @@ export type LoginZoidComponentProps = {|
     onLogin : (email : string) => void
 |};
 
-export let LoginZoidComponent : ZoidComponent<LoginZoidComponentProps> = create({
+export const LoginZoidComponent : ZoidComponent<LoginZoidComponentProps> = create({
 
     tag: 'login-component',
 
@@ -23,7 +23,7 @@ export let LoginZoidComponent : ZoidComponent<LoginZoidComponentProps> = create(
         return {
             demo:       './login.htm',
             production: 'https://my-site.com/login',
-            test:       'mock://www.my-site.com/base/test/windows/login/index.htm',
+            test:       'mock://www.my-site.com/base/test/windows/login/index.htm'
         }[props.env];
     },
 
@@ -44,6 +44,7 @@ export let LoginZoidComponent : ZoidComponent<LoginZoidComponentProps> = create(
 
     defaultContext: __DEFAULT_CONTEXT__,
 
+    // eslint-disable-next-line flowtype/require-exact-type
     prerenderTemplate({ doc } : { doc : Document }) : HTMLElement {
         return (
             <html>
@@ -96,7 +97,7 @@ export let LoginZoidComponent : ZoidComponent<LoginZoidComponentProps> = create(
                 </head>
                 <body>
                     <div class="spinner">
-                        <div id="loader" class="loader"></div>
+                        <div id="loader" class="loader" />
                     </div>
                 </body>
             </html>

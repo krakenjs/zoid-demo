@@ -2,5 +2,7 @@
 
 const zoidGlobals = require('zoid/globals');
 
-module.exports = { __DEFAULT_CONTEXT__: 'iframe',
-    __POPUP_SUPPORT__:   true, ...zoidGlobals };
+module.exports = {
+    __DEFAULT_CONTEXT__: 'iframe',
+    __POPUP_SUPPORT__:   true, ...zoidGlobals
+};

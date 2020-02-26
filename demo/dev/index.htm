@@ -1,0 +1,17 @@
+<head>
+	<title>Zoid Login Demo</title>
+</head>
+
+<body>
+  <script src="/login-zoid-component.frame.debug.js"></script>
+
+	<script>
+		zoidlogin.LoginZoidComponent({
+			env: 'demo',
+			prefilledEmail: 'foo@bar.com',
+			onLogin: (email) => {
+				alert(`${ email } successfully logged in`);
+			}
+		}).render(document.body)
+	</script>
+</body>

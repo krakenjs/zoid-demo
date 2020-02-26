@@ -28,6 +28,16 @@ export const WEBPACK_CONFIG_FRAME_MIN : WebpackConfig = getWebpackConfig({
     }
 });
 
+export const WEBPACK_CONFIG_FRAME_DEBUG : WebpackConfig = getWebpackConfig({
+    filename:   `${ FILE_NAME }.frame.debug.js`,
+    modulename: MODULE_NAME,
+    minify:     false,
+    debug:      true,
+    vars:       {
+        ...globals
+    }
+});
+
 export const WEBPACK_CONFIG_POPUP : WebpackConfig = getWebpackConfig({
     filename:   `${ FILE_NAME }.popup.js`,
     modulename: MODULE_NAME,
@@ -50,6 +60,19 @@ export const WEBPACK_CONFIG_POPUP_MIN : WebpackConfig = getWebpackConfig({
         __POPUP_SUPPORT__:    true,
         __IE_POPUP_SUPPORT__: true,
         __MIN__:              true
+    }
+});
+
+export const WEBPACK_CONFIG_POPUP_DEBUG : WebpackConfig = getWebpackConfig({
+    filename:   `${ FILE_NAME }.popup.debug.js`,
+    modulename: MODULE_NAME,
+    minify:     false,
+    debug:      true,
+    vars:       {
+        ...globals,
+        __DEFAULT_CONTEXT__:  'popup',
+        __POPUP_SUPPORT__:    true,
+        __IE_POPUP_SUPPORT__: true
     }
 });
 
