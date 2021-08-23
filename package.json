@@ -56,7 +56,7 @@
     "serve": "^10.1.1"
   },
   "dependencies": {
-    "jsx-pragmatic": "^1.0.11",
+    "jsx-pragmatic": "^2",
     "zoid": "^8"
   }
 }
