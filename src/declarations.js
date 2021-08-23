@@ -1,5 +1,6 @@
 /* @flow */
 
+// $FlowFixMe[toplevel-library-import]
 import { CONTEXT } from 'zoid/src';
 
 declare var __TEST__ : boolean;

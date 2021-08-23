@@ -1,10 +1,16 @@
 /* @flow */
 /** @jsx node */
 
-import { create } from 'zoid/src';
+import { create, type ZoidComponent } from 'zoid/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
-export let LoginZoidComponent = create({
+export type LoginZoidComponentProps = {|
+    env : string,
+    prefilledEmail : string,
+    onLogin : (email : string) => void
+|};
+
+export let LoginZoidComponent : ZoidComponent<LoginZoidComponentProps> = create({
 
     tag: 'login-component',
 

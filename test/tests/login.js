@@ -6,6 +6,7 @@ describe('button cases', () => {
 
     it('should render the component and log in', (done) => {
 
+        // eslint-disable-next-line compat/compat
         const body = document.body;
         if (!body) {
             throw new Error(`Expected body to be present`);
@@ -13,6 +14,7 @@ describe('button cases', () => {
 
         const email = 'foo@bar.com';
 
+        // $FlowFixMe
         LoginZoidComponent({
 
             env: 'test',
